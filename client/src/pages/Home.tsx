@@ -253,15 +253,6 @@ const iconFor = (type: ProjectType) => {
   return <FileText size={15} strokeWidth={2.4} />;
 };
 
-const worksBoard = [
-  { src: storage.posters.kitchen, section: "timelapse", label: { ar: "تحول مساحة", en: "Space transformation" } },
-  { src: storage.posters.smartbox, section: "ads", label: { ar: "دعاية وأفاتار", en: "Ad & avatar" } },
-  { src: storage.images.flow1, section: "images", label: { ar: "مشهد بصري", en: "Visual scene" } },
-  { src: storage.images.library, section: "surreal", label: { ar: "خيال بصري", en: "Visual fiction" } },
-  { src: storage.posters.robot, section: "creative-video", label: { ar: "فيديو إبداعي", en: "Creative video" } },
-  { src: storage.images.fashion, section: "cards", label: { ar: "مخطط تفصيلي", en: "Detailed diagram" } },
-];
-
 function useCopy(lang: Lang): any {
   return useMemo(() => ({
     nav: {
@@ -444,8 +435,8 @@ function WorksSection({ lang }: { lang: Lang }) {
         <div className="archive-board works-board">
           <div className="archive-board-header"><span className="archive-board-kicker">AI / 03—11</span><strong>AI WORKS</strong><span className="archive-board-note">{lang === "ar" ? "أعمال حقيقية · معاينة مختارة" : "REAL WORKS · CURATED PREVIEW"}</span></div>
           <div className="archive-board-grid">
-            {worksBoard.map((item, index) => <button key={item.src} className={`archive-piece piece-${index + 1}`} onClick={() => jump(item.section)} aria-label={`${L(lang, item.label)} — ${lang === "ar" ? "انتقل إلى المجموعة" : "jump to group"}`}>
-              <span className="piece-pin" /><span className="piece-tape" /><img src={item.src} alt={L(lang, item.label)} /><span className="piece-caption"><b>{String(index + 1).padStart(2, "0")}</b>{L(lang, item.label)}</span>
+            {sections.map((section, index) => <button key={section.id} className={`archive-piece folder-piece piece-${index + 1} accent-${section.accent}`} onClick={() => jump(section.id)} aria-label={`${L(lang, section.title)} — ${lang === "ar" ? "افتح المجلد" : "open folder"}`}>
+              <span className="piece-pin" /><span className="piece-tape" /><span className="folder-ai-mark"><b>AI</b><i /></span><span className="folder-icon">{categoryIcon(section.id)}</span><strong className="folder-title">{L(lang, section.title)}</strong><span className="folder-meta">AI / {section.index}</span><span className="folder-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span><span className="piece-caption"><b>{String(index + 1).padStart(2, "0")}</b>{lang === "ar" ? "فتح المجموعة" : "OPEN FOLDER"}</span>
             </button>)}
           </div>
           <div className="archive-board-footer"><span>{lang === "ar" ? "معاينة بصرية من مجموعات الأعمال" : "A visual preview of the work groups"}</span><span>WORKS / 03</span></div>
