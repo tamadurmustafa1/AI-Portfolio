@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build production site
+        env:
+          VITE_SUPABASE_URL: https://glitihcjnklxjiaruisn.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY: sb_publishable_L8MRd_0ou1lYeGESMdHg2Q_LQMti8me
         run: pnpm exec vite build
       - name: Remove Manus preview-only files
         run: rm -rf dist/public/__manus__

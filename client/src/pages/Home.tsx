@@ -24,6 +24,7 @@ import {
   X,
 } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
+import { addComment, addLike, loadSocial, socialReady, type SharedComment } from "@/lib/social";
 
 type Lang = "ar" | "en";
 type ProjectType = "image" | "video" | "html" | "doc" | "audio";
@@ -391,21 +392,36 @@ function Stats({ lang }: { lang: Lang }) {
   return <div className="stats-grid">{copy.stats.map((stat: { value: string; ar: string; en: string }) => <div className="stat" key={stat.value}><strong>{stat.value}</strong><span>{lang === "ar" ? stat.ar : stat.en}</span></div>)}</div>;
 }
 
-function Transformation({ lang }: { lang: Lang }) {
+function SocialControls({ workId, lang }: { workId: string; lang: Lang }) {
   const copy = useCopy(lang);
   const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const [comment, setComment] = useState("");
-  const [comments, setComments] = useState<string[]>([]);
-  useEffect(() => { const saved = localStorage.getItem("ai-portfolio-comments"); if (saved) setComments(JSON.parse(saved)); }, []);
-  const submitComment = () => { if (!comment.trim()) return; const next = [comment.trim(), ...comments]; setComments(next); localStorage.setItem("ai-portfolio-comments", JSON.stringify(next)); setComment(""); };
+  const [comments, setComments] = useState<SharedComment[]>([]);
+  const refresh = async () => {
+    if (!socialReady) return;
+    try { const snapshot = await loadSocial(workId); setLiked(snapshot.likedByVisitor); setLikeCount(snapshot.likes); setComments(snapshot.comments); } catch { /* Keep the card usable if the service is temporarily unavailable. */ }
+  };
+  useEffect(() => { void refresh(); const timer = window.setInterval(() => void refresh(), 15000); return () => window.clearInterval(timer); }, [workId]);
+  const toggleLike = async () => { if (liked || !socialReady) return; setLiked(true); setLikeCount((count) => count + 1); try { await addLike(workId); await refresh(); } catch { setLiked(false); setLikeCount((count) => Math.max(0, count - 1)); } };
+  const submitComment = async () => { if (!comment.trim() || !socialReady) return; const body = comment.trim(); setComment(""); try { await addComment(workId, body); await refresh(); } catch { setComment(body); } };
+  return (
+    <div className="shared-social" data-work-id={workId}>
+      <div className="film-controls"><button className={liked ? "reaction active" : "reaction"} onClick={() => void toggleLike()}><Heart size={16} fill={liked ? "currentColor" : "none"} />{L(lang, copy.like)}</button><span className="reaction-count">{likeCount.toString().padStart(2, "0")}</span><span className="film-divider" /><span className="comment-count"><MessageCircle size={16} />{comments.length.toString().padStart(2, "0")} {L(lang, copy.comments)}</span></div>
+      <div className="comment-box"><input value={comment} onChange={(event) => setComment(event.target.value)} onKeyDown={(event) => event.key === "Enter" && void submitComment()} placeholder={L(lang, copy.commentPlaceholder)} aria-label={L(lang, copy.commentPlaceholder)} disabled={!socialReady} /><button onClick={() => void submitComment()} disabled={!socialReady}><ArrowUpRight size={16} />{L(lang, copy.send)}</button></div>
+      {comments.length > 0 && <div className="comment-list">{comments.slice(0, 2).map((item, index) => <div className="comment-item" key={item.id}><span>0{index + 1}</span>{item.body}</div>)}</div>}
+    </div>
+  );
+}
+
+function Transformation({ lang }: { lang: Lang }) {
+  const copy = useCopy(lang);
   return (
     <section className="transformation-section" id="transformation">
       <div className="section-intro transformation-intro reveal-up"><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.transformationEyebrow)}</div><h2>{L(lang, copy.transformationTitle)}</h2><p>{L(lang, copy.transformationBody)}</p><div className="phase-list">{copy.phases.map((phase: { ar: string; en: string }, index: number) => <div className={index === 0 || index === 4 ? "phase edge" : "phase"} key={phase.en}><b>{L(lang, phase)}</b></div>)}</div></div>
       <div className="transformation-visual reveal-up" style={{ "--delay": "100ms" } as CSSProperties}>
         <div className="video-frame"><video controls playsInline poster={storage.transPoster} src={storage.transVideo} aria-label={lang === "ar" ? "فيديو كيف غيّر AI طريقة العمل؟" : "How did AI change the way we work? video"} /><div className="video-corner"><span>BEFORE / AFTER</span><span>INTERACTIVE FILM</span></div></div>
-        <div className="film-controls"><button className={liked ? "reaction active" : "reaction"} onClick={() => setLiked(!liked)}><Heart size={16} fill={liked ? "currentColor" : "none"} />{L(lang, copy.like)}</button><span className="reaction-count">{liked ? "01" : "00"}</span><span className="film-divider" /><span className="comment-count"><MessageCircle size={16} />{comments.length.toString().padStart(2, "0")} {L(lang, copy.comments)}</span></div>
-        <div className="comment-box"><input value={comment} onChange={(event) => setComment(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submitComment()} placeholder={L(lang, copy.commentPlaceholder)} aria-label={L(lang, copy.commentPlaceholder)} /><button onClick={submitComment}><ArrowUpRight size={16} />{L(lang, copy.send)}</button></div>
-        {comments.length > 0 && <div className="comment-list">{comments.slice(0, 2).map((item, index) => <div className="comment-item" key={`${item}-${index}`}><span>0{index + 1}</span>{item}</div>)}</div>}
+        <SocialControls workId="transformation" lang={lang} />
       </div>
     </section>
   );
@@ -430,7 +446,7 @@ function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: 
         {project.type === "doc" && !project.poster && <div className="doc-art"><div className="doc-fold"><FileText size={34} /><span>{project.tool?.en === "PDF" ? "PDF" : "PPTX"}</span></div><span>{lang === "ar" ? "ملف أصلي" : "Original file"}</span></div>}
         <div className="media-index">{sectionIndex ? `${sectionIndex} / ` : ""}{project.type.toUpperCase()}</div>
       </div>
-      <div className="project-content"><div className="project-meta"><span>{iconFor(project.type)}{typeLabel}</span>{project.featured && <span className="featured-pill"><Sparkles size={13} />{lang === "ar" ? "مختار" : "Featured"}</span>}</div><h3>{title}</h3><p>{description}</p><div className="project-footer">{action && (project.drive || project.source) && <a className="project-link" href={project.drive || project.source} target="_blank" rel="noreferrer">{action}<MoveUpRight size={15} /></a>}{project.type === "audio" && project.id === "courtyard" && project.source && <audio controls preload="none" src={project.source} aria-label={title} />}</div></div>
+      <div className="project-content"><div className="project-meta"><span>{iconFor(project.type)}{typeLabel}</span>{project.featured && <span className="featured-pill"><Sparkles size={13} />{lang === "ar" ? "مختار" : "Featured"}</span>}</div><h3>{title}</h3><p>{description}</p><div className="project-footer">{action && (project.drive || project.source) && <a className="project-link" href={project.drive || project.source} target="_blank" rel="noreferrer">{action}<MoveUpRight size={15} /></a>}{project.type === "audio" && project.id === "courtyard" && project.source && <audio controls preload="none" src={project.source} aria-label={title} />}</div><SocialControls workId={project.id} lang={lang} /></div>
     </article>
   );
 }
