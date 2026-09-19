@@ -253,6 +253,15 @@ const iconFor = (type: ProjectType) => {
   return <FileText size={15} strokeWidth={2.4} />;
 };
 
+const worksBoard = [
+  { src: storage.posters.kitchen, section: "timelapse", label: { ar: "تحول مساحة", en: "Space transformation" } },
+  { src: storage.posters.smartbox, section: "ads", label: { ar: "دعاية وأفاتار", en: "Ad & avatar" } },
+  { src: storage.images.flow1, section: "images", label: { ar: "مشهد بصري", en: "Visual scene" } },
+  { src: storage.images.library, section: "surreal", label: { ar: "خيال بصري", en: "Visual fiction" } },
+  { src: storage.posters.robot, section: "creative-video", label: { ar: "فيديو إبداعي", en: "Creative video" } },
+  { src: storage.images.fashion, section: "cards", label: { ar: "مخطط تفصيلي", en: "Detailed diagram" } },
+];
+
 function useCopy(lang: Lang): any {
   return useMemo(() => ({
     nav: {
@@ -427,9 +436,21 @@ const groupLabel = (id: string) => {
 
 function WorksSection({ lang }: { lang: Lang }) {
   const copy = useCopy(lang);
+  const jump = (section: string) => document.getElementById(section)?.scrollIntoView({ behavior: "smooth", block: "start" });
   return (
     <section className="work-section" id="work">
       <div className="work-heading reveal-up"><div className="section-intro"><span className="section-number">03</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.workEyebrow)}</div><h2>{L(lang, copy.workTitle)}</h2><p>{L(lang, copy.workBody)}</p></div><div className="archive-stamp"><Layers3 size={21} /><span>AI<br />PORTFOLIO</span><b>2026</b></div></div>
+      <div className="works-board-wrap reveal-up" style={{ "--delay": "90ms" } as CSSProperties}>
+        <div className="archive-board works-board">
+          <div className="archive-board-header"><span className="archive-board-kicker">AI / 03—11</span><strong>AI WORKS</strong><span className="archive-board-note">{lang === "ar" ? "أعمال حقيقية · معاينة مختارة" : "REAL WORKS · CURATED PREVIEW"}</span></div>
+          <div className="archive-board-grid">
+            {worksBoard.map((item, index) => <button key={item.src} className={`archive-piece piece-${index + 1}`} onClick={() => jump(item.section)} aria-label={`${L(lang, item.label)} — ${lang === "ar" ? "انتقل إلى المجموعة" : "jump to group"}`}>
+              <span className="piece-pin" /><span className="piece-tape" /><img src={item.src} alt={L(lang, item.label)} /><span className="piece-caption"><b>{String(index + 1).padStart(2, "0")}</b>{L(lang, item.label)}</span>
+            </button>)}
+          </div>
+          <div className="archive-board-footer"><span>{lang === "ar" ? "معاينة بصرية من مجموعات الأعمال" : "A visual preview of the work groups"}</span><span>WORKS / 03</span></div>
+        </div>
+      </div>
       <div className="archive-grid">{sections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="work-group-label">{L(lang, groupLabel(section.id))}</span><span className="archive-number">{section.index}</span><h3>{L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex={section.index} />)}</div></section>)}</div>
     </section>
   );
