@@ -451,12 +451,18 @@ function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: 
   );
 }
 
+function CategoryVisual({ section, lang }: { section: PortfolioSection; lang: Lang }) {
+  const lead = section.projects[0];
+  const source = lead?.type === "image" ? lead.source : lead?.type === "video" ? lead.poster : undefined;
+  return source ? <img src={source} alt={L(lang, section.title)} loading="lazy" /> : <div className={`category-fallback category-${lead?.type || "doc"}`}><span>{iconFor(lead?.type || "doc")}</span><strong>{lead?.type === "html" ? "HTML" : lead?.type === "audio" ? "AUDIO" : "PDF"}</strong></div>;
+}
+
 function WorkArchive({ lang }: { lang: Lang }) {
   const copy = useCopy(lang);
   return (
     <section className="work-section" id="work">
       <div className="work-heading reveal-up"><div className="section-intro"><span className="section-number">04</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.workEyebrow)}</div><h2>{L(lang, copy.workTitle)}</h2><p>{L(lang, copy.workBody)}</p></div><div className="archive-stamp"><Layers3 size={21} /><span>AI<br />PORTFOLIO</span><b>2026</b></div></div>
-      <div className="section-index">{sections.map((section) => <a key={section.id} href={`#${section.id}`}><span>{section.index}</span>{L(lang, section.title)}</a>)}</div>
+      <div className="category-library" aria-label={lang === "ar" ? "فئات الأعمال" : "Work categories"}>{sections.map((section) => <a className={`category-card accent-${section.accent}`} key={section.id} href={`#${section.id}`}><div className="category-visual"><CategoryVisual section={section} lang={lang} /><span className="category-index">{section.index}</span><span className="category-arrow"><ArrowUpRight size={16} /></span></div><div className="category-card-copy"><h3>{L(lang, section.title)}</h3><p>{L(lang, section.description)}</p><span className="category-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div></a>)}</div>
       <div className="archive-grid">{sections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="archive-number">{section.index}</span><h3>{L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex={section.index} />)}</div></section>)}</div>
     </section>
   );
