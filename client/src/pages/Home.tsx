@@ -291,8 +291,8 @@ function useCopy(lang: Lang): any {
       en: ["Home", "How did AI change the way we work?", "Work"],
     },
     heroKicker: { ar: "ملف تماضر مصطفى / تدريب أدوات الذكاء الاصطناعي", en: "Tamadur Mustafa / AI tools training portfolio" },
-    heroTitle: { ar: "من التعلّم\nإلى الأثر", en: "From learning\nto impact" },
-    heroSubtitle: { ar: "ملف أعمال أدوات الذكاء الاصطناعي", en: "AI Tools Course Portfolio" },
+    heroTitle: { ar: "من المعرفة\nإلى التطبيق", en: "From knowledge\nto application" },
+    heroSubtitle: { ar: "رحلة في توظيف الذكاء الاصطناعي لصناعة أفكار وتجارب وأعمال رقمية", en: "A journey in using AI to create digital ideas, experiences, and works" },
     heroBody: { ar: "رحلة موثقة من استكشاف الأدوات إلى صناعة الصور، الفيديو، الصوت، القصص، الألعاب والتجارب التفاعلية — باستخدام الأعمال الفعلية المحفوظة في ملف الدورة.", en: "A documented journey from exploring AI tools to making images, video, sound, stories, games, and interactive experiences — using the actual works preserved in the course portfolio." },
     explore: { ar: "استعرض الأعمال", en: "Explore the work" },
     watch: { ar: "كيف غيّر AI طريقة العمل؟", en: "How did AI change the way we work?" },
@@ -375,7 +375,7 @@ function Hero({ lang }: { lang: Lang }) {
         </div>
         <div className="hero-portrait reveal-up" style={{ "--delay": "120ms" } as CSSProperties}>
           <div className="portrait-orbit orbit-one" /><div className="portrait-orbit orbit-two" />
-          <div className="portrait-card"><img src={storage.profile} alt={L(lang, copy.identity)} /><div className="portrait-gradient" /><div className="portrait-label"><span>{L(lang, copy.archiveLabel)}</span><strong>01 / 11</strong></div><div className="portrait-caption"><span>{L(lang, copy.identity)}</span><small>AI TOOLS / PORTFOLIO</small></div></div>
+          <div className="portrait-card"><img src={storage.profile} alt={L(lang, copy.identity)} /><div className="portrait-gradient" /><div className="portrait-label"><span>{L(lang, copy.archiveLabel)}</span><strong>01 / 11</strong></div><div className="portrait-caption"><small>AI TOOLS / PORTFOLIO</small></div></div>
           <div className="vertical-note">LEARNING · EXPERIMENTATION · CREATION</div>
         </div>
       </div>

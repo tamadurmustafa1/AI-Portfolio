@@ -440,3 +440,68 @@ button { font: inherit; border: 0; }
 .presentation-art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(4,13,27,.02) 32%, rgba(4,13,27,.8) 100%); }
 .presentation-thumb-label { position: absolute; z-index: 2; inset: auto 14px 13px; display: flex; align-items: center; gap: 7px; color: rgba(245,247,251,.9); font-family: "Space Grotesk", "Noto Kufi Arabic", sans-serif; font-size: 9px; font-weight: 600; letter-spacing: .11em; text-transform: uppercase; }.presentation-thumb-label svg { color: var(--orange-2); }
 @media (max-width: 475px) { .presentation-art { min-height: 155px; }.presentation-thumb-label { inset-inline: 10px; font-size: 8px; } }
+
+
+/* Works map refresh: vibrant AI panels with centered orange push pins */
+.works-board .folder-piece {
+  overflow: hidden;
+  padding: 44px 14px 28px;
+  border: 1px solid rgba(157,231,236,.42);
+  background: linear-gradient(145deg, rgba(25,65,92,.98), rgba(8,24,42,.98) 72%);
+  box-shadow: 0 16px 28px rgba(0,0,0,.34), inset 0 0 0 1px rgba(255,255,255,.08), inset 0 0 28px rgba(78,157,255,.1);
+}
+.works-board .folder-piece::before {
+  background: linear-gradient(135deg, rgba(255,255,255,.18), transparent 30%, transparent 63%, rgba(255,106,42,.16));
+}
+.works-board .folder-piece::after {
+  inset: 8px;
+  border: 1px solid rgba(157,231,236,.15);
+  background: linear-gradient(90deg, transparent 0 72%, rgba(255,174,105,.08) 72% 73%, transparent 73% 100%);
+}
+.works-board .folder-piece:hover {
+  border-color: rgba(255,174,105,.95);
+  background: linear-gradient(145deg, rgba(40,91,119,.99), rgba(10,29,49,.99) 72%);
+  box-shadow: 0 22px 38px rgba(0,0,0,.42), 0 0 30px rgba(255,106,42,.24), inset 0 0 0 1px rgba(255,174,105,.16);
+}
+.works-board .piece-pin {
+  top: 13px;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255,236,214,.9);
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 27%, #ffd6a8 0 11%, #ff9a4a 12% 32%, #ff6a2a 33% 68%, #c44218 69% 100%);
+  box-shadow: 0 4px 0 rgba(117,35,13,.7), 0 0 0 5px rgba(255,106,42,.1), 0 0 22px rgba(255,106,42,.72);
+  transform: translateX(-50%);
+}
+.works-board .piece-pin::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 4px;
+  height: 10px;
+  border-radius: 0 0 4px 4px;
+  background: #b84017;
+  box-shadow: 0 3px 4px rgba(0,0,0,.4);
+  transform: translateX(-50%);
+}
+.works-board .piece-tape { display: none; }
+.works-board .folder-icon {
+  width: 38px;
+  height: 38px;
+  border-color: rgba(255,174,105,.72);
+  background: rgba(255,106,42,.14);
+  box-shadow: 0 0 18px rgba(255,106,42,.14);
+}
+.works-board .folder-title { text-shadow: 0 2px 14px rgba(0,0,0,.5); }
+.accent-blue.works-board .folder-piece .folder-icon { background: rgba(78,157,255,.16); box-shadow: 0 0 18px rgba(78,157,255,.18); }
+.accent-ice.works-board .folder-piece .folder-icon { background: rgba(157,231,236,.13); box-shadow: 0 0 18px rgba(157,231,236,.16); }
+@media (max-width: 760px) {
+  .works-board .folder-piece { padding-top: 39px; }
+  .works-board .piece-pin { top: 10px; width: 19px; height: 19px; }
+}
+@media (max-width: 475px) {
+  .works-board .folder-piece { padding-top: 36px; }
+  .works-board .piece-pin { width: 17px; height: 17px; }
+}
