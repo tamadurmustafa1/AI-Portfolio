@@ -262,6 +262,20 @@ const sections: PortfolioSection[] = [
   },
 ];
 
+const orderedSections: PortfolioSection[] = [
+  sections[7],
+  sections[1],
+  sections[2],
+  sections[3],
+  sections[4],
+  sections[5],
+  sections[6],
+  sections[8],
+  sections[9],
+  sections[10],
+  sections[0],
+];
+
 const iconFor = (type: ProjectType) => {
   if (type === "video") return <Play size={15} strokeWidth={2.4} />;
   if (type === "image") return <ImageIcon size={15} strokeWidth={2.4} />;
@@ -412,7 +426,7 @@ function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: 
         {project.type === "html" && project.id !== "bead-game" && project.id !== "fish-game" && !project.poster && <div className="html-art"><div className="html-window"><span /><span /><span /></div><Code2 size={44} /><strong>HTML</strong><small>{lang === "ar" ? "تجربة قابلة للتشغيل" : "Playable experience"}</small></div>}
         {project.type === "doc" && project.poster && <div className="presentation-art"><img src={project.poster} alt="" /><div className="presentation-thumb-label"><Presentation size={14} />{lang === "ar" ? "عرض تعليمي" : "EDUCATIONAL PRESENTATION"}</div></div>}
         {project.type === "doc" && !project.poster && <div className="doc-art"><div className="doc-fold"><FileText size={34} /><span>{project.tool?.en === "PDF" ? "PDF" : "PPTX"}</span></div><span>{lang === "ar" ? "ملف أصلي" : "Original file"}</span></div>}
-        <div className="media-index">{sectionIndex} / {project.type.toUpperCase()}</div>
+        <div className="media-index">{sectionIndex ? `${sectionIndex} / ` : ""}{project.type.toUpperCase()}</div>
       </div>
       <div className="project-content"><div className="project-meta"><span>{iconFor(project.type)}{typeLabel}</span>{project.featured && <span className="featured-pill"><Sparkles size={13} />{lang === "ar" ? "مختار" : "Featured"}</span>}</div><h3>{title}</h3><p>{description}</p><div className="project-footer">{action && (project.drive || project.source) && <a className="project-link" href={project.drive || project.source} target="_blank" rel="noreferrer">{action}<MoveUpRight size={15} /></a>}{project.type === "audio" && project.id === "courtyard" && project.source && <audio controls preload="none" src={project.source} aria-label={title} />}</div></div>
     </article>
@@ -454,16 +468,16 @@ function WorksSection({ lang }: { lang: Lang }) {
       <div className="work-heading reveal-up"><div className="section-intro"><span className="section-number">03</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.workEyebrow)}</div><h2>{L(lang, copy.workTitle)}</h2><p>{L(lang, copy.workBody)}</p></div><div className="archive-stamp"><Layers3 size={21} /><span>AI<br />PORTFOLIO</span><b>2026</b></div></div>
       <div className="works-board-wrap reveal-up" style={{ "--delay": "90ms" } as CSSProperties}>
         <div className="archive-board works-board">
-          <div className="archive-board-header"><span className="archive-board-kicker">AI / 03—11</span><strong>AI WORKS</strong><span className="archive-board-note">{lang === "ar" ? "أعمال حقيقية · معاينة مختارة" : "REAL WORKS · CURATED PREVIEW"}</span></div>
+          <div className="archive-board-header"><span className="archive-board-kicker">AI WORKS</span><strong>AI WORKS</strong><span className="archive-board-note">{lang === "ar" ? "أعمال حقيقية · معاينة مختارة" : "REAL WORKS · CURATED PREVIEW"}</span></div>
           <div className="archive-board-grid">
-            {sections.map((section, index) => <button key={section.id} className={`archive-piece folder-piece piece-${index + 1} accent-${section.accent}`} onClick={() => jump(section.id)} aria-label={`${L(lang, section.title)} — ${lang === "ar" ? "افتح المجلد" : "open folder"}`}>
-              <span className="piece-pin" /><span className="piece-tape" /><span className="folder-ai-mark"><b>AI</b><i /></span><span className="folder-icon">{categoryIcon(section.id)}</span><strong className="folder-title">{L(lang, section.title)}</strong><span className="folder-meta">AI / {section.index}</span><span className="folder-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span><span className="piece-caption"><b>{String(index + 1).padStart(2, "0")}</b>{lang === "ar" ? "فتح المجموعة" : "OPEN FOLDER"}</span>
+            {orderedSections.map((section, index) => <button key={section.id} className={`archive-piece folder-piece piece-${index + 1} accent-${section.accent}`} onClick={() => jump(section.id)} aria-label={`${L(lang, section.title)} — ${lang === "ar" ? "افتح المجلد" : "open folder"}`}>
+              <span className="piece-pin" /><span className="piece-tape" /><span className="folder-ai-mark"><b>AI</b><i /></span><span className="folder-icon">{categoryIcon(section.id)}</span><strong className="folder-title">{section.id === "timelapse" ? "Time Lapse" : L(lang, section.title)}</strong><span className="folder-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span><span className="piece-caption">{lang === "ar" ? "فتح المجموعة" : "OPEN FOLDER"}</span>
             </button>)}
           </div>
-          <div className="archive-board-footer"><span>{lang === "ar" ? "معاينة بصرية من مجموعات الأعمال" : "A visual preview of the work groups"}</span><span>WORKS / 03</span></div>
+          <div className="archive-board-footer"><span>{lang === "ar" ? "معاينة بصرية من مجموعات الأعمال" : "A visual preview of the work groups"}</span><span>WORKS</span></div>
         </div>
       </div>
-      <div className="archive-grid">{sections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="work-group-label">{L(lang, groupLabel(section.id))}</span><span className="archive-number">{section.index}</span><h3>{L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex={section.index} />)}</div></section>)}</div>
+      <div className="archive-grid">{orderedSections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="work-group-label">{L(lang, groupLabel(section.id))}</span><h3>{section.id === "timelapse" ? "Time Lapse" : L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex="" />)}</div></section>)}</div>
     </section>
   );
 }
