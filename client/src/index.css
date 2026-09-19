@@ -426,3 +426,17 @@ button { font: inherit; border: 0; }
 .game-fish-image { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(1.04) contrast(1.02); }
 .game-fish::after { z-index: 2; background: linear-gradient(180deg, rgba(3,14,28,.04) 35%, rgba(3,12,24,.78) 100%); }
 .game-fish .game-thumb-label { z-index: 4; }
+
+/* Interactive experience thumbnails: subject-led visuals, with technology kept secondary */
+.interactive-art { position: relative; width: 100%; height: 100%; min-height: 170px; overflow: hidden; background: #081727; }
+.interactive-art img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(1.04) contrast(1.02); }
+.interactive-art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(4,13,27,.04) 34%, rgba(4,13,27,.78) 100%); }
+.interactive-thumb-label { position: absolute; z-index: 2; inset: auto 14px 13px; display: flex; align-items: center; gap: 7px; color: rgba(245,247,251,.88); font-family: "Space Grotesk", "Noto Kufi Arabic", sans-serif; font-size: 9px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }.interactive-thumb-label svg { color: var(--orange-2); }
+@media (max-width: 475px) { .interactive-art { min-height: 155px; }.interactive-thumb-label { inset-inline: 10px; font-size: 8px; } }
+
+/* Presentation thumbnail: show the subject of the deck before the file format */
+.presentation-art { position: relative; width: 100%; height: 100%; min-height: 170px; overflow: hidden; background: #081727; }
+.presentation-art img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(1.02) contrast(1.03); }
+.presentation-art::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(4,13,27,.02) 32%, rgba(4,13,27,.8) 100%); }
+.presentation-thumb-label { position: absolute; z-index: 2; inset: auto 14px 13px; display: flex; align-items: center; gap: 7px; color: rgba(245,247,251,.9); font-family: "Space Grotesk", "Noto Kufi Arabic", sans-serif; font-size: 9px; font-weight: 600; letter-spacing: .11em; text-transform: uppercase; }.presentation-thumb-label svg { color: var(--orange-2); }
+@media (max-width: 475px) { .presentation-art { min-height: 155px; }.presentation-thumb-label { inset-inline: 10px; font-size: 8px; } }

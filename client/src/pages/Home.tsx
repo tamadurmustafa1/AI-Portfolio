@@ -53,6 +53,12 @@ type PortfolioSection = {
 const storage = {
   profile: "/manus-storage/profile-cover_fbae9d8d.png",
   gameFish: "/manus-storage/fish-bead-thumbnail_ed5c0dda.png",
+  hajjPoster: "/manus-storage/poster-hajj-kaaba_cb371364.png",
+  interactivePosters: {
+    plant: "/manus-storage/poster-save-my-plant_f0c1aa89.png",
+    cells: "/manus-storage/poster-living-cells_964cbad2.png",
+    pascal: "/manus-storage/poster-pascals-law_f045ca62.png",
+  },
   transVideo: "/manus-storage/video-transformation-cinematic_63a0e148.mp4",
   transPoster: "/manus-storage/poster-transformation_c4c730c4.jpg",
   images: {
@@ -198,7 +204,7 @@ const sections: PortfolioSection[] = [
     description: { ar: "عرض تقديمي تعليمي محفوظ كملف PowerPoint ضمن مجلد العروض.", en: "An educational presentation preserved as a PowerPoint file in the presentations folder." },
     accent: "blue",
     projects: [
-      { id: "hajj", type: "doc", title: { ar: "مناسك الحج — دليل شامل", en: "Hajj Rituals — A Complete Guide" }, description: { ar: "عرض تقديمي مجهز على Z AI حول مناسك الحج.", en: "A presentation prepared on Z AI about the Hajj rituals." }, drive: drive.presentation, tool: { ar: "Z AI / PowerPoint", en: "Z AI / PowerPoint" }, cta: { ar: "افتح العرض", en: "Open Presentation" } },
+      { id: "hajj", type: "doc", title: { ar: "مناسك الحج — دليل شامل", en: "Hajj Rituals — A Complete Guide" }, description: { ar: "عرض تقديمي مجهز على Z AI حول مناسك الحج.", en: "A presentation prepared on Z AI about the Hajj rituals." }, drive: drive.presentation, poster: storage.hajjPoster, tool: { ar: "Z AI / PowerPoint", en: "Z AI / PowerPoint" }, cta: { ar: "افتح العرض", en: "Open Presentation" } },
     ],
   },
   {
@@ -234,9 +240,9 @@ const sections: PortfolioSection[] = [
     description: { ar: "ملفات HTML تعليمية يمكن فتحها وتشغيلها كصفحات تفاعلية مستقلة.", en: "Educational HTML files that open and run as standalone interactive pages." },
     accent: "blue",
     projects: [
-      { id: "plant", type: "html", title: { ar: "أنقذ نبتتي", en: "Save My Plant" }, description: { ar: "تجربة تفاعلية تعليمية حول إنقاذ النبتة.", en: "An educational interactive experience about saving a plant." }, source: storage.html.plant, tool: { ar: "HTML تفاعلي", en: "Interactive HTML" }, cta: { ar: "افتح التجربة التفاعلية", en: "Open Experience" } },
-      { id: "cells", type: "html", title: { ar: "الدرس التفاعلي — خلايا الكائنات الحية", en: "Interactive Lesson — Living Organism Cells" }, description: { ar: "رحلة تعليمية تفاعلية إلى بوابة الخلية الذكية.", en: "An interactive learning journey into the smart cell gateway." }, source: storage.html.cells, tool: { ar: "HTML تفاعلي", en: "Interactive HTML" }, cta: { ar: "افتح التجربة التفاعلية", en: "Open Experience" } },
-      { id: "pascal", type: "html", title: { ar: "قانون باسكال", en: "Pascal's Law" }, description: { ar: "تجربة تفاعلية للتحكم في القوة وفهم قانون باسكال.", en: "An interactive experiment for controlling force and understanding Pascal's law." }, source: storage.html.pascal, tool: { ar: "HTML تفاعلي", en: "Interactive HTML" }, cta: { ar: "افتح التجربة التفاعلية", en: "Open Experience" } },
+      { id: "plant", type: "html", title: { ar: "أنقذ نبتتي", en: "Save My Plant" }, description: { ar: "تجربة تفاعلية تعليمية حول إنقاذ النبتة.", en: "An educational interactive experience about saving a plant." }, source: storage.html.plant, poster: storage.interactivePosters.plant, tool: { ar: "HTML تفاعلي", en: "Interactive HTML" }, cta: { ar: "افتح التجربة التفاعلية", en: "Open Experience" } },
+      { id: "cells", type: "html", title: { ar: "الدرس التفاعلي — خلايا الكائنات الحية", en: "Interactive Lesson — Living Organism Cells" }, description: { ar: "رحلة تعليمية تفاعلية إلى بوابة الخلية الذكية.", en: "An interactive learning journey into the smart cell gateway." }, source: storage.html.cells, poster: storage.interactivePosters.cells, tool: { ar: "HTML تفاعلي", en: "Interactive HTML" }, cta: { ar: "افتح التجربة التفاعلية", en: "Open Experience" } },
+      { id: "pascal", type: "html", title: { ar: "قانون باسكال", en: "Pascal's Law" }, description: { ar: "تجربة تفاعلية للتحكم في القوة وفهم قانون باسكال.", en: "An interactive experiment for controlling force and understanding Pascal's law." }, source: storage.html.pascal, poster: storage.interactivePosters.pascal, tool: { ar: "HTML تفاعلي", en: "Interactive HTML" }, cta: { ar: "افتح التجربة التفاعلية", en: "Open Experience" } },
     ],
   },
   {
@@ -398,8 +404,10 @@ function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: 
         {project.type === "audio" && <div className="audio-art"><div className="audio-orb"><AudioLines size={30} /></div><div className="equalizer">{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((bar) => <i key={bar} style={{ "--bar": `${bar % 4 + 2}` } as CSSProperties} />)}</div><span>SOUND / {sectionIndex}</span></div>}
         {project.type === "html" && project.id === "bead-game" && <div className="game-art game-beads" role="img" aria-label={lang === "ar" ? "صورة مصغرة للعبة رحلة الخرز" : "Thumbnail for the Bead Quest game"}><div className="game-art-grid" /><span className="bead bead-1" /><span className="bead bead-2" /><span className="bead bead-3" /><span className="bead bead-4" /><span className="bead bead-5" /><span className="bead bead-6" /><span className="bead bead-7" /><span className="bead bead-8" /><span className="bead-thread" /><div className="game-thumb-label"><Gamepad2 size={14} />{lang === "ar" ? "تحدي الخرز" : "BEAD QUEST"}</div></div>}
         {project.type === "html" && project.id === "fish-game" && <div className="game-art game-fish" role="img" aria-label={lang === "ar" ? "صورة مصغرة لسمكة ذهبية مصنوعة من الخرز للعبة سمكة مش بمكانها" : "Bead-crafted golden fish thumbnail for Fish Out of Place"}><img className="game-fish-image" src={storage.gameFish} alt="" /><div className="game-thumb-label"><Gamepad2 size={14} />{lang === "ar" ? "السمكة مش بمكانها" : "FISH OUT OF PLACE"}</div></div>}
-        {project.type === "html" && project.id !== "bead-game" && project.id !== "fish-game" && <div className="html-art"><div className="html-window"><span /><span /><span /></div><Code2 size={44} /><strong>HTML</strong><small>{lang === "ar" ? "تجربة قابلة للتشغيل" : "Playable experience"}</small></div>}
-        {project.type === "doc" && <div className="doc-art"><div className="doc-fold"><FileText size={34} /><span>{project.tool?.en === "PDF" ? "PDF" : "PPTX"}</span></div><span>{lang === "ar" ? "ملف أصلي" : "Original file"}</span></div>}
+        {project.type === "html" && project.id !== "bead-game" && project.id !== "fish-game" && project.poster && <div className="interactive-art"><img src={project.poster} alt="" /><div className="interactive-thumb-label"><Globe2 size={14} />{lang === "ar" ? "تجربة تعليمية" : "INTERACTIVE EXPERIENCE"}</div></div>}
+        {project.type === "html" && project.id !== "bead-game" && project.id !== "fish-game" && !project.poster && <div className="html-art"><div className="html-window"><span /><span /><span /></div><Code2 size={44} /><strong>HTML</strong><small>{lang === "ar" ? "تجربة قابلة للتشغيل" : "Playable experience"}</small></div>}
+        {project.type === "doc" && project.poster && <div className="presentation-art"><img src={project.poster} alt="" /><div className="presentation-thumb-label"><Presentation size={14} />{lang === "ar" ? "عرض تعليمي" : "EDUCATIONAL PRESENTATION"}</div></div>}
+        {project.type === "doc" && !project.poster && <div className="doc-art"><div className="doc-fold"><FileText size={34} /><span>{project.tool?.en === "PDF" ? "PDF" : "PPTX"}</span></div><span>{lang === "ar" ? "ملف أصلي" : "Original file"}</span></div>}
         <div className="media-index">{sectionIndex} / {project.type.toUpperCase()}</div>
       </div>
       <div className="project-content"><div className="project-meta"><span>{iconFor(project.type)}{typeLabel}</span>{project.featured && <span className="featured-pill"><Sparkles size={13} />{lang === "ar" ? "مختار" : "Featured"}</span>}</div><h3>{title}</h3><p>{description}</p><div className="project-footer">{action && (project.drive || project.source) && <a className="project-link" href={project.drive || project.source} target="_blank" rel="noreferrer">{action}<MoveUpRight size={15} /></a>}{project.type === "audio" && project.id === "courtyard" && project.source && <audio controls preload="none" src={project.source} aria-label={title} />}</div></div>
