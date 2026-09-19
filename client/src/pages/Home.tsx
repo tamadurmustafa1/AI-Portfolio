@@ -435,7 +435,7 @@ function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: 
   return (
     <article className={`project-card type-${project.type} ${project.featured ? "featured" : ""}`}>
       <div className="project-media">
-        {project.type === "image" && project.source && <img src={project.source} alt={title} loading="lazy" />}
+        {project.type === "image" && project.source && <img src={project.source} alt={title} />}
         {project.type === "video" && project.source && <video controls playsInline preload="metadata" poster={project.poster} src={project.source} aria-label={title} />}
         {project.type === "audio" && <div className="audio-art"><div className="audio-orb"><AudioLines size={30} /></div><div className="equalizer">{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((bar) => <i key={bar} style={{ "--bar": `${bar % 4 + 2}` } as CSSProperties} />)}</div><span>SOUND / {sectionIndex}</span></div>}
         {project.type === "html" && project.id === "bead-game" && <div className="game-art game-beads" role="img" aria-label={lang === "ar" ? "صورة مصغرة للعبة رحلة الخرز" : "Thumbnail for the Bead Quest game"}><div className="game-art-grid" /><span className="bead bead-1" /><span className="bead bead-2" /><span className="bead bead-3" /><span className="bead bead-4" /><span className="bead bead-5" /><span className="bead bead-6" /><span className="bead bead-7" /><span className="bead bead-8" /><span className="bead-thread" /><div className="game-thumb-label"><Gamepad2 size={14} />{lang === "ar" ? "تحدي الخرز" : "BEAD QUEST"}</div></div>}
@@ -454,7 +454,7 @@ function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: 
 function CategoryVisual({ section, lang }: { section: PortfolioSection; lang: Lang }) {
   const lead = section.projects[0];
   const source = lead?.type === "image" ? lead.source : lead?.type === "video" ? lead.poster : undefined;
-  return source ? <img src={source} alt={L(lang, section.title)} loading="lazy" /> : <div className={`category-fallback category-${lead?.type || "doc"}`}><span>{iconFor(lead?.type || "doc")}</span><strong>{lead?.type === "html" ? "HTML" : lead?.type === "audio" ? "AUDIO" : "PDF"}</strong></div>;
+  return source ? <img src={source} alt={L(lang, section.title)} /> : <div className={`category-fallback category-${lead?.type || "doc"}`}><span>{iconFor(lead?.type || "doc")}</span><strong>{lead?.type === "html" ? "HTML" : lead?.type === "audio" ? "AUDIO" : "PDF"}</strong></div>;
 }
 
 const categoryIcon = (id: string) => {
