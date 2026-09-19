@@ -35,6 +35,8 @@ jobs:
         run: pnpm exec vite build
       - name: Remove Manus preview-only files
         run: rm -rf dist/public/__manus__
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
