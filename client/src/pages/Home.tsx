@@ -76,6 +76,12 @@ const storage = {
     robot: "/manus-storage/poster-robot_f20c6208.jpg",
     smartbox: "/manus-storage/poster-smartbox_63373bd9.jpg",
     cake: "/manus-storage/poster-tala-cake_cbd03009.jpg",
+    promo: "/manus-storage/poster-creative-promo_ae886c36.png",
+    data: "/manus-storage/poster-data-trainer_5a5157bb.png",
+    smartDeliveryBox: "/manus-storage/poster-smart-delivery-box_9aa9e333.png",
+    dragon: "/manus-storage/poster-dragon-snow_7fedd24f.png",
+    coffee: "/manus-storage/poster-tala-coffee_ec9808e5.png",
+    startup: "/manus-storage/poster-computer-startup_66662812.png",
   },
   videos: {
     kitchen: "/manus-storage/video-kitchen-transformation_80d5dbcc.mp4",
@@ -152,9 +158,9 @@ const sections: PortfolioSection[] = [
     description: { ar: "فيديوهات دعائية وتجارب أفاتار تحوّل الفكرة إلى رسالة مرئية.", en: "Promotional videos and avatar-led pieces that turn a concept into a visual message." },
     accent: "blue",
     projects: [
-      { id: "promo", type: "video", title: { ar: "فيديو دعائي إبداعي", en: "Creative Promotional Video" }, description: { ar: "فيديو ترويجي من مواد الدورة.", en: "A promotional video from the course portfolio." }, source: storage.videos.promo, poster: storage.posters.smartbox, tool: { ar: "فيديو", en: "Video" } },
-      { id: "data-trainer", type: "video", title: { ar: "مدربة إدخال البيانات", en: "Data Entry Trainer" }, description: { ar: "فيديو دعائي يقدّم شخصية مدربة إدخال البيانات.", en: "A promotional video introducing a data-entry trainer character." }, source: storage.videos.data, poster: storage.posters.smartbox, tool: { ar: "فيديو", en: "Video" } },
-      { id: "smartbox", type: "video", title: { ar: "إعلان سمارت بوكس مع أفاتار", en: "Smart Box Ad with Avatar" }, description: { ar: "إعلان مرئي لسمارت بوكس باستخدام أفاتار.", en: "A visual Smart Box advertisement using an avatar." }, source: storage.videos.smartbox, poster: storage.posters.smartbox, tool: { ar: "فيديو", en: "Video" } },
+      { id: "promo", type: "video", title: { ar: "فيديو دعائي إبداعي", en: "Creative Promotional Video" }, description: { ar: "فيديو ترويجي من مواد الدورة.", en: "A promotional video from the course portfolio." }, source: storage.videos.promo, poster: storage.posters.promo, tool: { ar: "فيديو", en: "Video" } },
+      { id: "data-trainer", type: "video", title: { ar: "مدربة إدخال البيانات", en: "Data Entry Trainer" }, description: { ar: "فيديو دعائي يقدّم شخصية مدربة إدخال البيانات.", en: "A promotional video introducing a data-entry trainer character." }, source: storage.videos.data, poster: storage.posters.data, tool: { ar: "فيديو", en: "Video" } },
+      { id: "smartbox", type: "video", title: { ar: "إعلان سمارت بوكس مع أفاتار", en: "Smart Box Ad with Avatar" }, description: { ar: "إعلان مرئي لسمارت بوكس باستخدام أفاتار.", en: "A visual Smart Box advertisement using an avatar." }, source: storage.videos.smartbox, poster: storage.posters.smartDeliveryBox, tool: { ar: "فيديو", en: "Video" } },
     ],
   },
   {
@@ -203,10 +209,10 @@ const sections: PortfolioSection[] = [
     accent: "ice",
     projects: [
       { id: "robot", type: "video", title: { ar: "روبوت يتفاعل مع طفل", en: "Robot Interacts with a Child" }, description: { ar: "مشهد إبداعي عن تفاعل الروبوت والطفل.", en: "A creative scene about an interaction between a robot and a child." }, source: storage.videos.robot, poster: storage.posters.robot, tool: { ar: "فيديو", en: "Video" } },
-      { id: "dragon", type: "video", title: { ar: "التنين والثلج", en: "The Dragon & the Snow" }, description: { ar: "مشهد فيديو خيالي عن التنين والثلج.", en: "An imaginative video scene featuring a dragon and snow." }, source: storage.videos.dragon, poster: storage.posters.robot, tool: { ar: "فيديو", en: "Video" } },
+      { id: "dragon", type: "video", title: { ar: "التنين والثلج", en: "The Dragon & the Snow" }, description: { ar: "مشهد فيديو خيالي عن التنين والثلج.", en: "An imaginative video scene featuring a dragon and snow." }, source: storage.videos.dragon, poster: storage.posters.dragon, tool: { ar: "فيديو", en: "Video" } },
       { id: "cake", type: "video", title: { ar: "تالا تصنع الكيك", en: "Tala Makes a Cake" }, description: { ar: "مشهد قصصي عن تالا وصناعة الكيك.", en: "A story scene about Tala making a cake." }, source: storage.videos.cake, poster: storage.posters.cake, tool: { ar: "فيديو", en: "Video" } },
-      { id: "coffee", type: "video", title: { ar: "تالا وميلا مع القهوة", en: "Tala & Mila with Coffee" }, description: { ar: "مشهد قصصي يجمع تالا وميلا مع القهوة.", en: "A story scene bringing Tala and Mila together over coffee." }, source: storage.videos.coffee, poster: storage.posters.cake, tool: { ar: "فيديو", en: "Video" } },
-      { id: "startup", type: "video", title: { ar: "من زر التشغيل إلى سطح المكتب", en: "From Power Button to Desktop" }, description: { ar: "محاكاة مرئية لمراحل تشغيل جهاز الحاسوب.", en: "A visual simulation of the computer startup sequence." }, source: storage.videos.startup, poster: storage.posters.lab, tool: { ar: "فيديو", en: "Video" } },
+      { id: "coffee", type: "video", title: { ar: "تالا وميلا مع القهوة", en: "Tala & Mila with Coffee" }, description: { ar: "مشهد قصصي يجمع تالا وميلا مع القهوة.", en: "A story scene bringing Tala and Mila together over coffee." }, source: storage.videos.coffee, poster: storage.posters.coffee, tool: { ar: "فيديو", en: "Video" } },
+      { id: "startup", type: "video", title: { ar: "من زر التشغيل إلى سطح المكتب", en: "From Power Button to Desktop" }, description: { ar: "محاكاة مرئية لمراحل تشغيل جهاز الحاسوب.", en: "A visual simulation of the computer startup sequence." }, source: storage.videos.startup, poster: storage.posters.startup, tool: { ar: "فيديو", en: "Video" } },
     ],
   },
   {
