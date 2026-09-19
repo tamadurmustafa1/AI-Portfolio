@@ -348,6 +348,7 @@ function Hero({ lang }: { lang: Lang }) {
       <div className="hero-grid">
         <div className="hero-copy reveal-up">
           <div className="eyebrow"><span className="eyebrow-dot" />{L(lang, copy.heroKicker)}</div>
+          <div className="hero-signature"><span className="signature-line" /><div className="hero-identity-copy"><span className="hero-name">{L(lang, copy.identity)}</span><small>{L(lang, copy.identityRole)}</small></div></div>
           <h1>{L(lang, copy.heroTitle)}</h1>
           <div className="hero-title-meta"><span>{L(lang, copy.heroSubtitle)}</span><span className="line" /><span>2026</span></div>
           <p className="hero-body">{L(lang, copy.heroBody)}</p>
@@ -355,7 +356,6 @@ function Hero({ lang }: { lang: Lang }) {
             <a className="button button-primary" href="#work">{L(lang, copy.explore)} <ArrowDownLeft size={17} /></a>
             <a className="button button-quiet" href="#transformation"><span className="play-disc"><Play size={12} fill="currentColor" /></span>{L(lang, copy.watch)}</a>
           </div>
-          <div className="hero-signature"><span className="signature-line" /><span>{L(lang, copy.identity)}</span><small>{L(lang, copy.identityRole)}</small></div>
         </div>
         <div className="hero-portrait reveal-up" style={{ "--delay": "120ms" } as CSSProperties}>
           <div className="portrait-orbit orbit-one" /><div className="portrait-orbit orbit-two" />

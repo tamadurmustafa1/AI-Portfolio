@@ -55,8 +55,10 @@ button { font: inherit; border: 0; }
 .button-quiet { color: var(--white); border-color: var(--line-strong); background: rgba(255,255,255,.035); }
 .button-quiet:hover { border-color: var(--ice); background: rgba(157,231,236,.07); transform: translateY(-2px); }
 .play-disc { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: 1px solid var(--ice); border-radius: 50%; color: var(--ice); }
-.hero-signature { display: flex; align-items: center; gap: 12px; margin-top: 74px; color: var(--white); font-size: 12px; }
-.hero-signature small { color: var(--muted); font-size: 10px; }
+.hero-signature { display: flex; align-items: center; gap: 14px; margin-top: 29px; color: var(--white); }
+.hero-identity-copy { display: grid; gap: 5px; }
+.hero-name { color: var(--white); font-family: "Noto Kufi Arabic", sans-serif; font-size: clamp(28px, 3.2vw, 50px); font-weight: 900; letter-spacing: -.075em; line-height: 1.08; text-shadow: 0 8px 28px rgba(0,0,0,.2); }
+.hero-signature small { color: var(--muted); font-family: "Noto Kufi Arabic", sans-serif; font-size: 10px; line-height: 1.5; }
 .signature-line { width: 31px; height: 1px; background: var(--orange); }
 .hero-portrait { position: relative; justify-self: end; width: min(100%, 450px); aspect-ratio: .83; }
 .portrait-card { position: absolute; inset: 25px 20px 8px 15px; overflow: hidden; border: 1px solid rgba(157,231,236,.38); background: var(--navy-3); box-shadow: 26px 30px 80px rgba(0,0,0,.28); }
