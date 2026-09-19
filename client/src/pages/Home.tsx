@@ -54,6 +54,10 @@ const storage = {
   profile: "/manus-storage/profile-cover_fbae9d8d.png",
   gameFish: "/manus-storage/fish-bead-thumbnail_ed5c0dda.png",
   hajjPoster: "/manus-storage/poster-hajj-kaaba_cb371364.png",
+  bookPosters: {
+    alphabet: "/manus-storage/poster-alphabet-children-book_be3a79e8.png",
+    talaMoon: "/manus-storage/poster-tala-moon-story_fa22dd3d.png",
+  },
   interactivePosters: {
     plant: "/manus-storage/poster-save-my-plant_f0c1aa89.png",
     cells: "/manus-storage/poster-living-cells_964cbad2.png",
@@ -252,8 +256,8 @@ const sections: PortfolioSection[] = [
     description: { ar: "كتب وقصص رقمية محفوظة كملفات PDF ضمن الأعمال.", en: "Digital books and stories preserved as PDF files in the portfolio." },
     accent: "ice",
     projects: [
-      { id: "alphabet", type: "doc", title: { ar: "كتاب الحروف الإنجليزية للأطفال", en: "English Alphabet Children Book" }, description: { ar: "كتاب رقمي للأطفال محفوظ بصيغة PDF.", en: "A digital children’s book preserved as a PDF." }, drive: drive.englishBook, tool: { ar: "PDF", en: "PDF" }, cta: { ar: "افتح الكتاب", en: "Open Book" } },
-      { id: "tala-moon", type: "doc", title: { ar: "رحلة تالا وإخوانها إلى القمر", en: "Tala & Her Siblings’ Journey to the Moon" }, description: { ar: "قصة رقمية طويلة محفوظة بصيغة PDF.", en: "A long-form digital story preserved as a PDF." }, drive: drive.talaBook, tool: { ar: "PDF", en: "PDF" }, cta: { ar: "افتح القصة", en: "Open Story" } },
+      { id: "alphabet", type: "doc", title: { ar: "كتاب الحروف الإنجليزية للأطفال", en: "English Alphabet Children Book" }, description: { ar: "كتاب رقمي للأطفال محفوظ بصيغة PDF.", en: "A digital children’s book preserved as a PDF." }, drive: drive.englishBook, poster: storage.bookPosters.alphabet, tool: { ar: "PDF", en: "PDF" }, cta: { ar: "افتح الكتاب", en: "Open Book" } },
+      { id: "tala-moon", type: "doc", title: { ar: "رحلة تالا وإخوانها إلى القمر", en: "Tala & Her Siblings’ Journey to the Moon" }, description: { ar: "قصة رقمية طويلة محفوظة بصيغة PDF.", en: "A long-form digital story preserved as a PDF." }, drive: drive.talaBook, poster: storage.bookPosters.talaMoon, tool: { ar: "PDF", en: "PDF" }, cta: { ar: "افتح القصة", en: "Open Story" } },
     ],
   },
 ];
