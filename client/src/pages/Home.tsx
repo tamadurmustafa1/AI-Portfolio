@@ -350,7 +350,7 @@ function Header({ lang, setLang, open, setOpen }: { lang: Lang; setLang: (lang: 
     <header className="site-header">
       <a className="brand-mark" href="#home" onClick={() => setOpen(false)} aria-label="AI Portfolio home"><span>AI</span><b>/</b><i>PF</i></a>
       <nav className={open ? "main-nav open" : "main-nav"}>
-        {links.map((link, index) => <a key={link.href} href={link.href} onClick={() => setOpen(false)}><small>0{index + 1}</small>{link.label}</a>)}
+        {links.map((link) => <a key={link.href} href={link.href} onClick={() => setOpen(false)}>{link.label}</a>)}
       </nav>
       <div className="header-actions"><LanguageSwitch lang={lang} setLang={setLang} /><button className="menu-toggle" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"}>{open ? <X size={20} /> : <Menu size={20} />}</button></div>
     </header>
@@ -375,7 +375,7 @@ function Hero({ lang }: { lang: Lang }) {
         </div>
         <div className="hero-portrait reveal-up" style={{ "--delay": "120ms" } as CSSProperties}>
           <div className="portrait-orbit orbit-one" /><div className="portrait-orbit orbit-two" />
-          <div className="portrait-card"><img src={storage.profile} alt={L(lang, copy.identity)} /><div className="portrait-gradient" /><div className="portrait-label"><span>{L(lang, copy.archiveLabel)}</span><strong>01 / 11</strong></div><div className="portrait-caption"><small>AI TOOLS / PORTFOLIO</small></div></div>
+          <div className="portrait-card"><img src={storage.profile} alt={L(lang, copy.identity)} /><div className="portrait-gradient" /><div className="portrait-label"><span>{L(lang, copy.archiveLabel)}</span></div><div className="portrait-caption"><small>AI TOOLS / PORTFOLIO</small></div></div>
           <div className="vertical-note">LEARNING · EXPERIMENTATION · CREATION</div>
         </div>
       </div>
@@ -386,7 +386,7 @@ function Hero({ lang }: { lang: Lang }) {
 
 function Stats({ lang }: { lang: Lang }) {
   const copy = useCopy(lang);
-  return <div className="stats-grid">{copy.stats.map((stat: { value: string; ar: string; en: string }, index: number) => <div className="stat" key={stat.value}><span className="stat-index">0{index + 1}</span><strong>{stat.value}</strong><span>{lang === "ar" ? stat.ar : stat.en}</span></div>)}</div>;
+  return <div className="stats-grid">{copy.stats.map((stat: { value: string; ar: string; en: string }) => <div className="stat" key={stat.value}><strong>{stat.value}</strong><span>{lang === "ar" ? stat.ar : stat.en}</span></div>)}</div>;
 }
 
 function Transformation({ lang }: { lang: Lang }) {
@@ -398,7 +398,7 @@ function Transformation({ lang }: { lang: Lang }) {
   const submitComment = () => { if (!comment.trim()) return; const next = [comment.trim(), ...comments]; setComments(next); localStorage.setItem("ai-portfolio-comments", JSON.stringify(next)); setComment(""); };
   return (
     <section className="transformation-section" id="transformation">
-      <div className="section-intro transformation-intro reveal-up"><span className="section-number">02</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.transformationEyebrow)}</div><h2>{L(lang, copy.transformationTitle)}</h2><p>{L(lang, copy.transformationBody)}</p><div className="phase-list">{copy.phases.map((phase: { ar: string; en: string }, index: number) => <div className={index === 0 || index === 4 ? "phase edge" : "phase"} key={phase.en}><span>0{index + 1}</span><b>{L(lang, phase)}</b></div>)}</div></div>
+      <div className="section-intro transformation-intro reveal-up"><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.transformationEyebrow)}</div><h2>{L(lang, copy.transformationTitle)}</h2><p>{L(lang, copy.transformationBody)}</p><div className="phase-list">{copy.phases.map((phase: { ar: string; en: string }, index: number) => <div className={index === 0 || index === 4 ? "phase edge" : "phase"} key={phase.en}><b>{L(lang, phase)}</b></div>)}</div></div>
       <div className="transformation-visual reveal-up" style={{ "--delay": "100ms" } as CSSProperties}>
         <div className="video-frame"><video controls playsInline poster={storage.transPoster} src={storage.transVideo} aria-label={lang === "ar" ? "فيديو كيف غيّر AI طريقة العمل؟" : "How did AI change the way we work? video"} /><div className="video-corner"><span>BEFORE / AFTER</span><span>INTERACTIVE FILM</span></div></div>
         <div className="film-controls"><button className={liked ? "reaction active" : "reaction"} onClick={() => setLiked(!liked)}><Heart size={16} fill={liked ? "currentColor" : "none"} />{L(lang, copy.like)}</button><span className="reaction-count">{liked ? "01" : "00"}</span><span className="film-divider" /><span className="comment-count"><MessageCircle size={16} />{comments.length.toString().padStart(2, "0")} {L(lang, copy.comments)}</span></div>
@@ -465,7 +465,7 @@ function WorksSection({ lang }: { lang: Lang }) {
   const jump = (section: string) => document.getElementById(section)?.scrollIntoView({ behavior: "smooth", block: "start" });
   return (
     <section className="work-section" id="work">
-      <div className="work-heading reveal-up"><div className="section-intro"><span className="section-number">03</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.workEyebrow)}</div><h2>{L(lang, copy.workTitle)}</h2><p>{L(lang, copy.workBody)}</p></div><div className="archive-stamp"><Layers3 size={21} /><span>AI<br />PORTFOLIO</span><b>2026</b></div></div>
+      <div className="work-heading reveal-up"><div className="section-intro"><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.workEyebrow)}</div><h2>{L(lang, copy.workTitle)}</h2><p>{L(lang, copy.workBody)}</p></div><div className="archive-stamp"><Layers3 size={21} /><span>AI<br />PORTFOLIO</span><b>2026</b></div></div>
       <div className="works-board-wrap reveal-up" style={{ "--delay": "90ms" } as CSSProperties}>
         <div className="archive-board works-board">
           <div className="archive-board-header"><span className="archive-board-kicker">AI WORKS</span><strong>AI WORKS</strong><span className="archive-board-note">{lang === "ar" ? "أعمال حقيقية · معاينة مختارة" : "REAL WORKS · CURATED PREVIEW"}</span></div>
@@ -484,7 +484,7 @@ function WorksSection({ lang }: { lang: Lang }) {
 
 function Footer({ lang }: { lang: Lang }) {
   const copy = useCopy(lang);
-  return <footer className="site-footer"><div className="footer-top"><div className="footer-brand"><a className="brand-mark" href="#home"><span>AI</span><b>/</b><i>PF</i></a><p>{L(lang, copy.footer)}</p></div><div className="footer-quote">{lang === "ar" ? "كل أداة فتحت احتمالاً.\nوكل تجربة تركت أثراً." : "Every tool opened a possibility.\nEvery experiment left a trace."}</div><a className="back-top" href="#home"><ArrowUpRight size={18} />{lang === "ar" ? "العودة إلى الأعلى" : "Back to top"}</a></div><div className="footer-bottom"><span>© 2026 · {L(lang, copy.identity)}</span><span>{L(lang, copy.sourceNote)}</span><span>AI / 01—11</span></div></footer>;
+  return <footer className="site-footer"><div className="footer-top"><div className="footer-brand"><a className="brand-mark" href="#home"><span>AI</span><b>/</b><i>PF</i></a><p>{L(lang, copy.footer)}</p></div><div className="footer-quote">{lang === "ar" ? "كل أداة فتحت احتمالاً.\nوكل تجربة تركت أثراً." : "Every tool opened a possibility.\nEvery experiment left a trace."}</div><a className="back-top" href="#home"><ArrowUpRight size={18} />{lang === "ar" ? "العودة إلى الأعلى" : "Back to top"}</a></div><div className="footer-bottom"><span>© 2026 · {L(lang, copy.identity)}</span><span>{L(lang, copy.sourceNote)}</span><span>AI / PORTFOLIO</span></div></footer>;
 }
 
 export default function Home() {

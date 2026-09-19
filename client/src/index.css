@@ -505,3 +505,47 @@ button { font: inherit; border: 0; }
   .works-board .folder-piece { padding-top: 36px; }
   .works-board .piece-pin { width: 17px; height: 17px; }
 }
+
+
+/* Navigation accent refinement: stronger orange contrast, same layout and behavior */
+.main-nav a {
+  position: relative;
+  padding: 9px 11px 8px;
+  border: 1px solid rgba(255,106,42,.22);
+  border-bottom-color: rgba(157,231,236,.3);
+  color: rgba(245,247,251,.78);
+  background: linear-gradient(180deg, rgba(255,106,42,.09), rgba(78,157,255,.05));
+  transition: color .2s ease, transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.main-nav a::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: -1px;
+  left: 10px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-2), var(--ice));
+  opacity: .72;
+  transform: scaleX(.42);
+  transform-origin: center;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.main-nav a:nth-child(2) { border-color: rgba(78,157,255,.28); background: linear-gradient(180deg, rgba(78,157,255,.1), rgba(255,106,42,.05)); }
+.main-nav a:nth-child(3) { border-color: rgba(255,138,71,.34); background: linear-gradient(180deg, rgba(255,138,71,.13), rgba(78,157,255,.05)); }
+.main-nav a:hover, .main-nav a:focus-visible, .main-nav a:active {
+  color: var(--white);
+  border-color: rgba(255,174,105,.9);
+  background: linear-gradient(180deg, rgba(255,106,42,.22), rgba(78,157,255,.1));
+  box-shadow: 0 0 18px rgba(255,106,42,.16);
+  transform: translateY(-1px);
+}
+.main-nav a:hover::after, .main-nav a:focus-visible::after, .main-nav a:active::after { opacity: 1; transform: scaleX(1); }
+.language-switch {
+  padding: 6px 9px;
+  border: 1px solid rgba(255,106,42,.36);
+  background: linear-gradient(90deg, rgba(255,106,42,.12), rgba(157,231,236,.06));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.035);
+}
+.language-switch button { padding: 2px 3px; }
+.language-switch button.active, .language-switch button:hover { color: #ffb27f; text-shadow: 0 0 12px rgba(255,106,42,.45); }
+.language-switch span { color: var(--ice); opacity: .6; }
