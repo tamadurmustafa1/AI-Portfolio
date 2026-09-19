@@ -104,7 +104,7 @@ const storage = {
 const drive = {
   presentation: "https://drive.google.com/file/d/1keoULuPFQTkw7rppJEmST1Q9M8LoQ308/view",
   englishBook: "https://drive.google.com/file/d/1_1NaOqUCHJgGng6sNNwVeH43VZhyPb_w/view",
-  talaBook: "https://drive.google.com/file/d/17wIIrxEQ7cJQW4NUTxXTzstNMKk3otIX/view",
+  talaBook: "https://drive.google.com/file/d/1D8xYiS8Zc8p2FM-LSupu5Spim3Rx1W2A/view",
 };
 
 const L = (lang: Lang, value: { ar: string; en: string }) => value[lang];
