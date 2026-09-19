@@ -457,12 +457,25 @@ function CategoryVisual({ section, lang }: { section: PortfolioSection; lang: La
   return source ? <img src={source} alt={L(lang, section.title)} loading="lazy" /> : <div className={`category-fallback category-${lead?.type || "doc"}`}><span>{iconFor(lead?.type || "doc")}</span><strong>{lead?.type === "html" ? "HTML" : lead?.type === "audio" ? "AUDIO" : "PDF"}</strong></div>;
 }
 
+const categoryIcon = (id: string) => {
+  if (id === "timelapse" || id === "creative-video") return <Play size={20} />;
+  if (id === "audio") return <AudioLines size={20} />;
+  if (id === "games") return <Gamepad2 size={20} />;
+  if (id === "ads") return <Sparkles size={20} />;
+  if (id === "images" || id === "surreal") return <ImageIcon size={20} />;
+  if (id === "presentations") return <Presentation size={20} />;
+  if (id === "cards") return <Layers3 size={20} />;
+  if (id === "interactive") return <Code2 size={20} />;
+  return <BookOpen size={20} />;
+};
+
 function WorkArchive({ lang }: { lang: Lang }) {
   const copy = useCopy(lang);
   return (
     <section className="work-section" id="work">
       <div className="work-heading reveal-up"><div className="section-intro"><span className="section-number">04</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.workEyebrow)}</div><h2>{L(lang, copy.workTitle)}</h2><p>{L(lang, copy.workBody)}</p></div><div className="archive-stamp"><Layers3 size={21} /><span>AI<br />PORTFOLIO</span><b>2026</b></div></div>
-      <div className="category-library" aria-label={lang === "ar" ? "فئات الأعمال" : "Work categories"}>{sections.map((section) => <a className={`category-card accent-${section.accent}`} key={section.id} href={`#${section.id}`}><div className="category-visual"><CategoryVisual section={section} lang={lang} /><span className="category-index">{section.index}</span><span className="category-arrow"><ArrowUpRight size={16} /></span></div><div className="category-card-copy"><h3>{L(lang, section.title)}</h3><p>{L(lang, section.description)}</p><span className="category-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div></a>)}</div>
+      <div className="works-library-head"><span><i />AI WORKS LIBRARY</span><small>{lang === "ar" ? "أرشيف رقمي ذكي · 11 مجلدًا" : "INTELLIGENT DIGITAL ARCHIVE · 11 FOLDERS"}</small></div>
+      <div className="category-library" aria-label={lang === "ar" ? "فئات الأعمال" : "Work categories"}>{sections.map((section) => <a className={`category-card accent-${section.accent}`} key={section.id} href={`#${section.id}`}><div className="folder-tab"><span>{section.index}</span><b>{lang === "ar" ? "مجلد" : "FOLDER"}</b></div><div className="category-folder-body"><div className="category-visual"><CategoryVisual section={section} lang={lang} /><span className="category-index">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "ملفات" : "FILES"}</span><span className="category-arrow"><ArrowUpRight size={16} /></span></div><div className="category-card-copy"><div className="category-icon">{categoryIcon(section.id)}</div><div className="category-title-row"><h3>{L(lang, section.title)}</h3><span className="folder-status" /></div><p>{L(lang, section.description)}</p><div className="category-meta"><span>{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span><span>{lang === "ar" ? "متاح" : "READY"}</span></div></div></div><span className="folder-corner-line" /></a>)}</div>
       <div className="archive-grid">{sections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="archive-number">{section.index}</span><h3>{L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex={section.index} />)}</div></section>)}</div>
     </section>
   );
