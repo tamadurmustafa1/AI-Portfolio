@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>رحلة الخرز – Bead Quest | Bead Craft فن الخرز</title>
+    <!-- Google Fonts: Tajawal & Amiri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,700;1,400&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: { 50: '#FDFBF7', 100: '#F9F5EC', 200: '#F2E8D5', 300: '#E6D5B8' },
+                        burgundy: { 500: '#8B1E3F', 600: '#731632', 700: '#5C1027', 800: '#420819' },
+                        gold: { 300: '#FCE082', 400: '#F5C84C', 500: '#D4AF37', 600: '#AA8820' },
+                        rose: { 100: '#FCE7EA', 200: '#F8CBD2', 300: '#F2A4B1', 400: '#E57388' },
+                        studio: { dark: '#1F1A1C', card: 'rgba(255, 255, 255, 0.85)' }
+                    },
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                        serif: ['Amiri', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #1a1417;
+            background: radial-gradient(circle at 50% 20%, #3a1c28 0%, #1a1216 60%, #0d080a 100%);
+            min-height: 100vh;
+            color: #4A3B32;
+            overflow-x: hidden;
+        }
+        .luxury-glass {
+            background: rgba(253, 251, 247, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25), 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+        .luxury-dark-glass {
+            background: rgba(35, 22, 28, 0.82);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .bead-glow {
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .bead-glow:hover {
+            transform: scale(1.18) translateY(-4px);
+            filter: drop-shadow(0 12px 18px rgba(212, 175, 55, 0.45));
+        }
+        .bead-glow:active {
+            transform: scale(0.95);
+        }
+        /* Custom Bead 3D styling */
+        .bead-sphere {
+            position: relative;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset -4px -4px 8px rgba(0,0,0,0.45), inset 4px 4px 8px rgba(255,255,255,0.7), 0 6px 14px rgba(0,0,0,0.3);
+        }
+        .bead-sphere::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 25%;
+            height: 25%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 80%);
+        }
+        .gold-border-shimmer {
+            background: linear-gradient(135deg, #d4af37 0%, #fff2b2 50%, #aa8820 100%);
+            background-size: 200% 200%;
+            animation: shimmerGold 4s ease infinite;
+        }
+        @keyframes shimmerGold {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
+        }
+        .float-animation {
+            animation: floatSlow 5s ease-in-out infinite;
+        }
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.4);
+            border-radius: 4px;
+        }
+        /* Touch ripples & transitions */
+        .page-transition {
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .hidden-screen {
+            display: none !important;
+            opacity: 0;
+            transform: scale(0.97);
+        }
+        .pulse-subtle {
+            animation: pulseGlow 2.5s infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.7); }
+        }
+    </style>
+</head>
+<body class="flex flex-col justify-between min-h-screen text-slate-800 antialiased selection:bg-gold-400 selection:text-burgundy-800">
+
+    <!-- Ambient Studio Particles Canvas -->
+    <canvas id="ambientCanvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="relative z-40 w-full px-4 sm:px-8 py-3.5 flex justify-between items-center border-b border-gold-500/20 bg-studio-dark/60 backdrop-blur-md text-cream-100">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="Navigation.goHome()">
+            <div class="w-10 h-10 rounded-full gold-border-shimmer p-0.5 flex items-center justify-center shadow-lg">
+                <div class="w-full h-full bg-burgundy-700 rounded-full flex items-center justify-center text-gold-300 text-lg">
+                    <i class="fa-solid fa-gem"></i>
+                </div>
+            </div>
+            <div>
+                <h1 class="font-serif text-xl sm:text-2xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-gold-300 via-amber-200 to-rose-200">
+                    رحلة الخرز
+                </h1>
+                <span class="text-[10px] sm:text-xs text-gold-400/80 font-light block -mt-1 tracking-wider">
+                    BEAD CRAFT • فن الخرز
+                </span>
+            </div>
+        </div>
+
+        <!-- Player Stats Hub (XP, Stars, Level) -->
+        <div class="flex items-center gap-2 sm:gap-4">
+            <!-- XP Pill -->
+            <div class="luxury-dark-glass px-3 py-1.5 rounded-full flex items-center gap-2 border border-gold-500/30 text-xs sm:text-sm">
+                <span class="text-gold-400 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-bolt text-amber-400"></i>
+                    <span id="playerXP">0</span> XP
+                </span>
+                <span class="w-1 h-3 bg-gold-500/30 rounded-full"></span>
+                <span class="text-amber-300 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-star text-amber-400"></i>
+                    <span id="playerStars">0</span>
+                </span>
+            </div>
+
+            <!-- Audio & Badges & Info Buttons -->
+            <div class="flex items-center gap-1.5">
+                <button id="soundToggleBtn" onclick="SoundManager.toggleSound()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-gold-500/20 border border-gold-500/30 flex items-center justify-center text-gold-300 transition-all text-sm" title="كتم/تشغيل الصوت">
+                    <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+                </button>
+                <button onclick="Modals.openAchievements()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-gold-500/20 border border-gold-500/30 flex items-center justify-center text-gold-300 transition-all text-sm" title="إنجازاتي">
+                    <i class="fa-solid fa-award"></i>
+                </button>
+                <button onclick="Modals.openHelp()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-gold-500/20 border border-gold-500/30 flex items-center justify-center text-gold-300 transition-all text-sm" title="كيف ألعب؟">
+                    <i class="fa-solid fa-circle-question"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE CONTAINER -->
+    <main class="relative z-10 flex-1 flex flex-col justify-center items-center p-3 sm:p-6 max-w-6xl mx-auto w-full">
+
+        <!-- ================= 1. HOME SCREEN ================= -->
+        <section id="homeScreen" class="page-transition w-full flex flex-col items-center text-center py-6 sm:py-10">
+            <!-- Luxury Atelier Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-burgundy-600/40 border border-gold-500/40 text-gold-300 text-xs sm:text-sm mb-6 backdrop-blur-md">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>استوديو التصميم والحرف اليدوية الراقية</span>
+            </div>
+
+            <!-- Hero Title -->
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-cream-100 via-gold-300 to-amber-400 mb-4 drop-shadow-lg leading-tight">
+                رحلة الخرز <span class="block text-2xl sm:text-4xl font-sans font-semibold text-rose-200 mt-2">اصنع، طابق، صمّم، وأبدع</span>
+            </h1>
+            <p class="max-w-2xl text-cream-200/80 text-sm sm:text-lg mb-8 leading-relaxed">
+                انغمس في عالم الأناقة وتناغم الألوان. اختبر ذكاءك البصري، اكتشف الأنماط الخفية، وابتكر أساور ومجوهرات فنية فريدة بمساعدة الذكاء الحرفي.
+            </p>
+
+            <!-- Floating Preview Beads Showcase -->
+            <div class="relative w-full max-w-md h-32 mb-8 flex items-center justify-center gap-4">
+                <div class="bead-sphere w-14 h-14 bg-gradient-to-br from-rose-300 via-rose-500 to-burgundy-700 float-animation shadow-2xl" style="animation-delay: 0s;"></div>
+                <div class="bead-sphere w-18 h-18 bg-gradient-to-br from-amber-200 via-gold-400 to-amber-600 float-animation shadow-2xl scale-125" style="animation-delay: 0.8s;"></div>
+                <div class="bead-sphere w-14 h-14 bg-gradient-to-br from-teal-200 via-teal-400 to-emerald-700 float-animation shadow-2xl" style="animation-delay: 1.6s;"></div>
+                <div class="bead-sphere w-12 h-12 bg-gradient-to-br from-purple-200 via-purple-400 to-indigo-800 float-animation shadow-2xl" style="animation-delay: 2.2s;"></div>
+                <div class="bead-sphere w-10 h-10 bg-gradient-to-br from-cream-50 via-slate-100 to-slate-300 float-animation shadow-2xl" style="animation-delay: 1.2s;"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center gap-4 w-full max-w-md">
+                <button onclick="Navigation.showScreen('mapScreen'); SoundManager.playClick();" 
+                        class="w-full sm:flex-1 py-4 px-8 rounded-2xl gold-border-shimmer text-studio-dark font-extrabold text-lg shadow-2xl hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-compass text-burgundy-700 text-xl"></i>
+                    <span>ابدأ الرحلة</span>
+                </button>
+                <button onclick="Modals.openHelp()" 
+                        class="w-full sm:w-auto py-4 px-6 rounded-2xl luxury-dark-glass text-gold-300 font-bold border border-gold-500/40 hover:bg-gold-500/10 active:scale-95 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play text-sm"></i>
+                    <span>كيف ألعب؟</span>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ================= 2. JOURNEY MAP (خارطة المستويات) ================= -->
+        <section id="mapScreen" class="page-transition hidden-screen w-full max-w-4xl">
+            <div class="text-center mb-8">
+                <span class="text-xs uppercase tracking-widest text-gold-400 font-semibold">محطات الرحلة الحرفية</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-cream-100 mt-1">اختر ورشة التحدي</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent mx-auto mt-2"></div>
+            </div>
+
+            <!-- Level Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                
+                <!-- Level 1 -->
+                <div onclick="GameEngine.startLevel(1)" class="group cursor-pointer luxury-glass rounded-3xl p-5 border-2 border-gold-500/40 hover:border-gold-400 transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-20 h-20 bg-gold-400/10 rounded-bl-full pointer-events-none"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-burgundy-600 text-cream-100">المرحلة 1</span>
+                        <div class="flex text-gold-500 text-sm gap-0.5" id="lvl1-stars">
+                            <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-400 to-burgundy-700 text-cream-100 flex items-center justify-center text-2xl mb-3 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shapes"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-burgundy-800">سيد الأنماط</h3>
+                    <p class="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">اكتشف الخرزة المفقودة في المتتالية المتناغمة بذكاء وسرعة بديهة.</p>
+                    <div class="flex items-center justify-between text-xs font-bold text-burgundy-700 pt-2 border-t border-slate-200">
+                        <span>التركيز والمنطق</span>
+                        <span class="flex items-center gap-1">دخول <i class="fa-solid fa-arrow-left text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div id="lvl2-card" onclick="GameEngine.startLevel(2)" class="group cursor-pointer luxury-glass rounded-3xl p-5 border-2 border-gold-500/40 hover:border-gold-400 transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-burgundy-600 text-cream-100">المرحلة 2</span>
+                        <div class="flex text-gold-500 text-sm gap-0.5" id="lvl2-stars">
+                            <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-700 text-cream-100 flex items-center justify-center text-2xl mb-3 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-burgundy-800">ذاكرة الكريستال</h3>
+                    <p class="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">احفظ تسلسل الخرز النادر وأعد تركيبه في خيط الحرير قبل فوات الأوان.</p>
+                    <div class="flex items-center justify-between text-xs font-bold text-burgundy-700 pt-2 border-t border-slate-200">
+                        <span>الذاكرة البصرية</span>
+                        <span class="flex items-center gap-1">دخول <i class="fa-solid fa-arrow-left text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <!-- Level 3 -->
+                <div onclick="GameEngine.startLevel(3)" class="group cursor-pointer luxury-glass rounded-3xl p-5 border-2 border-gold-500/40 hover:border-gold-400 transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-burgundy-600 text-cream-100">المرحلة 3</span>
+                        <div class="flex text-gold-500 text-sm gap-0.5" id="lvl3-stars">
+                            <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-800 text-cream-100 flex items-center justify-center text-2xl mb-3 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-ring"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-burgundy-800">مصمم السوار</h3>
+                    <p class="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">اصنع سوارك الحر بالسحب والإفلات وتنسيق الأحجار الكريمة مع الدلايات الذهبية.</p>
+                    <div class="flex items-center justify-between text-xs font-bold text-burgundy-700 pt-2 border-t border-slate-200">
+                        <span>حرفية وحرية كاملة</span>
+                        <span class="flex items-center gap-1">دخول <i class="fa-solid fa-arrow-left text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <!-- Level 4 -->
+                <div onclick="GameEngine.startLevel(4)" class="group cursor-pointer luxury-glass rounded-3xl p-5 border-2 border-gold-500/40 hover:border-gold-400 transition-all duration-300 hover:-translate-y-1.5 shadow-xl relative overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-burgundy-600 text-cream-100">المرحلة 4</span>
+                        <div class="flex text-gold-500 text-sm gap-0.5" id="lvl4-stars">
+                            <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-400 to-pink-700 text-cream-100 flex items-center justify-center text-2xl mb-3 shadow-md group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-palette"></i>
+                    </div>
+                    <h3 class="font-bold text-lg text-burgundy-800">تحدي الإلهام الفني</h3>
+                    <p class="text-xs text-slate-600 mt-1 mb-4 leading-relaxed">صمم مجوهرات تتبع طابعًا فنيًا محددًا (غروب الشمس، أعماق البحار، ربيع الزهور).</p>
+                    <div class="flex items-center justify-between text-xs font-bold text-burgundy-700 pt-2 border-t border-slate-200">
+                        <span>تقييم الذكاء اللوني</span>
+                        <span class="flex items-center gap-1">دخول <i class="fa-solid fa-arrow-left text-[10px]"></i></span>
+                    </div>
+                </div>
+
+                <!-- Level 5: Pro Studio -->
+                <div onclick="GameEngine.startLevel(5)" class="md:col-span-2 group cursor-pointer luxury-glass rounded-3xl p-5 border-2 border-gold-400 bg-gradient-to-r from-cream-100 via-rose-50 to-amber-50 hover:border-gold-300 transition-all duration-300 hover:-translate-y-1.5 shadow-2xl relative overflow-hidden">
+                    <div class="absolute -left-10 -bottom-10 w-36 h-36 bg-gold-400/15 rounded-full pointer-events-none"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="px-3.5 py-1 rounded-full text-xs font-extrabold bg-gradient-to-r from-gold-500 to-amber-600 text-burgundy-900 shadow">استوديو المحترفين VIP</span>
+                        <span class="text-xs font-bold text-burgundy-700 bg-gold-400/30 px-3 py-1 rounded-full">مع المساعد الذكي AI</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-300 via-gold-500 to-burgundy-700 text-cream-100 flex items-center justify-center text-3xl shadow-lg shrink-0">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-serif text-xl font-bold text-burgundy-900">مصمم الخرز المحترف وبطاقة الإهداء</h3>
+                            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                                استوديو فني متكامل يتيح لك الاستعانة بالمساعد الذكي لاقتراح تشكيلات خيالية، وتصدير بطاقة إنجاز وتصميم فاخرة باسمك للمشاركة.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-8 text-center">
+                <button onclick="Navigation.showScreen('homeScreen')" class="text-gold-300/80 hover:text-gold-300 text-sm font-semibold inline-flex items-center gap-2 transition">
+                    <i class="fa-solid fa-house"></i>
+                    العودة للرئيسية
+                </button>
+            </div>
+        </section>
+
+
+        <!-- ================= 3. LEVEL 1: PATTERN MASTER (سيد الأنماط) ================= -->
+        <section id="level1Screen" class="page-transition hidden-screen w-full max-w-3xl">
+            <!-- Level Header -->
+            <div class="luxury-glass rounded-3xl p-5 sm:p-6 mb-5 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-slate-200/80 pb-3 mb-4">
+                    <div class="flex items-center gap-3">
+                        <button onclick="Navigation.showScreen('mapScreen')" class="w-8 h-8 rounded-full bg-burgundy-100 text-burgundy-800 flex items-center justify-center hover:bg-burgundy-200 transition">
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                        <div>
+                            <h3 class="font-serif font-bold text-lg sm:text-xl text-burgundy-900">المستوى 1: سيد الأنماط</h3>
+                            <span class="text-xs text-slate-500" id="l1-round-text">الجولة 1 من 5</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm font-bold">
+                        <span class="text-amber-600 bg-amber-100 px-3 py-1 rounded-full flex items-center gap-1.5">
+                            <i class="fa-solid fa-fire text-amber-500"></i>
+                            <span id="l1-streak">0</span> متتالي
+                        </span>
+                        <span class="text-burgundy-800 bg-rose-100 px-3 py-1 rounded-full">
+                            نقاط: <span id="l1-score">0</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="text-center my-3">
+                    <p class="text-sm font-medium text-slate-700">تأمّل النمط المتكرر، واكتشف الخرزة التي تكمل الإيقاع الجمالي:</p>
+                </div>
+
+                <!-- The Bead String Sequence Container -->
+                <div class="bg-gradient-to-b from-cream-100 to-amber-50/50 rounded-2xl p-6 my-5 border border-gold-400/40 relative overflow-hidden shadow-inner flex items-center justify-center min-h-[140px]">
+                    <!-- String thread line -->
+                    <div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gradient-to-r from-gold-500 via-amber-300 to-gold-500 rounded-full shadow-sm z-0"></div>
+                    
+                    <!-- Beads in sequence -->
+                    <div id="l1-pattern-container" class="relative z-10 flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
+                        <!-- Dynamic Beads Injected Here -->
+                    </div>
+                </div>
+
+                <!-- Answer Options -->
+                <div class="mt-6 text-center">
+                    <span class="text-xs font-bold text-burgundy-700 uppercase tracking-wider block mb-3">اختر الخرزة المكملة:</span>
+                    <div id="l1-options-container" class="flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
+                        <!-- Dynamic Options Injected Here -->
+                    </div>
+                </div>
+
+                <!-- Feedback Toast Area -->
+                <div id="l1-feedback" class="text-center font-bold text-sm mt-4 min-h-[24px] transition-all"></div>
+            </div>
+        </section>
+
+
+        <!-- ================= 4. LEVEL 2: CRYSTAL MEMORY (ذاكرة الخرز) ================= -->
+        <section id="level2Screen" class="page-transition hidden-screen w-full max-w-3xl">
+            <div class="luxury-glass rounded-3xl p-5 sm:p-6 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-slate-200/80 pb-3 mb-4">
+                    <div class="flex items-center gap-3">
+                        <button onclick="Navigation.showScreen('mapScreen')" class="w-8 h-8 rounded-full bg-burgundy-100 text-burgundy-800 flex items-center justify-center hover:bg-burgundy-200 transition">
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                        <div>
+                            <h3 class="font-serif font-bold text-lg sm:text-xl text-burgundy-900">المستوى 2: ذاكرة الكريستال</h3>
+                            <span class="text-xs text-slate-500" id="l2-round-text">الجولة 1 من 4</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-burgundy-800 bg-rose-100 px-3 py-1 rounded-full text-sm font-bold">
+                            نقاط: <span id="l2-score">0</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Status & Timer Bar -->
+                <div class="text-center my-2">
+                    <p id="l2-instructions" class="text-sm font-bold text-burgundy-700 transition-all">احفظ ترتيب هذه الخرزات قبل أن تختفي...</p>
+                    <div class="w-full bg-slate-200 h-2 rounded-full mt-3 overflow-hidden">
+                        <div id="l2-timer-bar" class="h-full bg-gradient-to-r from-rose-400 to-burgundy-600 transition-all duration-100" style="width: 100%;"></div>
+                    </div>
+                </div>
+
+                <!-- Display Thread Area -->
+                <div class="bg-gradient-to-b from-cream-100 to-amber-50/50 rounded-2xl p-6 my-5 border border-gold-400/40 relative overflow-hidden shadow-inner flex flex-col items-center justify-center min-h-[160px]">
+                    <div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gradient-to-r from-gold-500 via-amber-300 to-gold-500 rounded-full shadow-sm z-0"></div>
+                    
+                    <div id="l2-string-container" class="relative z-10 flex items-center justify-center gap-3 sm:gap-4 min-h-[50px]">
+                        <!-- Dynamic memory sequence / user placed beads -->
+                    </div>
+                </div>
+
+                <!-- User Bead Palette for Re-assembly -->
+                <div id="l2-selection-palette" class="mt-4 text-center hidden">
+                    <span class="text-xs font-bold text-slate-600 block mb-3">اضغط على الخرز بالترتيب الصحيح الذي حفظته:</span>
+                    <div id="l2-bead-options" class="flex items-center justify-center gap-3 sm:gap-5 flex-wrap">
+                        <!-- Dynamic clickable bead choices -->
+                    </div>
+                    <div class="mt-4 flex justify-center gap-3">
+                        <button onclick="GameEngine.resetL2CurrentTry()" class="px-4 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-xs font-bold text-slate-700 transition">
+                            <i class="fa-solid fa-rotate-right ml-1"></i> إعادة المحاولة
+                        </button>
+                    </div>
+                </div>
+
+                <div id="l2-feedback" class="text-center font-bold text-sm mt-3 min-h-[24px]"></div>
+            </div>
+        </section>
+
+
+        <!-- ================= 5. LEVEL 3, 4 & 5: BEAD STUDIO (المصمم والاستوديو الإبداعي) ================= -->
+        <section id="studioScreen" class="page-transition hidden-screen w-full max-w-5xl">
+            <div class="luxury-glass rounded-3xl p-4 sm:p-6 shadow-2xl">
+                <!-- Studio Header Bar -->
+                <div class="flex flex-wrap items-center justify-between border-b border-slate-200/80 pb-3 mb-4 gap-3">
+                    <div class="flex items-center gap-3">
+                        <button onclick="Navigation.showScreen('mapScreen')" class="w-8 h-8 rounded-full bg-burgundy-100 text-burgundy-800 flex items-center justify-center hover:bg-burgundy-200 transition">
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                        <div>
+                            <h3 class="font-serif font-bold text-lg sm:text-2xl text-burgundy-900" id="studioTitle">مصمم السوار الحرفي</h3>
+                            <span class="text-xs text-slate-500" id="studioSubtitle">اصنع تناغمك الفني الخاص</span>
+                        </div>
+                    </div>
+
+                    <!-- Studio Action Buttons -->
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <!-- AI Smart Assistant Button -->
+                        <button onclick="SmartAssistant.suggestPalette()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-gold-400 to-amber-500 text-burgundy-950 font-extrabold text-xs sm:text-sm shadow-md hover:scale-105 active:scale-95 transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>مساعد الخرز الذكي</span>
+                        </button>
+                        <button onclick="StudioEngine.clearBracelet()" class="px-3 py-2 rounded-xl bg-rose-100 hover:bg-rose-200 text-burgundy-800 font-bold text-xs sm:text-sm transition flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span class="hidden sm:inline">مسح الخيط</span>
+                        </button>
+                        <button onclick="StudioEngine.finishBracelet()" class="px-4 py-2 rounded-xl bg-burgundy-700 hover:bg-burgundy-800 text-cream-100 font-bold text-xs sm:text-sm transition shadow-md flex items-center gap-1.5">
+                            <i class="fa-solid fa-check"></i>
+                            <span>اعتماد التصميم</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Themed Banner (Visible only in Level 4: Creative Theme Challenge) -->
+                <div id="themeBanner" class="hidden mb-4 p-4 rounded-2xl bg-gradient-to-r from-burgundy-900 via-studio-dark to-burgundy-950 text-cream-100 border border-gold-500/30">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gold-500/20 text-gold-300 flex items-center justify-center text-xl" id="themeIcon">
+                                <i class="fa-solid fa-sun"></i>
+                            </div>
+                            <div>
+                                <span class="text-[11px] text-gold-300 uppercase font-semibold">موضوع التحدي المطلوب:</span>
+                                <h4 class="font-bold text-base sm:text-lg text-cream-50" id="themeName">غروب الشمس الذهبي</h4>
+                            </div>
+                        </div>
+                        <div class="text-right text-xs text-cream-200/80 max-w-xs hidden sm:block" id="themeHint">
+                            استخدم درجات الذهب والياقوت والكهرمان لتحقيق أعلى تناغم لوني.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAIN WORKBENCH: Interactive Curved Bracelet Canvas -->
+                <div class="relative bg-gradient-to-b from-[#FAF6EE] to-[#EFE7D8] rounded-2xl border-2 border-gold-400/40 p-4 shadow-inner flex flex-col items-center justify-center min-h-[280px] sm:min-h-[320px] overflow-hidden">
+                    
+                    <div class="absolute top-3 left-4 text-[11px] font-bold text-slate-400 bg-white/70 px-2.5 py-1 rounded-full">
+                        عدد الخرز: <span id="beadCountDisplay" class="text-burgundy-800 font-extrabold">0</span> / 18
+                    </div>
+
+                    <!-- Dynamic Visual Interactive Bracelet Area -->
+                    <div id="braceletVisualArea" class="w-full flex items-center justify-center relative my-6">
+                        <!-- Canvas for rendering curved realistic string and beads -->
+                        <canvas id="braceletCanvas" width="600" height="240" class="max-w-full touch-none"></canvas>
+                    </div>
+
+                    <p class="text-xs text-slate-500 flex items-center gap-1.5 mt-2">
+                        <i class="fa-solid fa-hand-pointer text-amber-500"></i>
+                        <span>انقر على أي خرزة في لوحة المواد بالأسفل لإضافتها إلى خيط الحرير، أو اضغط عليها في الخيط لحذفها.</span>
+                    </p>
+                </div>
+
+                <!-- BEAD PALETTE & CHARMS SELECTION (لوحة الخرز والدلايات) -->
+                <div class="mt-5">
+                    <!-- Palette Tabs -->
+                    <div class="flex border-b border-slate-200 gap-2 mb-3">
+                        <button onclick="StudioEngine.switchTab('gems')" id="tabGems" class="px-4 py-1.5 font-bold text-xs sm:text-sm border-b-2 border-burgundy-700 text-burgundy-800 transition">
+                            <i class="fa-solid fa-gem ml-1 text-gold-500"></i> الخرز والأحجار
+                        </button>
+                        <button onclick="StudioEngine.switchTab('charms')" id="tabCharms" class="px-4 py-1.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-burgundy-800 transition">
+                            <i class="fa-solid fa-medal ml-1 text-amber-500"></i> الدلايات الفاخرة
+                        </button>
+                    </div>
+
+                    <!-- Gems & Beads Palette -->
+                    <div id="gemsPalette" class="flex items-center justify-center sm:justify-start gap-2.5 sm:gap-4 overflow-x-auto py-2 px-1">
+                        <!-- Dynamic bead buttons injected via JS -->
+                    </div>
+
+                    <!-- Charms Palette -->
+                    <div id="charmsPalette" class="hidden flex items-center justify-center sm:justify-start gap-3 overflow-x-auto py-2 px-1">
+                        <!-- Dynamic charms injected via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= 6. FINAL SHOWCASE & REWARD CARD MODAL ================= -->
+        <div id="showcaseModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+            <div class="luxury-glass max-w-md w-full rounded-3xl p-6 shadow-2xl border-2 border-gold-400 relative overflow-hidden text-center transform scale-95 transition-transform duration-300" id="showcaseModalCard">
+                
+                <div class="w-16 h-16 rounded-full gold-border-shimmer p-1 mx-auto mb-3 shadow-lg flex items-center justify-center">
+                    <div class="w-full h-full bg-burgundy-700 rounded-full flex items-center justify-center text-gold-300 text-2xl">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                </div>
+
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full">شهادة إتقان حرفي</span>
+                <h3 class="font-serif text-2xl font-bold text-burgundy-900 mt-2" id="showcaseTitle">تحفة فنية فريدة!</h3>
+                <p class="text-xs text-slate-600 mt-1" id="showcaseDesc">تم تقييم التناسق اللوني والدقة الجمالية بنجاح مبهر.</p>
+
+                <!-- Evaluation Badge & Stars -->
+                <div class="my-4 py-3 bg-white/70 rounded-2xl border border-gold-400/30">
+                    <div class="flex justify-center text-amber-400 text-2xl gap-1.5 mb-1" id="showcaseStars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="text-xs font-bold text-burgundy-800">
+                        التناغم اللوني: <span id="harmonyScore" class="text-emerald-600 font-extrabold text-sm">96%</span>
+                    </div>
+                    <div class="text-[11px] text-slate-500 mt-0.5" id="aiHarmonyVerdict">
+                        "تناسق ملكي بديع بين البريق الذهبي والهدوء الباستيلي."
+                    </div>
+                </div>
+
+                <!-- Final Bracelet Preview Canvas -->
+                <div class="bg-gradient-to-b from-cream-100 to-amber-50/70 rounded-2xl p-3 border border-gold-400/40 my-3 flex items-center justify-center">
+                    <canvas id="showcaseCanvas" width="320" height="130" class="max-w-full"></canvas>
+                </div>
+
+                <!-- Rewards Gained -->
+                <div class="flex justify-around items-center py-2 px-4 bg-burgundy-900 text-cream-100 rounded-xl mb-5 text-xs font-bold">
+                    <span class="flex items-center gap-1 text-gold-300">
+                        <i class="fa-solid fa-bolt"></i> +<span id="earnedXP">150</span> XP
+                    </span>
+                    <span class="w-1 h-3 bg-white/20 rounded-full"></span>
+                    <span class="flex items-center gap-1 text-amber-300">
+                        <i class="fa-solid fa-star"></i> +<span id="earnedStars">3</span> نجوم
+                    </span>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button onclick="StudioEngine.downloadCreationCard()" class="flex-1 py-3 px-4 rounded-xl gold-border-shimmer text-studio-dark font-extrabold text-xs sm:text-sm shadow-lg hover:scale-105 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i>
+                        <span>حفظ بطاقة التصميم</span>
+                    </button>
+                    <button onclick="Modals.closeShowcase()" class="py-3 px-5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs sm:text-sm transition">
+                        <span>متابعة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ACHIEVEMENTS MODAL -->
+    <div id="achievementsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="luxury-glass max-w-md w-full rounded-3xl p-6 shadow-2xl border border-gold-400 relative">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200 mb-4">
+                <h3 class="font-serif font-bold text-xl text-burgundy-900 flex items-center gap-2">
+                    <i class="fa-solid fa-award text-gold-500"></i> إنجازاتي وشاراتي الحرفية
+                </h3>
+                <button onclick="Modals.closeAchievements()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-3 max-h-80 overflow-y-auto pr-1" id="badgesList">
+                <!-- Badges populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- HOW TO PLAY MODAL -->
+    <div id="helpModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="luxury-glass max-w-lg w-full rounded-3xl p-6 shadow-2xl border border-gold-400 relative">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-200 mb-4">
+                <h3 class="font-serif font-bold text-xl text-burgundy-900 flex items-center gap-2">
+                    <i class="fa-solid fa-compass text-gold-500"></i> دليل رحلة الخرز
+                </h3>
+                <button onclick="Modals.closeHelp()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <div class="flex gap-3 items-start bg-white/60 p-3 rounded-xl border border-gold-400/20">
+                    <div class="w-8 h-8 rounded-lg bg-burgundy-600 text-cream-100 flex items-center justify-center shrink-0 font-bold">1</div>
+                    <div>
+                        <strong class="text-burgundy-900 block">سيد الأنماط:</strong>
+                        استنتج الخرزة المفقودة التي تكمل تناغم النمط الهندسي أو اللوني.
+                    </div>
+                </div>
+                <div class="flex gap-3 items-start bg-white/60 p-3 rounded-xl border border-gold-400/20">
+                    <div class="w-8 h-8 rounded-lg bg-amber-600 text-cream-100 flex items-center justify-center shrink-0 font-bold">2</div>
+                    <div>
+                        <strong class="text-burgundy-900 block">ذاكرة الكريستال:</strong>
+                        احفظ تسلسل الخرز بدقة، وأعد تركيبه بعد اختفائه بالضغط على الخرز المطلوب.
+                    </div>
+                </div>
+                <div class="flex gap-3 items-start bg-white/60 p-3 rounded-xl border border-gold-400/20">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-600 text-cream-100 flex items-center justify-center shrink-0 font-bold">3</div>
+                    <div>
+                        <strong class="text-burgundy-900 block">مصمم السوار وتحدي الإلهام:</strong>
+                        اختر الخرزات والدلايات المفضلة لتنظيم سوار كامل. استخدم "مساعد الخرز الذكي" للحصول على تناغمات فورية ساحرة!
+                    </div>
+                </div>
+            </div>
+            <button onclick="Modals.closeHelp()" class="w-full mt-5 py-3 rounded-xl bg-burgundy-700 hover:bg-burgundy-800 text-cream-100 font-bold text-sm shadow-md transition">
+                فهمت، لنبدأ الإبداع!
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="relative z-20 py-3 text-center text-xs text-cream-200/50 border-t border-gold-500/10 bg-studio-dark/40 backdrop-blur-sm">
+        <span>رحلة الخرز – جزء من منصة Bead Craft • فن صناعة الخرز والمجوهرات اليدوية &copy; 2025</span>
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        /* ----------------------------------------------------
+           1. BEAD MATERIALS DEFINITION & LUXURY COLOR PALETTE
+           ---------------------------------------------------- */
+        const BEAD_TYPES = {
+            pearl: { id: 'pearl', name: 'لؤلؤ عاجي', color1: '#FFFFFF', color2: '#E2DCD5', color3: '#FAF8F5', shadow: '#B0A8A0' },
+            roseQuartz: { id: 'roseQuartz', name: 'كوارتز وردي', color1: '#FFB8C6', color2: '#F48BA2', color3: '#FFE2E8', shadow: '#C0546D' },
+            burgundyRuby: { id: 'burgundyRuby', name: 'ياقوت عنابي', color1: '#9B1D40', color2: '#570B20', color3: '#D84972', shadow: '#31030F' },
+            goldPolished: { id: 'goldPolished', name: 'ذهب ملكي', color1: '#FFE680', color2: '#D4AF37', color3: '#FFF7D6', shadow: '#8B6F14' },
+            emeraldCrystal: { id: 'emeraldCrystal', name: 'زمرد براق', color1: '#34D399', color2: '#059669', color3: '#A7F3D0', shadow: '#064E3B' },
+            lapisLazuli: { id: 'lapisLazuli', name: 'لازورد ملكي', color1: '#60A5FA', color2: '#1D4ED8', color3: '#BFDBFE', shadow: '#1E3A8A' },
+            amberHoney: { id: 'amberHoney', name: 'كهرمان عسلي', color1: '#FBBF24', color2: '#B45309', color3: '#FDE68A', shadow: '#78350F' },
+            amethystViolet: { id: 'amethystViolet', name: 'جمشت بنفسجي', color1: '#C084FC', color2: '#7E22CE', color3: '#E9D5FF', shadow: '#581C87' },
+            turquoiseSky: { id: 'turquoiseSky', name: 'فيروز هادئ', color1: '#2DD4BF', color2: '#0F766E', color3: '#99F6E4', shadow: '#134E4A' }
+        };
+
+        const CHARMS = [
+            { id: 'goldStar', name: 'نجمة الذهب', icon: '★', color: '#D4AF37' },
+            { id: 'crescentMoon', name: 'هلال فضي', icon: '☽', color: '#E2E8F0' },
+            { id: 'lotusBloom', name: 'زهرة اللوتس', icon: '✿', color: '#F472B6' },
+            { id: 'goldenHeart', name: 'قلب مرصع', icon: '♥', color: '#EF4444' },
+            { id: 'sacredDrop', name: 'قطرة المطر', icon: '💧', color: '#38BDF8' }
+        ];
+
+        /* ----------------------------------------------------
+           2. SOUND SYNTHESIZER (Web Audio API)
+           ---------------------------------------------------- */
+        const SoundManager = {
+            ctx: null,
+            enabled: true,
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioContext();
+                }
+            },
+
+            toggleSound() {
+                this.enabled = !this.enabled;
+                const icon = document.getElementById('soundIcon');
+                if (this.enabled) {
+                    icon.className = 'fa-solid fa-volume-high';
+                    this.playChime(523.25, 0.1); // C5
+                } else {
+                    icon.className = 'fa-solid fa-volume-xmark';
+                }
+            },
+
+            playChime(freq = 600, duration = 0.25, type = 'sine') {
+                if (!this.enabled) return;
+                try {
+                    this.init();
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch(e) {}
+            },
+
+            playBeadClick() {
+                this.playChime(850 + Math.random() * 200, 0.1, 'triangle');
+            },
+
+            playClick() {
+                this.playChime(440, 0.08, 'sine');
+            },
+
+            playSuccess() {
+                if (!this.enabled) return;
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C, E, G, High C
+                notes.forEach((note, index) => {
+                    setTimeout(() => this.playChime(note, 0.35, 'sine'), index * 80);
+                });
+            },
+
+            playError() {
+                if (!this.enabled) return;
+                this.playChime(220, 0.25, 'sawtooth');
+            }
+        };
+
+        /* ----------------------------------------------------
+           3. PLAYER STATE & STORAGE
+           ---------------------------------------------------- */
+        const Player = {
+            xp: 0,
+            stars: 0,
+            streak: 0,
+            levelProgress: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+            badges: [
+                { id: 'first_thread', title: 'خيط البدايات', desc: 'أول عقد تم صناعته بنجاح', icon: 'fa-wand-magic', unlocked: false },
+                { id: 'pattern_master', title: 'سيد الأنماط', desc: 'إتمام 5 أنماط بنجاح متتالي', icon: 'fa-shapes', unlocked: false },
+                { id: 'crystal_mind', title: 'ذاكرة الكريستال', desc: 'إعادة ترتيب عقد معقد بدقة 100%', icon: 'fa-brain', unlocked: false },
+                { id: 'harmony_artisan', title: 'فنان التناغم', desc: 'تحقيق 90%+ في تحدي الإلهام الفني', icon: 'fa-palette', unlocked: false },
+                { id: 'grand_master', title: 'الصائغ الملكي', desc: 'استخدام الاستوديو وتصدير تصميم راقٍ', icon: 'fa-crown', unlocked: false }
+            ],
+
+            addXP(amount) {
+                this.xp += amount;
+                document.getElementById('playerXP').innerText = this.xp;
+            },
+
+            addStars(count) {
+                this.stars += count;
+                document.getElementById('playerStars').innerText = this.stars;
+            },
+
+            unlockBadge(id) {
+                const b = this.badges.find(x => x.id === id);
+                if (b && !b.unlocked) {
+                    b.unlocked = true;
+                    // Sparkles & Chime
+                    SoundManager.playSuccess();
+                    if (window.confetti) confetti({ particleCount: 60, spread: 60, origin: { y: 0.2 } });
+                }
+            }
+        };
+
+        /* ----------------------------------------------------
+           4. NAVIGATION SYSTEM
+           ---------------------------------------------------- */
+        const Navigation = {
+            screens: ['homeScreen', 'mapScreen', 'level1Screen', 'level2Screen', 'studioScreen'],
+
+            showScreen(screenId) {
+                this.screens.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        if (id === screenId) {
+                            el.classList.remove('hidden-screen');
+                        } else {
+                            el.classList.add('hidden-screen');
+                        }
+                    }
+                });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+
+            goHome() {
+                SoundManager.playClick();
+                this.showScreen('homeScreen');
+            }
+        };
+
+        /* ----------------------------------------------------
+           5. GAME ENGINE: LEVELS IMPLEMENTATION
+           ---------------------------------------------------- */
+        const GameEngine = {
+            currentLevel: 1,
+            
+            // LEVEL 1: Pattern Master State
+            l1: {
+                round: 1,
+                maxRounds: 5,
+                score: 0,
+                streak: 0,
+                targetBeadId: null
+            },
+
+            // LEVEL 2: Crystal Memory State
+            l2: {
+                round: 1,
+                maxRounds: 4,
+                score: 0,
+                sequence: [],
+                userSequence: [],
+                timerInterval: null
+            },
+
+            // LEVEL 4: Theme Challenge Prompts
+            themes: [
+                {
+                    title: 'حديقة الربيع والأزهار',
+                    desc: 'تناغم الورود الزهرية مع خضرة الزمرد واللؤلؤ النقي.',
+                    favors: ['roseQuartz', 'emeraldCrystal', 'pearl', 'lotusBloom'],
+                    icon: 'fa-seedling'
+                },
+                {
+                    title: 'أعماق البحر الفيروزي',
+                    desc: 'أمواج اللازورد مع زرقة الفيروز ولمعان الكريستال.',
+                    favors: ['lapisLazuli', 'turquoiseSky', 'pearl', 'sacredDrop'],
+                    icon: 'fa-water'
+                },
+                {
+                    title: 'غروب الشمس الملكي',
+                    desc: 'تدرج شمس المغيب بين الياقوت العنابي والذهب والكهرمان.',
+                    favors: ['burgundyRuby', 'goldPolished', 'amberHoney', 'goldStar'],
+                    icon: 'fa-sun'
+                }
+            ],
+            currentThemeIndex: 0,
+
+            startLevel(levelNum) {
+                SoundManager.playClick();
+                this.currentLevel = levelNum;
+
+                if (levelNum === 1) {
+                    this.l1.round = 1;
+                    this.l1.score = 0;
+                    this.l1.streak = 0;
+                    Navigation.showScreen('level1Screen');
+                    this.loadL1Round();
+                } else if (levelNum === 2) {
+                    this.l2.round = 1;
+                    this.l2.score = 0;
+                    Navigation.showScreen('level2Screen');
+                    this.loadL2Round();
+                } else if (levelNum === 3) {
+                    document.getElementById('studioTitle').innerText = 'مصمم السوار الحرفي';
+                    document.getElementById('studioSubtitle').innerText = 'حرية كاملة في تنسيق واختيار الخرز والأشكال';
+                    document.getElementById('themeBanner').classList.add('hidden');
+                    Navigation.showScreen('studioScreen');
+                    StudioEngine.initWorkbench();
+                } else if (levelNum === 4) {
+                    this.currentThemeIndex = Math.floor(Math.random() * this.themes.length);
+                    const t = this.themes[this.currentThemeIndex];
+                    document.getElementById('studioTitle').innerText = 'تحدي الإلهام الفني';
+                    document.getElementById('studioSubtitle').innerText = 'صمم سوارًا يعكس روح الطابع المختار للتقييم';
+                    document.getElementById('themeBanner').classList.remove('hidden');
+                    document.getElementById('themeName').innerText = t.title;
+                    document.getElementById('themeHint').innerText = t.desc;
+                    document.getElementById('themeIcon').innerHTML = `<i class="fa-solid ${t.icon}"></i>`;
+                    Navigation.showScreen('studioScreen');
+                    StudioEngine.initWorkbench();
+                } else if (levelNum === 5) {
+                    document.getElementById('studioTitle').innerText = 'استوديو المصمم المحترف VIP';
+                    document.getElementById('studioSubtitle').innerText = 'أطلق العنان لإبداعك وصدّر بطاقة إهدائك الفاخرة';
+                    document.getElementById('themeBanner').classList.add('hidden');
+                    Navigation.showScreen('studioScreen');
+                    StudioEngine.initWorkbench();
+                }
+            },
+
+            /* ---------------- LEVEL 1 LOGIC (Patterns) ---------------- */
+            loadL1Round() {
+                const keys = Object.keys(BEAD_TYPES);
+                document.getElementById('l1-round-text').innerText = `الجولة ${this.l1.round} من ${this.l1.maxRounds}`;
+                document.getElementById('l1-streak').innerText = this.l1.streak;
+                document.getElementById('l1-score').innerText = this.l1.score;
+                document.getElementById('l1-feedback').innerText = '';
+
+                // Generate Pattern: e.g. A-B-A-B-? or A-B-C-A-B-? or A-A-B-B-?
+                const patternTypes = ['ABAB', 'ABCABC', 'AABB'];
+                const pType = patternTypes[(this.l1.round - 1) % patternTypes.length];
+                
+                // Shuffle two or three beads
+                const shuffledKeys = [...keys].sort(() => 0.5 - Math.random());
+                const bA = shuffledKeys[0];
+                const bB = shuffledKeys[1];
+                const bC = shuffledKeys[2];
+
+                let sequenceKeys = [];
+                let missingIndex = 0;
+
+                if (pType === 'ABAB') {
+                    sequenceKeys = [bA, bB, bA, bB, bA, bB];
+                    missingIndex = 5; // The last bead
+                } else if (pType === 'ABCABC') {
+                    sequenceKeys = [bA, bB, bC, bA, bB, bC];
+                    missingIndex = 5;
+                } else {
+                    sequenceKeys = [bA, bA, bB, bB, bA, bA];
+                    missingIndex = 5;
+                }
+
+                this.l1.targetBeadId = sequenceKeys[missingIndex];
+
+                // Render Pattern String
+                const container = document.getElementById('l1-pattern-container');
+                container.innerHTML = '';
+
+                sequenceKeys.forEach((key, idx) => {
+                    if (idx === missingIndex) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'w-12 h-12 rounded-full border-2 border-dashed border-burgundy-600/60 bg-burgundy-900/10 flex items-center justify-center text-burgundy-700 font-bold text-xl pulse-subtle';
+                        placeholder.innerHTML = '?';
+                        container.appendChild(placeholder);
+                    } else {
+                        const beadData = BEAD_TYPES[key];
+                        const beadEl = document.createElement('div');
+                        beadEl.className = 'bead-sphere bead-glow w-11 h-11';
+                        beadEl.style.background = `radial-gradient(circle at 35% 35%, ${beadData.color3} 0%, ${beadData.color1} 45%, ${beadData.color2} 100%)`;
+                        container.appendChild(beadEl);
+                    }
+                });
+
+                // Generate 4 Options (including target)
+                const options = [this.l1.targetBeadId];
+                while (options.length < 4) {
+                    const r = keys[Math.floor(Math.random() * keys.length)];
+                    if (!options.includes(r)) options.push(r);
+                }
+                options.sort(() => 0.5 - Math.random());
+
+                const optsContainer = document.getElementById('l1-options-container');
+                optsContainer.innerHTML = '';
+                options.forEach(optKey => {
+                    const bead = BEAD_TYPES[optKey];
+                    const btn = document.createElement('button');
+                    btn.className = 'flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/60 transition group';
+                    btn.onclick = () => GameEngine.checkL1Answer(optKey, btn);
+
+                    const sphere = document.createElement('div');
+                    sphere.className = 'bead-sphere bead-glow w-13 h-13 group-hover:scale-110 transition-transform';
+                    sphere.style.width = '52px';
+                    sphere.style.height = '52px';
+                    sphere.style.background = `radial-gradient(circle at 35% 35%, ${bead.color3} 0%, ${bead.color1} 45%, ${bead.color2} 100%)`;
+
+                    const label = document.createElement('span');
+                    label.className = 'text-[11px] font-bold text-slate-700';
+                    label.innerText = bead.name;
+
+                    btn.appendChild(sphere);
+                    btn.appendChild(label);
+                    optsContainer.appendChild(btn);
+                });
+            },
+
+            checkL1Answer(selectedKey, btnElement) {
+                const feedback = document.getElementById('l1-feedback');
+                if (selectedKey === this.l1.targetBeadId) {
+                    // Correct!
+                    SoundManager.playSuccess();
+                    this.l1.score += 50 + (this.l1.streak * 10);
+                    this.l1.streak += 1;
+                    Player.addXP(30);
+
+                    feedback.innerHTML = `<span class="text-emerald-700 font-extrabold"><i class="fa-solid fa-circle-check ml-1"></i> إجابة متناسقة ورائعة! +${50 + (this.l1.streak * 10)} نقطة</span>`;
+                    
+                    if (this.l1.streak >= 3) Player.unlockBadge('pattern_master');
+
+                    setTimeout(() => {
+                        this.l1.round++;
+                        if (this.l1.round > this.l1.maxRounds) {
+                            this.finishLevel(1, 3, this.l1.score);
+                        } else {
+                            this.loadL1Round();
+                        }
+                    }, 1100);
+                } else {
+                    // Incorrect
+                    SoundManager.playError();
+                    this.l1.streak = 0;
+                    feedback.innerHTML = `<span class="text-rose-600 font-bold"><i class="fa-solid fa-circle-xmark ml-1"></i> ليست الخرزة المناسبة، تأمّل النمط مجددًا!</span>`;
+                    btnElement.classList.add('opacity-40');
+                }
+                document.getElementById('l1-streak').innerText = this.l1.streak;
+                document.getElementById('l1-score').innerText = this.l1.score;
+            },
+
+            /* ---------------- LEVEL 2 LOGIC (Crystal Memory) ---------------- */
+            loadL2Round() {
+                const keys = Object.keys(BEAD_TYPES);
+                document.getElementById('l2-round-text').innerText = `الجولة ${this.l2.round} من ${this.l2.maxRounds}`;
+                document.getElementById('l2-score').innerText = this.l2.score;
+                document.getElementById('l2-feedback').innerText = '';
+                document.getElementById('l2-instructions').innerText = 'احفظ ترتيب هذه الخرزات قبل أن تختفي...';
+                document.getElementById('l2-selection-palette').classList.add('hidden');
+
+                // Sequence length increases with round (3, 4, 5, 6)
+                const seqLength = 2 + this.l2.round;
+                this.l2.sequence = [];
+                this.l2.userSequence = [];
+
+                for (let i = 0; i < seqLength; i++) {
+                    const randKey = keys[Math.floor(Math.random() * keys.length)];
+                    this.l2.sequence.push(randKey);
+                }
+
+                // Render visible sequence
+                const container = document.getElementById('l2-string-container');
+                container.innerHTML = '';
+                this.l2.sequence.forEach(key => {
+                    const b = BEAD_TYPES[key];
+                    const el = document.createElement('div');
+                    el.className = 'bead-sphere bead-glow w-12 h-12';
+                    el.style.background = `radial-gradient(circle at 35% 35%, ${b.color3} 0%, ${b.color1} 45%, ${b.color2} 100%)`;
+                    container.appendChild(el);
+                });
+
+                // Countdown Timer (e.g., 3.5 seconds)
+                let timeLeft = 100;
+                const timerBar = document.getElementById('l2-timer-bar');
+                timerBar.style.width = '100%';
+                
+                if (this.l2.timerInterval) clearInterval(this.l2.timerInterval);
+
+                const stepTime = 35; // 3500ms total
+                this.l2.timerInterval = setInterval(() => {
+                    timeLeft -= 1;
+                    timerBar.style.width = `${timeLeft}%`;
+                    if (timeLeft <= 0) {
+                        clearInterval(this.l2.timerInterval);
+                        this.hideL2SequenceAndPrompt();
+                    }
+                }, stepTime);
+            },
+
+            hideL2SequenceAndPrompt() {
+                SoundManager.playBeadClick();
+                document.getElementById('l2-instructions').innerText = 'أعد وضع الخرز في الخيط بنفس الترتيب:';
+                
+                // Clear and put empty placeholder slots
+                const container = document.getElementById('l2-string-container');
+                container.innerHTML = '';
+                this.l2.sequence.forEach((_, idx) => {
+                    const slot = document.createElement('div');
+                    slot.id = `l2-slot-${idx}`;
+                    slot.className = 'w-12 h-12 rounded-full border-2 border-dashed border-gold-500/60 bg-white/40 flex items-center justify-center text-xs font-bold text-gold-700';
+                    slot.innerText = idx + 1;
+                    container.appendChild(slot);
+                });
+
+                // Show palette choices
+                const palette = document.getElementById('l2-selection-palette');
+                palette.classList.remove('hidden');
+                const beadOpts = document.getElementById('l2-bead-options');
+                beadOpts.innerHTML = '';
+
+                // Palette contains all unique beads from sequence plus 2 random decoys
+                const uniqueKeys = [...new Set(this.l2.sequence)];
+                const allKeys = Object.keys(BEAD_TYPES);
+                while (uniqueKeys.length < Math.min(6, allKeys.length)) {
+                    const r = allKeys[Math.floor(Math.random() * allKeys.length)];
+                    if (!uniqueKeys.includes(r)) uniqueKeys.push(r);
+                }
+                uniqueKeys.sort(() => 0.5 - Math.random());
+
+                uniqueKeys.forEach(key => {
+                    const b = BEAD_TYPES[key];
+                    const btn = document.createElement('button');
+                    btn.className = 'bead-sphere bead-glow w-12 h-12 transition-transform active:scale-95';
+                    btn.style.background = `radial-gradient(circle at 35% 35%, ${b.color3} 0%, ${b.color1} 45%, ${b.color2} 100%)`;
+                    btn.onclick = () => GameEngine.pickL2Bead(key);
+                    beadOpts.appendChild(btn);
+                });
+            },
+
+            pickL2Bead(key) {
+                if (this.l2.userSequence.length >= this.l2.sequence.length) return;
+
+                SoundManager.playBeadClick();
+                const currentIndex = this.l2.userSequence.length;
+                this.l2.userSequence.push(key);
+
+                // Update slot visual
+                const slot = document.getElementById(`l2-slot-${currentIndex}`);
+                if (slot) {
+                    const b = BEAD_TYPES[key];
+                    slot.className = 'bead-sphere bead-glow w-12 h-12';
+                    slot.style.background = `radial-gradient(circle at 35% 35%, ${b.color3} 0%, ${b.color1} 45%, ${b.color2} 100%)`;
+                    slot.innerText = '';
+                }
+
+                // Check if user completed the sequence
+                if (this.l2.userSequence.length === this.l2.sequence.length) {
+                    this.evaluateL2Attempt();
+                }
+            },
+
+            resetL2CurrentTry() {
+                SoundManager.playClick();
+                this.l2.userSequence = [];
+                this.l2.sequence.forEach((_, idx) => {
+                    const slot = document.getElementById(`l2-slot-${idx}`);
+                    if (slot) {
+                        slot.className = 'w-12 h-12 rounded-full border-2 border-dashed border-gold-500/60 bg-white/40 flex items-center justify-center text-xs font-bold text-gold-700';
+                        slot.style.background = '';
+                        slot.innerText = idx + 1;
+                    }
+                });
+            },
+
+            evaluateL2Attempt() {
+                let isCorrect = true;
+                for (let i = 0; i < this.l2.sequence.length; i++) {
+                    if (this.l2.sequence[i] !== this.l2.userSequence[i]) {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+
+                const feedback = document.getElementById('l2-feedback');
+                if (isCorrect) {
+                    SoundManager.playSuccess();
+                    this.l2.score += 70 + (this.l2.round * 20);
+                    Player.addXP(40);
+                    feedback.innerHTML = `<span class="text-emerald-700 font-extrabold"><i class="fa-solid fa-sparkles ml-1"></i> ذاكرة كريستالية مذهلة! الترتيب سليم 100%</span>`;
+
+                    if (this.l2.round === this.l2.maxRounds) Player.unlockBadge('crystal_mind');
+
+                    setTimeout(() => {
+                        this.l2.round++;
+                        if (this.l2.round > this.l2.maxRounds) {
+                            this.finishLevel(2, 3, this.l2.score);
+                        } else {
+                            this.loadL2Round();
+                        }
+                    }, 1300);
+                } else {
+                    SoundManager.playError();
+                    feedback.innerHTML = `<span class="text-rose-600 font-bold"><i class="fa-solid fa-circle-xmark ml-1"></i> الترتيب غير مطابق، اضغط إعادة المحاولة للبدء من جديد.</span>`;
+                }
+            },
+
+            /* Finish Level & Show Reward */
+            finishLevel(lvlNum, starsEarned, score) {
+                Player.levelProgress[lvlNum] = starsEarned;
+                Player.addStars(starsEarned);
+                Player.addXP(score);
+
+                // Update Stars on map
+                const starContainer = document.getElementById(`lvl${lvlNum}-stars`);
+                if (starContainer) {
+                    starContainer.innerHTML = '';
+                    for (let s = 0; s < starsEarned; s++) {
+                        starContainer.innerHTML += '<i class="fa-solid fa-star text-amber-400"></i>';
+                    }
+                }
+
+                if (window.confetti) {
+                    confetti({ particleCount: 100, spread: 80, origin: { y: 0.4 } });
+                }
+
+                // Show showcase modal with custom summary
+                document.getElementById('showcaseTitle').innerText = 'تم إنجاز التحدي بنجاح!';
+                document.getElementById('showcaseDesc').innerText = `حصلت على ${score} نقطة و${starsEarned} نجوم في هذا المستوى.`;
+                document.getElementById('earnedXP').innerText = score;
+                document.getElementById('earnedStars').innerText = starsEarned;
+                document.getElementById('harmonyScore').innerText = '100%';
+                document.getElementById('aiHarmonyVerdict').innerText = 'أداء حرفي فائق الدقة وتناغم بديع.';
+
+                Modals.openShowcase();
+            }
+        };
+
+        /* ----------------------------------------------------
+           6. STUDIO & BRACELET CANVAS RENDERING ENGINE
+           ---------------------------------------------------- */
+        const StudioEngine = {
+            braceletItems: [], // Array of { type: 'bead'|'charm', id: string }
+            maxItems: 18,
+            activeTab: 'gems',
+
+            initWorkbench() {
+                this.braceletItems = [];
+                this.renderPaletteButtons();
+                this.updateBracelet();
+            },
+
+            switchTab(tab) {
+                SoundManager.playClick();
+                this.activeTab = tab;
+                const tabG = document.getElementById('tabGems');
+                const tabC = document.getElementById('tabCharms');
+                const pG = document.getElementById('gemsPalette');
+                const pC = document.getElementById('charmsPalette');
+
+                if (tab === 'gems') {
+                    tabG.className = 'px-4 py-1.5 font-bold text-xs sm:text-sm border-b-2 border-burgundy-700 text-burgundy-800 transition';
+                    tabC.className = 'px-4 py-1.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-burgundy-800 transition';
+                    pG.classList.remove('hidden');
+                    pC.classList.add('hidden');
+                } else {
+                    tabC.className = 'px-4 py-1.5 font-bold text-xs sm:text-sm border-b-2 border-burgundy-700 text-burgundy-800 transition';
+                    tabG.className = 'px-4 py-1.5 font-bold text-xs sm:text-sm border-b-2 border-transparent text-slate-500 hover:text-burgundy-800 transition';
+                    pC.classList.remove('hidden');
+                    pG.classList.add('hidden');
+                }
+            },
+
+            renderPaletteButtons() {
+                // Gems
+                const pGems = document.getElementById('gemsPalette');
+                pGems.innerHTML = '';
+                Object.values(BEAD_TYPES).forEach(bead => {
+                    const btn = document.createElement('button');
+                    btn.className = 'flex flex-col items-center gap-1.5 p-1.5 rounded-xl hover:bg-white/70 transition shrink-0';
+                    btn.onclick = () => StudioEngine.addItem('bead', bead.id);
+
+                    const sphere = document.createElement('div');
+                    sphere.className = 'bead-sphere bead-glow';
+                    sphere.style.width = '42px';
+                    sphere.style.height = '42px';
+                    sphere.style.background = `radial-gradient(circle at 35% 35%, ${bead.color3} 0%, ${bead.color1} 45%, ${bead.color2} 100%)`;
+
+                    const label = document.createElement('span');
+                    label.className = 'text-[10px] font-bold text-slate-700';
+                    label.innerText = bead.name;
+
+                    btn.appendChild(sphere);
+                    btn.appendChild(label);
+                    pGems.appendChild(btn);
+                });
+
+                // Charms
+                const pCharms = document.getElementById('charmsPalette');
+                pCharms.innerHTML = '';
+                CHARMS.forEach(charm => {
+                    const btn = document.createElement('button');
+                    btn.className = 'flex flex-col items-center gap-1.5 p-1.5 rounded-xl hover:bg-white/70 transition shrink-0';
+                    btn.onclick = () => StudioEngine.addItem('charm', charm.id);
+
+                    const iconWrap = document.createElement('div');
+                    iconWrap.className = 'w-10 h-10 rounded-full bg-gold-400/20 border border-gold-500/50 flex items-center justify-center text-xl shadow-md';
+                    iconWrap.innerHTML = `<span style="color: ${charm.color}">${charm.icon}</span>`;
+
+                    const label = document.createElement('span');
+                    label.className = 'text-[10px] font-bold text-slate-700';
+                    label.innerText = charm.name;
+
+                    btn.appendChild(iconWrap);
+                    btn.appendChild(label);
+                    pCharms.appendChild(btn);
+                });
+            },
+
+            addItem(type, id) {
+                if (this.braceletItems.length >= this.maxItems) {
+                    SoundManager.playError();
+                    return;
+                }
+                SoundManager.playBeadClick();
+                this.braceletItems.push({ type, id });
+                this.updateBracelet();
+                Player.unlockBadge('first_thread');
+            },
+
+            removeItem(index) {
+                SoundManager.playClick();
+                this.braceletItems.splice(index, 1);
+                this.updateBracelet();
+            },
+
+            clearBracelet() {
+                SoundManager.playClick();
+                this.braceletItems = [];
+                this.updateBracelet();
+            },
+
+            updateBracelet() {
+                document.getElementById('beadCountDisplay').innerText = this.braceletItems.length;
+                this.drawBraceletCanvas('braceletCanvas', this.braceletItems, true);
+            },
+
+            /* Canvas Draw: realistic arched string with 3D specular beads */
+            drawBraceletCanvas(canvasId, items, isInteractive = false) {
+                const canvas = document.getElementById(canvasId);
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                const W = canvas.width;
+                const H = canvas.height;
+
+                ctx.clearRect(0, 0, W, H);
+
+                // Curve geometry: arched catenary curve
+                const startX = 40;
+                const endX = W - 40;
+                const centerY = H * 0.48;
+                const arcHeight = H * 0.28;
+
+                // 1. Draw Silk Cord / Gold Chain
+                ctx.beginPath();
+                ctx.moveTo(startX, centerY);
+                ctx.quadraticCurveTo(W / 2, centerY + arcHeight + 35, endX, centerY);
+                ctx.strokeStyle = '#D4AF37';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                // Draw clasp ends
+                ctx.fillStyle = '#AA8820';
+                ctx.beginPath();
+                ctx.arc(startX, centerY, 6, 0, Math.PI * 2);
+                ctx.arc(endX, centerY, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (items.length === 0) return;
+
+                // 2. Draw Beads along Quadratic Curve
+                const total = items.length;
+                items.forEach((item, i) => {
+                    // Parametric t between 0.08 and 0.92
+                    const t = total === 1 ? 0.5 : 0.08 + (i / (total - 1)) * 0.84;
+                    
+                    // Quadratic curve point calculation
+                    const x = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * (W / 2) + t * t * endX;
+                    const y = (1 - t) * (1 - t) * centerY + 2 * (1 - t) * t * (centerY + arcHeight + 35) + t * t * centerY;
+
+                    if (item.type === 'bead') {
+                        const bead = BEAD_TYPES[item.id] || BEAD_TYPES.pearl;
+                        const radius = 13.5;
+
+                        // Drop Shadow
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.arc(x, y + 4, radius, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(0,0,0,0.18)';
+                        ctx.fill();
+                        ctx.restore();
+
+                        // 3D Radial Sphere
+                        const grad = ctx.createRadialGradient(x - radius * 0.35, y - radius * 0.35, radius * 0.1, x, y, radius);
+                        grad.addColorStop(0, bead.color3);
+                        grad.addColorStop(0.45, bead.color1);
+                        grad.addColorStop(1, bead.color2);
+
+                        ctx.beginPath();
+                        ctx.arc(x, y, radius, 0, Math.PI * 2);
+                        ctx.fillStyle = grad;
+                        ctx.fill();
+                        ctx.lineWidth = 1;
+                        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                        ctx.stroke();
+
+                        // Specular Glint
+                        ctx.beginPath();
+                        ctx.arc(x - radius * 0.35, y - radius * 0.35, radius * 0.25, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(255,255,255,0.85)';
+                        ctx.fill();
+
+                    } else if (item.type === 'charm') {
+                        const charm = CHARMS.find(c => c.id === item.id) || CHARMS[0];
+                        
+                        // Dangling loop
+                        ctx.beginPath();
+                        ctx.moveTo(x, y);
+                        ctx.lineTo(x, y + 10);
+                        ctx.strokeStyle = '#D4AF37';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+
+                        // Charm Gold Coin
+                        ctx.beginPath();
+                        ctx.arc(x, y + 18, 11, 0, Math.PI * 2);
+                        ctx.fillStyle = '#FCE082';
+                        ctx.fill();
+                        ctx.strokeStyle = '#AA8820';
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+
+                        // Charm Icon
+                        ctx.fillStyle = charm.color;
+                        ctx.font = '11px sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(charm.icon, x, y + 19);
+                    }
+                });
+            },
+
+            finishBracelet() {
+                if (this.braceletItems.length < 5) {
+                    SoundManager.playError();
+                    alert('يرجى إضافة 5 خرزات على الأقل لإكمال تصميم السوار الفني!');
+                    return;
+                }
+
+                SoundManager.playSuccess();
+                let harmony = 85;
+                let verdict = 'تصميم رائع متوازن الألوان والأبعاد.';
+
+                // AI evaluation logic if theme challenge
+                if (GameEngine.currentLevel === 4) {
+                    const theme = GameEngine.themes[GameEngine.currentThemeIndex];
+                    let matchingCount = 0;
+                    this.braceletItems.forEach(item => {
+                        if (theme.favors.includes(item.id)) matchingCount++;
+                    });
+
+                    const adherence = Math.min(100, Math.round((matchingCount / this.braceletItems.length) * 100) + 20);
+                    harmony = adherence;
+
+                    if (harmony >= 90) {
+                        verdict = `إتقان مذهل! عكس السوار روح "${theme.title}" بألوان دقيقة ومريحة للعين.`;
+                        Player.unlockBadge('harmony_artisan');
+                    } else {
+                        verdict = `محاولة فنية جميلة مع طابع "${theme.title}". دمج المزيد من درجات الألوان الأساسية سيزيد التألق.`;
+                    }
+                } else {
+                    // Check symmetry or richness
+                    if (this.braceletItems.length >= 10) {
+                        harmony = 94;
+                        verdict = 'توزيع ملكي متناسق بين الأحجار الكريمة والدلايات الذهبية.';
+                        Player.unlockBadge('grand_master');
+                    }
+                }
+
+                document.getElementById('showcaseTitle').innerText = 'تحفة أساور Bead Craft';
+                document.getElementById('showcaseDesc').innerText = 'تم حفظ سوارك في استوديو المجوهرات الفاخرة.';
+                document.getElementById('harmonyScore').innerText = `${harmony}%`;
+                document.getElementById('aiHarmonyVerdict').innerText = `"${verdict}"`;
+                document.getElementById('earnedXP').innerText = 120;
+                document.getElementById('earnedStars').innerText = 3;
+
+                // Render on showcase modal canvas
+                this.drawBraceletCanvas('showcaseCanvas', this.braceletItems, false);
+                
+                Player.addXP(120);
+                Player.addStars(3);
+
+                if (window.confetti) confetti({ particleCount: 90, spread: 70, origin: { y: 0.5 } });
+                Modals.openShowcase();
+            },
+
+            downloadCreationCard() {
+                SoundManager.playClick();
+                const cardCanvas = document.createElement('canvas');
+                cardCanvas.width = 700;
+                cardCanvas.height = 450;
+                const ctx = cardCanvas.getContext('2d');
+
+                // Luxury Background
+                const bgGrad = ctx.createLinearGradient(0, 0, 700, 450);
+                bgGrad.addColorStop(0, '#2D141E');
+                bgGrad.addColorStop(1, '#120B0E');
+                ctx.fillStyle = bgGrad;
+                ctx.fillRect(0, 0, 700, 450);
+
+                // Gold border
+                ctx.strokeStyle = '#D4AF37';
+                ctx.lineWidth = 6;
+                ctx.strokeRect(16, 16, 668, 418);
+
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(24, 24, 652, 402);
+
+                // Header Text
+                ctx.fillStyle = '#FCE082';
+                ctx.font = 'bold 26px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('BEAD CRAFT • فن الخرز', 350, 70);
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = '18px sans-serif';
+                ctx.fillText('شهادة تصميم سوار أصيل وراقي', 350, 105);
+
+                // Copy the bracelet from main canvas
+                const mainCanvas = document.getElementById('braceletCanvas');
+                ctx.drawImage(mainCanvas, 50, 130, 600, 240);
+
+                // Footer signature
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '14px sans-serif';
+                ctx.fillText('صُمم بكل فخر في رحلة الخرز – Bead Quest', 350, 395);
+
+                // Trigger Download
+                const link = document.createElement('a');
+                link.download = 'Bead-Quest-Creation.png';
+                link.href = cardCanvas.toDataURL('image/png');
+                link.click();
+            }
+        };
+
+        /* ----------------------------------------------------
+           7. SMART BEAD AI ASSISTANT (مساعد الخرز الذكي)
+           ---------------------------------------------------- */
+        const SmartAssistant = {
+            palettes: [
+                { name: 'تناغم الباستيل الرقيق', beads: ['pearl', 'roseQuartz', 'pearl', 'amethystViolet', 'pearl', 'roseQuartz'] },
+                { name: 'الملكي الذهبي الياقوتي', beads: ['burgundyRuby', 'goldPolished', 'burgundyRuby', 'goldPolished', 'pearl'] },
+                { name: 'نسيم الفيروز والزمرد', beads: ['emeraldCrystal', 'turquoiseSky', 'pearl', 'turquoiseSky', 'emeraldCrystal'] },
+                { name: 'شروق الشمس والكهرمان', beads: ['goldPolished', 'amberHoney', 'roseQuartz', 'amberHoney', 'goldPolished'] }
+            ],
+
+            suggestPalette() {
+                SoundManager.playSuccess();
+                const choice = this.palettes[Math.floor(Math.random() * this.palettes.length)];
+                
+                // Add suggested sequence to bracelet
+                StudioEngine.braceletItems = [];
+                choice.beads.forEach(bId => {
+                    StudioEngine.braceletItems.push({ type: 'bead', id: bId });
+                });
+                // Add center gold charm
+                StudioEngine.braceletItems.splice(Math.floor(choice.beads.length / 2), 0, { type: 'charm', id: 'goldStar' });
+                
+                StudioEngine.updateBracelet();
+
+                if (window.confetti) confetti({ particleCount: 30, spread: 45, origin: { y: 0.6 } });
+                
+                // Audio chime feedback
+                SoundManager.playChime(750, 0.2);
+            }
+        };
+
+        /* ----------------------------------------------------
+           8. MODALS CONTROLLER
+           ---------------------------------------------------- */
+        const Modals = {
+            openShowcase() {
+                const m = document.getElementById('showcaseModal');
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+            },
+            closeShowcase() {
+                const m = document.getElementById('showcaseModal');
+                m.classList.add('opacity-0');
+                setTimeout(() => {
+                    m.classList.add('hidden');
+                    Navigation.showScreen('mapScreen');
+                }, 300);
+            },
+            openAchievements() {
+                SoundManager.playClick();
+                const list = document.getElementById('badgesList');
+                list.innerHTML = '';
+                Player.badges.forEach(b => {
+                    const el = document.createElement('div');
+                    el.className = `flex items-center gap-3 p-3 rounded-2xl border ${b.unlocked ? 'bg-amber-50/80 border-gold-400' : 'bg-slate-100/60 border-slate-200 opacity-60'}`;
+                    el.innerHTML = `
+                        <div class="w-11 h-11 rounded-xl flex items-center justify-center text-lg ${b.unlocked ? 'bg-gradient-to-br from-gold-400 to-amber-600 text-burgundy-950 shadow-md' : 'bg-slate-300 text-slate-500'}">
+                            <i class="fa-solid ${b.icon}"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-bold text-sm ${b.unlocked ? 'text-burgundy-900' : 'text-slate-600'}">${b.title}</h4>
+                                <span class="text-[10px] font-bold ${b.unlocked ? 'text-emerald-700' : 'text-slate-400'}">${b.unlocked ? 'مُنجز' : 'مغلق'}</span>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-0.5">${b.desc}</p>
+                        </div>
+                    `;
+                    list.appendChild(el);
+                });
+
+                const m = document.getElementById('achievementsModal');
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+            },
+            closeAchievements() {
+                const m = document.getElementById('achievementsModal');
+                m.classList.add('opacity-0');
+                setTimeout(() => m.classList.add('hidden'), 300);
+            },
+            openHelp() {
+                SoundManager.playClick();
+                const m = document.getElementById('helpModal');
+                m.classList.remove('hidden');
+                setTimeout(() => m.classList.remove('opacity-0'), 10);
+            },
+            closeHelp() {
+                const m = document.getElementById('helpModal');
+                m.classList.add('opacity-0');
+                setTimeout(() => m.classList.add('hidden'), 300);
+            }
+        };
+
+        /* ----------------------------------------------------
+           9. AMBIENT PARTICLES (Visual Background Canvas)
+           ---------------------------------------------------- */
+        function initAmbientCanvas() {
+            const canvas = document.getElementById('ambientCanvas');
+            const ctx = canvas.getContext('2d');
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            });
+
+            const particles = [];
+            for (let i = 0; i < 28; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 4 + 1.5,
+                    color: Math.random() > 0.5 ? '#D4AF37' : '#F48BA2',
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    alpha: Math.random() * 0.6 + 0.2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0) p.x = w;
+                    if (p.x > w) p.x = 0;
+                    if (p.y < 0) p.y = h;
+                    if (p.y > h) p.y = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.alpha;
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Initialize on DOM load
+        window.addEventListener('DOMContentLoaded', () => {
+            initAmbientCanvas();
+            // Handle clicking canvas to remove beads
+            const bCanvas = document.getElementById('braceletCanvas');
+            bCanvas.addEventListener('click', (e) => {
+                if (StudioEngine.braceletItems.length > 0) {
+                    // Remove last added item on click or tap
+                    StudioEngine.removeItem(StudioEngine.braceletItems.length - 1);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

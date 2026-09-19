@@ -1,0 +1,336 @@
+--gws_boundary_a13369c8514fbe2c
+Content-Type: application/json; charset=UTF-8
+
+{}
+--gws_boundary_a13369c8514fbe2c
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تجربة قانون باسكال التفاعلية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            min-height: 100vh;
+            background: radial-gradient(circle at 50% -10%, #5ee7ff 0%, #182a67 38%, #070d2a 100%);
+            color: #eef8ff;
+        }
+
+        .experience-shell {
+            background: linear-gradient(145deg, rgba(255,255,255,.16), rgba(110,231,255,.07));
+            border: 1px solid rgba(167,243,255,.35);
+            box-shadow: 0 30px 80px rgba(0,0,0,.42), inset 0 1px rgba(255,255,255,.25);
+            backdrop-filter: blur(18px);
+        }
+
+        .cinematic-header {
+            position: relative; overflow: hidden;
+            background: linear-gradient(120deg, #164e9b, #087fbb 48%, #7c3aed);
+            box-shadow: inset 0 -30px 70px rgba(7,17,75,.32);
+        }
+        .cinematic-header::after { content: ''; position:absolute; width:320px; height:320px; right:-80px; top:-170px; border-radius:50%; background:rgba(255,255,255,.2); filter:blur(3px); }
+        .section-copy { color: #102a43; }
+        .glass-panel { background: rgba(232,248,255,.92); border:1px solid rgba(157,236,255,.65); box-shadow: 0 16px 40px rgba(0,0,0,.2); color:#102a43; }
+        .glass-panel label, .glass-panel .text-gray-700 { color:#102a43 !important; }
+        .area-label { position:absolute; top:-39px; left:50%; transform:translateX(-50%); z-index:6; min-width:112px; padding:6px 8px; border-radius:9px; background:linear-gradient(135deg,#ffffff,#d7f7ff); border:2px solid #159dcc; color:#06264a; font-size:.72rem; font-weight:900; text-align:center; white-space:nowrap; box-shadow:0 5px 16px rgba(0,68,118,.32), 0 0 14px rgba(34,211,238,.35); }
+        .area-label.large { background:linear-gradient(135deg,#fff7d6,#ffe28a); border-color:#e7a712; color:#4c2a00; box-shadow:0 5px 16px rgba(122,75,0,.28), 0 0 14px rgba(251,191,36,.4); }
+        .metric-card { background: linear-gradient(145deg, rgba(255,255,255,.92), rgba(218,243,255,.72)); border:1px solid rgba(54,142,186,.35); color:#102a43; }
+        .metric-card .text-gray-500, .metric-card .text-gray-400, .glass-panel .text-gray-500, .glass-panel .text-gray-400 { color:#27445e !important; }
+        .metric-card .text-sm, .metric-card .text-xs { color:#27445e !important; }
+        .area-badge { position:absolute; top:14px; left:50%; transform:translateX(-50%); z-index:5; padding:6px 12px; border-radius:999px; background:linear-gradient(90deg,#22d3ee,#60a5fa); color:#062044; font-weight:800; font-size:.75rem; box-shadow:0 0 22px rgba(34,211,238,.55); white-space:nowrap; }
+        .system-container { background: radial-gradient(circle at 50% 20%, rgba(91,219,255,.3), transparent 40%), linear-gradient(180deg,#132b67,#071331 72%); border:1px solid rgba(139,231,255,.42); box-shadow:0 18px 45px rgba(0,0,0,.35), inset 0 0 45px rgba(36,186,255,.13); }
+        .fluid { background:linear-gradient(180deg,rgba(93,235,255,.88),rgba(20,112,218,.88)); box-shadow:0 -12px 30px rgba(39,208,255,.32), inset 0 12px 20px rgba(255,255,255,.15); }
+        .pipe { background:linear-gradient(180deg,#54e8ff,#1767c9); box-shadow:0 0 18px rgba(45,211,255,.55); }
+        .cylinder { background:linear-gradient(90deg,rgba(203,240,255,.4),rgba(36,89,155,.45),rgba(203,240,255,.35)); border-color:#8de9ff; box-shadow:0 0 22px rgba(57,214,255,.25); }
+        .piston { background:linear-gradient(90deg,#f7fbff,#6ed8ff 45%,#2563eb); color:#05224c; box-shadow:0 0 18px rgba(97,224,255,.7); }
+        .piston-large { background:linear-gradient(90deg,#fef3c7,#fbbf24 45%,#f97316); color:#40150a; box-shadow:0 0 20px rgba(251,191,36,.7); }
+        .weight { background:linear-gradient(135deg,#fb7185,#be123c); box-shadow:0 5px 15px rgba(225,29,72,.4); }
+        .label { color:#06264a; text-shadow:none; font-weight:900; }
+        .piston-rod { background:linear-gradient(90deg,#d8fbff,#38bdf8,#d8fbff); box-shadow:0 0 12px rgba(56,189,248,.55); }
+        input[type=range] { accent-color:#22d3ee; filter:drop-shadow(0 0 6px rgba(34,211,238,.55)); }
+        @media (max-width:650px) { body{padding:10px!important}.system-container{height:360px}.cylinder-small{left:30px}.cylinder-large{right:30px}.fluid{left:30px;right:30px}.pipe{left:55px;width:calc(100% - 110px)}.area-badge{font-size:.68rem}.area-label{font-size:.62rem;min-width:92px;padding:5px 4px}.cinematic-header{padding:20px 14px!important} }
+        
+        .system-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin: 0 auto;
+            background: #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .fluid {
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+            right: 50px;
+            height: 150px;
+            background: rgba(59, 130, 246, 0.6); /* Blue color for fluid */
+            transition: all 0.1s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .pipe {
+            position: absolute;
+            bottom: 0;
+            left: 80px;
+            width: calc(100% - 160px);
+            height: 50px;
+            background: rgba(59, 130, 246, 0.6);
+            z-index: 1;
+        }
+
+        .cylinder {
+            position: absolute;
+            bottom: 0;
+            background: #cbd5e1;
+            border: 2px solid #94a3b8;
+            border-bottom: none;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            z-index: 2;
+        }
+
+        .cylinder-small {
+            left: 50px;
+            width: 60px;
+            height: 250px;
+        }
+
+        .cylinder-large {
+            right: 50px;
+            width: 150px;
+            height: 250px;
+        }
+
+        .piston {
+            position: absolute;
+            background: #475569;
+            width: calc(100% - 4px);
+            left: 2px;
+            height: 20px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: top 0.1s ease;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .piston-rod {
+            position: absolute;
+            width: 10px;
+            background: #94a3b8;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .piston-small {
+            top: 50px;
+        }
+
+        .piston-large {
+            top: 150px;
+            cursor: default; /* Large piston is driven, not driver */
+        }
+        
+        .label {
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            bottom: -30px;
+            font-weight: bold;
+            color: #334155;
+        }
+        
+        .weight {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ef4444;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        input[type=range] {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="experience-shell max-w-4xl mx-auto rounded-2xl overflow-hidden">
+        
+        <div class="cinematic-header text-white p-6 text-center">
+            <h1 class="text-3xl font-bold mb-2">قانون باسكال</h1>
+            <p class="text-lg">اكتشف كيف ينتقل الضغط في السوائل المحصورة</p>
+        </div>
+
+        <div class="p-6">
+            
+            <div class="section-copy mb-8 leading-relaxed text-center">
+                <p>ينص <strong>قانون باسكال</strong> على أن الضغط الممارس على أي جزء من سائل محصور ينتقل بكامله وبنفس الشدة إلى جميع أجزاء السائل وإلى جدران الوعاء الذي يحويه.</p>
+                <p class="mt-2 text-sm text-gray-500">استخدم شريط التمرير أدناه للضغط على المكبس الصغير ولاحظ كيف يرتفع المكبس الكبير.</p>
+            </div>
+
+            <div class="system-container mb-8">
+                <div class="area-badge">مساحة المكبس الصغير: A₁ = 0.010 م²</div>
+                <!-- Pipe connecting cylinders -->
+                <div class="pipe"></div>
+                
+                <!-- Small Cylinder (Input) -->
+                <div class="cylinder cylinder-small">
+                    <div class="area-label">A₁ = 0.010 م²</div>
+                    <div class="piston piston-small" id="pistonSmall">
+                        <div class="weight" id="forceInLabel">قوة: 0 نيوتن</div>
+                    </div>
+                    <div class="piston-rod" id="rodSmall" style="height: 50px;"></div>
+                    <div class="label">المكبس الصغير<br><span class="text-xs font-normal">المساحة = 0.010 م²</span></div>
+                </div>
+
+                <!-- Large Cylinder (Output) -->
+                <div class="cylinder cylinder-large">
+                    <div class="area-label large">A₂ = 0.040 م²</div>
+                    <div class="piston piston-large" id="pistonLarge">
+                        <div class="weight bg-green-500" id="forceOutLabel">قوة الرفع: 0 نيوتن</div>
+                    </div>
+                    <div class="piston-rod" id="rodLarge" style="height: 150px;"></div>
+                    <div class="label">المكبس الكبير<br><span class="text-xs font-normal">المساحة = 0.040 م²</span></div>
+                </div>
+                
+                <!-- Fluid (dynamically adjusted via JS) -->
+                <div class="fluid" id="fluidLevel"></div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-2xl">
+                <h3 class="text-xl font-semibold text-cyan-100 mb-4 text-center">التحكم في القوة</h3>
+                
+                <div class="flex flex-col items-center max-w-md mx-auto">
+                    <label for="forceSlider" class="text-sm font-medium text-gray-700 mb-2">اضغط على المكبس الصغير</label>
+                    <input type="range" id="forceSlider" min="0" max="100" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between w-full mt-2 text-xs text-gray-500">
+                        <span>0 نيوتن</span>
+                        <span>100 نيوتن</span>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="metric-card p-4 rounded-xl">
+                        <div class="text-sm text-gray-500 mb-1">الضغط (P)</div>
+                        <div class="text-xl font-bold text-blue-600" id="pressureValue">0 باسكال</div>
+                        <div class="text-xs mt-1 text-gray-400">P = F₁ / A₁ (Pa)</div>
+                    </div>
+                    <div class="metric-card p-4 rounded-xl">
+                        <div class="text-sm text-gray-500 mb-1">القوة الداخلة (F₁)</div>
+                        <div class="text-xl font-bold text-red-500" id="f1Value">0 نيوتن</div>
+                    </div>
+                    <div class="metric-card p-4 rounded-xl">
+                        <div class="text-sm text-gray-500 mb-1">القوة الناتجة (F₂)</div>
+                        <div class="text-xl font-bold text-green-500" id="f2Value">0 نيوتن</div>
+                        <div class="text-xs mt-1 text-gray-400">F₂ = P × A₂ (N)</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Constants
+            const A1 = 0.010; // m² — قطر تقريبي 11.3 cm
+            const A2 = 0.040; // m² — قطر تقريبي 22.6 cm (نسبة المساحات 4:1)
+            const maxDisplacementSmall = 120; // يمثل إزاحة 0.12 m للمكبس الصغير
+            const cylinderHeight = 250;
+            const maxDisplacementSmallMeters = 0.12;
+            
+            // DOM Elements
+            const slider = document.getElementById('forceSlider');
+            const pistonSmall = document.getElementById('pistonSmall');
+            const pistonLarge = document.getElementById('pistonLarge');
+            const rodSmall = document.getElementById('rodSmall');
+            const rodLarge = document.getElementById('rodLarge');
+            
+            const forceInLabel = document.getElementById('forceInLabel');
+            const forceOutLabel = document.getElementById('forceOutLabel');
+            
+            const pressureValue = document.getElementById('pressureValue');
+            const f1Value = document.getElementById('f1Value');
+            const f2Value = document.getElementById('f2Value');
+
+            // Initial positions
+            const initialPistonSmallTop = 50;
+            const initialPistonLargeTop = 150;
+
+            // Function to update the simulation based on slider value
+            function updateSimulation() {
+                const forceIn = parseInt(slider.value);
+                
+                // Calculate Pressure (P = F1 / A1)
+                const pressure = forceIn / A1;
+                
+                // Calculate Force Out (F2 = P * A2)
+                const forceOut = pressure * A2;
+
+                // Update text displays
+                forceInLabel.textContent = `قوة: ${forceIn} نيوتن`;
+                forceOutLabel.textContent = `قوة الرفع: ${forceOut.toFixed(2)} نيوتن`;
+                
+                pressureValue.textContent = `${pressure.toFixed(0)} باسكال`;
+                f1Value.textContent = `${forceIn} نيوتن`;
+                f2Value.textContent = `${forceOut.toFixed(2)} نيوتن`;
+
+                // Calculate visual displacement
+                // Let's assume slider value (0-100) maps directly to percentage of max displacement
+                const displacementPercentage = forceIn / 100;
+                const displacementSmallMeters = displacementPercentage * maxDisplacementSmallMeters;
+                document.querySelector('.area-badge').textContent = `مساحة المكبس الصغير: A₁ = ${A1.toFixed(3)} م² · القوة ${forceIn} نيوتن`;
+                
+                // Small piston moves down
+                const moveSmall = displacementPercentage * maxDisplacementSmall;
+                const moveSmallMeters = displacementSmallMeters;
+                const moveLargeMeters = moveSmallMeters * (A1 / A2);
+                pistonSmall.style.top = `${initialPistonSmallTop + moveSmall}px`;
+                rodSmall.style.height = `${initialPistonSmallTop + moveSmall}px`;
+
+                // Large piston moves up
+                // Volume must be conserved: V1 = V2 => d1 * A1 = d2 * A2 => d2 = d1 * (A1/A2)
+                const moveLarge = moveSmall * (A1 / A2);
+                // انحفاظ الحجم: A1 × d1 = A2 × d2، لذا d2 = 0.12 × F/100 × (0.010/0.040) متر
+                pistonLarge.style.top = `${initialPistonLargeTop - moveLarge}px`;
+                rodLarge.style.height = `${initialPistonLargeTop - moveLarge}px`;
+            }
+
+            // Add event listener to slider
+            slider.addEventListener('input', updateSimulation);
+
+            // Initialize visual state
+            updateSimulation();
+        });
+    </script>
+</body>
+</html>
+--gws_boundary_a13369c8514fbe2c--

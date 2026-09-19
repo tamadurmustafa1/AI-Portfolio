@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أنقذ نبتتي 🌱</title>
+    <!-- استدعاء خطوط جوجل للغة العربية -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- استدعاء مكتبة Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        nature: {
+                            light: '#ECFDF5', // أخضر فاتح جداً للخلفية
+                            earth: '#78350F', // بني ترابي
+                            leaf: '#10B981',  // أخضر حيوي
+                            sick: '#9CA3AF',  // رمادي باهت للمرض
+                            dark: '#064E3B'   // أخضر داكن
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+            color: #064E3B;
+            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* حاويات زجاجية عصرية (Glassmorphism) */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px -10px rgba(6, 78, 59, 0.1);
+        }
+
+        /* انتقالات الشاشات */
+        .screen {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .screen.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* تأثيرات الأزرار */
+        .btn-option {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.2);
+        }
+        .btn-option:active {
+            transform: translateY(1px);
+        }
+
+        /* حركات النبتة التفاعلية عبر SVG */
+        .plant-stem {
+            transition: all 1s ease-in-out;
+            transform-origin: bottom center;
+        }
+        .plant-leaf {
+            transition: all 1s ease-in-out;
+            transform-origin: center;
+        }
+        
+        /* حالات النبتة */
+        .plant-state-0 .plant-leaf { fill: #9CA3AF; transform: rotate(45deg) scale(0.8); } /* ذابلة ومريضة */
+        .plant-state-0 .plant-stem { stroke: #9CA3AF; transform: skewX(-15deg); }
+        
+        .plant-state-1 .plant-leaf { fill: #A3E635; transform: rotate(20deg) scale(0.9); }
+        .plant-state-1 .plant-stem { stroke: #65A30D; transform: skewX(-5deg); }
+        
+        .plant-state-2 .plant-leaf { fill: #84CC16; transform: rotate(10deg) scale(1); }
+        .plant-state-2 .plant-stem { stroke: #4D7C0F; transform: skewX(0deg); }
+        
+        .plant-state-3 .plant-leaf { fill: #22C55E; transform: rotate(0deg) scale(1.1); }
+        .plant-state-3 .plant-stem { stroke: #15803D; transform: skewX(0deg); }
+        
+        .plant-state-4 .plant-leaf { fill: #10B981; transform: rotate(-5deg) scale(1.2); } /* صحية تماماً */
+        .plant-state-4 .plant-stem { stroke: #047857; transform: skewX(0deg); }
+
+        /* حركة الاهتزاز عند الإجابة الخاطئة */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px) rotate(-2deg); }
+            40%, 80% { transform: translateX(5px) rotate(2deg); }
+        }
+        .shake-animation {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* حركة الانتعاش عند الإجابة الصحيحة */
+        @keyframes bounce-up {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .bounce-animation {
+            animation: bounce-up 0.8s ease-in-out;
+        }
+        
+        /* مؤثرات النقاط */
+        .score-popup {
+            position: absolute;
+            color: #10B981;
+            font-weight: 900;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: floatUp 1s ease-out forwards;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 50;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+        }
+    </style>
+</head>
+<body class="flex flex-col relative min-h-screen">
+
+    <div id="screen-welcome" class="screen active flex-1 flex-col items-center justify-center p-4 md:p-8 w-full max-w-4xl mx-auto">
+        <div class="glass-panel rounded-3xl p-8 md:p-12 w-full text-center relative overflow-hidden">
+            <!-- عنصر زخرفي -->
+            <div class="absolute -top-20 -right-20 w-64 h-64 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
+            
+            <div class="mb-8 relative z-10 flex justify-center">
+                <!-- رسم مبسط لنبتة ذابلة في شاشة البداية -->
+                <svg width="150" height="150" viewBox="0 0 100 100" class="drop-shadow-lg plant-state-0">
+                    <!-- الوعاء -->
+                    <path d="M 25 70 L 75 70 L 65 95 L 35 95 Z" fill="#D97706" />
+                    <path d="M 20 60 L 80 60 L 78 70 L 22 70 Z" fill="#B45309" />
+                    <!-- الساق -->
+                    <path class="plant-stem" d="M 50 60 Q 40 40 50 15" fill="none" stroke-width="4" stroke-linecap="round" />
+                    <!-- الأوراق -->
+                    <path class="plant-leaf" d="M 50 40 Q 25 30 35 15 Q 45 25 50 40" />
+                    <path class="plant-leaf" d="M 50 30 Q 75 20 65 5 Q 55 15 50 30" style="transform-origin: 50px 30px;" />
+                </svg>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-black mb-4 text-nature-dark">
+                هل تستطيع إنقاذ نبتتي؟ 🌱
+            </h1>
+            <p class="text-xl md:text-2xl text-emerald-700 mb-10 font-semibold max-w-2xl mx-auto leading-relaxed">
+                نبتتك المنزلية المفضلة تبدو متعبة وتحتاج إلى مساعدتك... 
+                اكتشف المشكلة من خلال الأعراض، واتخذ القرار الصحيح لتعيد لها الحياة!
+            </p>
+            
+            <button onclick="startGame()" class="relative z-10 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 px-12 rounded-full text-2xl shadow-[0_10px_25px_rgba(16,185,129,0.4)] transform transition hover:scale-105 active:scale-95">
+                ابدأ الإنقاذ 🚀
+            </button>
+        </div>
+    </div>
+
+    <div id="screen-game" class="screen flex-1 flex-col p-4 md:p-8 w-full max-w-5xl mx-auto">
+        
+        <!-- الشريط العلوي للمعلومات -->
+        <div class="glass-panel rounded-2xl p-4 mb-6 flex justify-between items-center z-10">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-100 p-2 rounded-xl">
+                    <span class="text-2xl">⭐</span>
+                </div>
+                <div>
+                    <div class="text-sm font-bold text-emerald-700">النقاط</div>
+                    <div id="score-display" class="text-2xl font-black text-nature-dark">0</div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <div class="text-sm font-bold text-emerald-700 mb-1">مرحلة الإنقاذ</div>
+                <div class="flex gap-1" id="stage-indicators">
+                    <!-- سيتم إضافة النقاط برمجياً -->
+                </div>
+            </div>
+        </div>
+
+        <!-- منطقة العمل الرئيسية -->
+        <div class="flex flex-col lg:flex-row gap-6 flex-1 h-full items-stretch relative">
+            
+            <!-- لوحة النبتة (اليسار/الأعلى) -->
+            <div class="lg:w-1/3 glass-panel rounded-3xl p-6 flex flex-col items-center justify-center relative min-h-[300px]" id="plant-container-panel">
+                <!-- حاوية النبتة التفاعلية -->
+                <div id="interactive-plant" class="relative z-10 mb-4">
+                    <svg id="main-plant-svg" width="200" height="250" viewBox="0 0 100 120" class="drop-shadow-2xl plant-state-0">
+                        <!-- التربة -->
+                        <ellipse cx="50" cy="85" rx="25" ry="5" fill="#78350F" />
+                        <!-- الوعاء -->
+                        <path d="M 25 85 L 75 85 L 65 115 L 35 115 Z" fill="#F59E0B" />
+                        <path d="M 20 75 L 80 75 L 78 85 L 22 85 Z" fill="#D97706" />
+                        <rect x="20" y="75" width="60" height="3" fill="#B45309" opacity="0.3"/>
+                        
+                        <!-- الساق الرئيسي -->
+                        <path class="plant-stem" d="M 50 75 Q 40 40 50 10" fill="none" stroke-width="4.5" stroke-linecap="round" />
+                        
+                        <!-- الأوراق بتوزيع مختلف -->
+                        <!-- ورقة يسرى سفلية -->
+                        <path class="plant-leaf" d="M 48 55 Q 20 50 15 35 Q 30 30 48 55" style="transform-origin: 48px 55px;" />
+                        <!-- ورقة يمنى سفلية -->
+                        <path class="plant-leaf" d="M 52 45 Q 80 40 85 25 Q 70 20 52 45" style="transform-origin: 52px 45px;" />
+                        <!-- ورقة علوية -->
+                        <path class="plant-leaf" d="M 50 20 Q 30 5 50 0 Q 70 5 50 20" style="transform-origin: 50px 20px;" />
+                    </svg>
+                </div>
+                
+                <!-- رسالة حالة النبتة المؤقتة -->
+                <div id="plant-status-toast" class="absolute top-4 bg-white/90 px-4 py-2 rounded-full font-bold text-sm shadow-md opacity-0 transition-opacity duration-300">
+                    أشعر بالعطش 😥
+                </div>
+            </div>
+
+            <!-- لوحة التشخيص والخيارات (اليمين/الأسفل) -->
+            <div class="lg:w-2/3 glass-panel rounded-3xl p-6 md:p-8 flex flex-col">
+                <div class="mb-6 border-b border-emerald-200 pb-6">
+                    <h2 class="text-emerald-800 font-bold mb-2 flex items-center gap-2">
+                        <span class="text-2xl">📋</span> تقرير الحالة:
+                    </h2>
+                    <p id="scenario-text" class="text-xl md:text-2xl text-nature-dark font-semibold leading-relaxed">
+                        جاري فحص النبتة...
+                    </p>
+                </div>
+                
+                <h3 class="text-lg font-bold mb-4 text-emerald-700">ماذا ستفعل لإنقاذها؟</h3>
+                
+                <div id="options-container" class="flex flex-col gap-4 flex-1">
+                    <!-- سيتم إضافة الأزرار برمجياً هنا -->
+                </div>
+
+                <!-- لوحة التغذية الراجعة (تظهر بعد الاختيار) -->
+                <div id="feedback-panel" class="hidden mt-6 p-5 rounded-2xl border-2 transition-all">
+                    <h4 id="feedback-title" class="font-black text-xl mb-2 flex items-center gap-2"></h4>
+                    <p id="feedback-desc" class="text-lg font-medium opacity-90"></p>
+                    
+                    <button id="btn-next-stage" onclick="nextStage()" class="hidden mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl transition shadow-lg">
+                        متابعة العناية ➡️
+                    </button>
+                    
+                    <button id="btn-retry-stage" onclick="retryStage()" class="hidden mt-4 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl transition shadow-lg">
+                        حاول مرة أخرى 🔄
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-result" class="screen flex-1 flex-col items-center justify-center p-4">
+        <!-- إضافة تأثيرات الاحتفال عبر Canvas في الخلفية -->
+        <canvas id="confetti-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+        
+        <div class="glass-panel rounded-3xl p-8 md:p-12 max-w-2xl w-full text-center relative z-10 shadow-2xl">
+            <div class="text-6xl mb-4 animate-bounce">🌳</div>
+            <h2 class="text-4xl md:text-5xl font-black mb-2 text-nature-dark">🎉 أحسنت!</h2>
+            <p class="text-xl text-emerald-700 mb-8 font-semibold">لقد أنقذت نبتتك وعادت لها الحياة والجمال!</p>
+            
+            <div class="bg-white/50 p-6 rounded-2xl mb-8 border border-emerald-100">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-sm text-emerald-600 font-bold">مجموع النقاط</div>
+                        <div id="final-score" class="text-4xl font-black text-nature-dark">0</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-emerald-600 font-bold">القرارات الصحيحة</div>
+                        <div class="text-4xl font-black text-nature-dark"><span id="final-correct">0</span>/4</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="text-lg text-emerald-700 font-bold mb-2">مستواك في رعاية النباتات:</h3>
+                <div id="final-rank" class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">
+                    جاري التقييم...
+                </div>
+            </div>
+
+            <button onclick="startGame()" class="bg-nature-dark hover:bg-emerald-800 text-white font-bold py-4 px-10 rounded-xl transition w-full md:w-auto shadow-xl">
+                🔄 أنقذ نبتة أخرى
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // بيانات المراحل والمواقف
+        const stagesData = [
+            {
+                symptom: "الأوراق متدلية وتبدو ذابلة، وعند لمس التربة تجدها جافة تماماً وقاسية.",
+                plantMessage: "أشعر بالعطش الشديد! 😥",
+                options: [
+                    { 
+                        text: "💧 ريّها فوراً بكمية مناسبة من الماء", 
+                        correct: true, 
+                        feedback: "اختيار ممتاز! التربة الجافة وتدلي الأوراق علامتان واضحتان على حاجة النبتة الماسة للماء." 
+                    },
+                    { 
+                        text: "☀️ وضعها في الشمس المباشرة لتتحسن", 
+                        correct: false, 
+                        feedback: "احذر! تعريض نبتة عطشى للشمس سيزيد من جفافها ويسرع من ذبولها." 
+                    },
+                    { 
+                        text: "💊 إضافة سماد قوي للتربة", 
+                        correct: false, 
+                        feedback: "خطأ شائع! إضافة السماد لنبتة جافة سيؤدي إلى حرق جذورها الضعيفة." 
+                    }
+                ]
+            },
+            {
+                symptom: "أطراف الأوراق أصبحت بنية وجافة (مقرمشة)، والهواء في الغرفة دافئ وجاف جداً.",
+                plantMessage: "الجو جاف جداً هنا! 🍂",
+                options: [
+                    { 
+                        text: "✂️ قص الأوراق بالكامل من الجذور", 
+                        correct: false, 
+                        feedback: "لا تقم بذلك! الأوراق الخضراء ما زالت تقوم بعملية البناء الضوئي، قصها سيضعف النبتة." 
+                    },
+                    { 
+                        text: "🪴 نقل النبتة فوراً إلى وعاء أكبر", 
+                        correct: false, 
+                        feedback: "تغيير الوعاء يسبب صدمة للنبتة، ولا يحل مشكلة جفاف أطراف الأوراق." 
+                    },
+                    { 
+                        text: "💦 رش الأوراق برذاذ الماء العذب", 
+                        correct: true, 
+                        feedback: "عمل رائع! جفاف أطراف الأوراق دليل على نقص الرطوبة المحيطة، رذاذ الماء سيساعدها على التنفس." 
+                    }
+                ]
+            },
+            {
+                symptom: "بعض الأوراق السفلية أصبحت صفراء وتتساقط، والتربة مبللة جداً وتفوح منها رائحة مكتومة.",
+                plantMessage: "لا أستطيع التنفس! الجذور تغرق 🌊",
+                options: [
+                    { 
+                        text: "🛑 التوقف عن الري وترك التربة تجف", 
+                        correct: true, 
+                        feedback: "تصرف احترافي! الاصفرار مع التربة المبللة يعني (الري الزائد) واختناق الجذور. تحتاج التربة أن تجف لتتنفس." 
+                    },
+                    { 
+                        text: "💧 إضافة المزيد من الماء لغسل التربة", 
+                        correct: false, 
+                        feedback: "هذا سيزيد المشكلة سوءاً! الجذور تختنق من كثرة الماء وسوف تتعفن إذا أضفت المزيد." 
+                    },
+                    { 
+                        text: "☀️ وضعها في منطقة مظلمة لترتاح", 
+                        correct: false, 
+                        feedback: "الظلام سيمنع التربة من الجفاف وسيحفز نمو الفطريات على الجذور المبللة." 
+                    }
+                ]
+            },
+            {
+                symptom: "النبتة تنمو بشكل مائل، وساقها ضعيف، وأوراقها باهتة ومتباعدة، وكأنها تبحث عن شيء.",
+                plantMessage: "أين أنت أيها الضوء؟ 🔦",
+                options: [
+                    { 
+                        text: "❄️ ريّها بماء بارد جداً لتنتعش", 
+                        correct: false, 
+                        feedback: "الماء البارد جداً يسبب صدمة للجذور ولا يعالج سبب النمو الضعيف والمائل." 
+                    },
+                    { 
+                        text: "🪟 نقلها لمكان أقرب للنافذة المضاءة", 
+                        correct: true, 
+                        feedback: "أحسنت! هذا يسمى (الاستطالة)، النبتة تمد ساقها بحثاً عن الضوء. نقلها لمكان مضاء سيجعل نموها أقوى وأكثف." 
+                    },
+                    { 
+                        text: "✂️ تقليمها بشدة من الأعلى", 
+                        correct: false, 
+                        feedback: "التقليم وحده لن يفيد إذا لم تعالج السبب الأساسي وهو نقص الإضاءة." 
+                    }
+                ]
+            }
+        ];
+
+        // متغيرات حالة اللعبة
+        let currentStageIndex = 0;
+        let score = 0;
+        let correctAnswersCount = 0;
+        let currentMistakesInStage = 0;
+        
+        // عناصر واجهة المستخدم
+        const screens = document.querySelectorAll('.screen');
+        const scoreDisplay = document.getElementById('score-display');
+        const stageIndicators = document.getElementById('stage-indicators');
+        const scenarioText = document.getElementById('scenario-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackPanel = document.getElementById('feedback-panel');
+        const plantSvg = document.getElementById('main-plant-svg');
+        const plantStatusToast = document.getElementById('plant-status-toast');
+        const plantContainerPanel = document.getElementById('plant-container-panel');
+
+        
+        // دالة التبديل بين الشاشات
+        function switchScreen(screenId) {
+            screens.forEach(s => {
+                s.classList.remove('active');
+                setTimeout(() => { s.style.display = 'none'; }, 500);
+            });
+            const activeScreen = document.getElementById(screenId);
+            setTimeout(() => {
+                activeScreen.style.display = 'flex';
+                void activeScreen.offsetWidth; // Trigger reflow
+                activeScreen.classList.add('active');
+            }, 500);
+        }
+
+        // بدء اللعبة وإعادة التعيين
+        function startGame() {
+            currentStageIndex = 0;
+            score = 0;
+            correctAnswersCount = 0;
+            updateScore(0);
+            updatePlantState(0);
+            renderStageIndicators();
+            switchScreen('screen-game');
+            setTimeout(() => loadStage(currentStageIndex), 600);
+            
+            // إيقاف الاحتفال إن وجد
+            if(confettiInterval) clearInterval(confettiInterval);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // بناء مؤشرات المراحل في الأعلى
+        function renderStageIndicators() {
+            stageIndicators.innerHTML = '';
+            for(let i = 0; i < stagesData.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = `w-3 h-3 rounded-full transition-all duration-300 ${i === currentStageIndex ? 'bg-emerald-600 scale-125' : (i < currentStageIndex ? 'bg-emerald-400' : 'bg-gray-300')}`;
+                stageIndicators.appendChild(dot);
+            }
+        }
+
+        // إظهار نص عائم فوق النبتة
+        function showPlantMessage(message) {
+            plantStatusToast.textContent = message;
+            plantStatusToast.classList.remove('opacity-0');
+            plantStatusToast.classList.add('opacity-100', '-translate-y-2');
+            
+            setTimeout(() => {
+                plantStatusToast.classList.add('opacity-0');
+                plantStatusToast.classList.remove('opacity-100', '-translate-y-2');
+            }, 4000);
+        }
+
+        // تحديث المظهر المرئي للنبتة
+        function updatePlantState(level) {
+            // إزالة جميع حالات النبتة
+            for(let i=0; i<=4; i++) {
+                plantSvg.classList.remove(`plant-state-${i}`);
+            }
+            // إضافة الحالة الجديدة
+            // level = 0 (مريضة) إلى 4 (صحية جداً)
+            plantSvg.classList.add(`plant-state-${level}`);
+        }
+
+        // تحديث وعرض النقاط مع حركة
+        function updateScore(points, eventX = null, eventY = null) {
+            score += points;
+            scoreDisplay.textContent = score;
+            
+            // إنشاء حركة رقم منبثق إذا تم تمرير إحداثيات
+            if(points > 0 && eventX && eventY) {
+                const popup = document.createElement('div');
+                popup.className = 'score-popup';
+                popup.textContent = `+${points}`;
+                popup.style.left = `${eventX}px`;
+                popup.style.top = `${eventY}px`;
+                document.body.appendChild(popup);
+                
+                setTimeout(() => {
+                    document.body.removeChild(popup);
+                }, 1000);
+            }
+        }
+
+        function loadStage(index) {
+            const stage = stagesData[index];
+            currentMistakesInStage = 0;
+            renderStageIndicators();
+            
+            // تحديث حالة النبتة بناءً على المرحلة (كلما تقدمنا، تحسنت قليلاً كقاعدة أساسية)
+            // لكن في بداية المرحلة نعرضها بحالتها الحالية
+            updatePlantState(index);
+            
+            setTimeout(() => {
+                showPlantMessage(stage.plantMessage);
+            }, 1000);
+            
+            scenarioText.textContent = stage.symptom;
+            
+            optionsContainer.innerHTML = '';
+            feedbackPanel.classList.add('hidden');
+
+            // ترتيب عشوائي للخيارات لتجنب الحفظ
+            const shuffledOptions = [...stage.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-option bg-white hover:bg-emerald-50 border-2 border-emerald-100 p-4 rounded-2xl text-right text-nature-dark font-bold text-lg transition-colors w-full flex items-center justify-between group';
+                btn.innerHTML = `
+                    <span>${opt.text}</span>
+                    <span class="text-emerald-300 group-hover:text-emerald-500 transition-colors text-2xl">❮</span>
+                `;
+                btn.onclick = (e) => handleChoice(opt, btn, e);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        // معالجة اختيار المستخدم
+        function handleChoice(option, btnElement, event) {
+            // تعطيل الأزرار مؤقتاً
+            const allBtns = optionsContainer.querySelectorAll('button');
+            allBtns.forEach(b => {
+                b.disabled = true;
+                b.classList.add('opacity-50', 'cursor-not-allowed');
+            });
+
+            feedbackPanel.classList.remove('hidden', 'border-emerald-400', 'bg-emerald-50', 'text-emerald-900', 'border-amber-400', 'bg-amber-50', 'text-amber-900');
+            const titleEl = document.getElementById('feedback-title');
+            const descEl = document.getElementById('feedback-desc');
+            const btnNext = document.getElementById('btn-next-stage');
+            const btnRetry = document.getElementById('btn-retry-stage');
+
+            btnNext.classList.add('hidden');
+            btnRetry.classList.add('hidden');
+
+            if (option.correct) {
+                // إجابة صحيحة
+                if (currentMistakesInStage === 0) correctAnswersCount++;
+                
+                // احتساب النقاط (10 للقرار، 20 لإكمال المرحلة)
+                updateScore(30, event.clientX, event.clientY);
+                
+                // تحديث مرئي للزر
+                btnElement.classList.remove('bg-white', 'border-emerald-100', 'opacity-50');
+                btnElement.classList.add('bg-emerald-100', 'border-emerald-500', 'opacity-100');
+                
+                // حركة النبتة
+                plantContainerPanel.classList.remove('bounce-animation');
+                void plantContainerPanel.offsetWidth;
+                plantContainerPanel.classList.add('bounce-animation');
+                
+                // تحسين حالة النبتة لتبدو أسعد (الحالة التالية)
+                updatePlantState(currentStageIndex + 1);
+                showPlantMessage("شكراً لك! أشعر بالتحسن 🌱");
+
+                // عرض التغذية الراجعة الإيجابية
+                feedbackPanel.classList.add('border-emerald-400', 'bg-emerald-50', 'text-emerald-900');
+                titleEl.innerHTML = `✨ قرار سليم! <span class="text-sm font-normal bg-emerald-200 text-emerald-800 px-2 py-1 rounded ml-2">+30 نقطة</span>`;
+                descEl.textContent = option.feedback;
+                
+                btnNext.classList.remove('hidden');
+
+            } else {
+                // إجابة خاطئة
+                currentMistakesInStage++;
+                
+                // تحديث مرئي للزر
+                btnElement.classList.remove('bg-white', 'border-emerald-100', 'opacity-50');
+                btnElement.classList.add('bg-red-50', 'border-red-300', 'opacity-100');
+                
+                // حركة اهتزاز للمنطقة والنبتة
+                plantContainerPanel.classList.remove('shake-animation');
+                void plantContainerPanel.offsetWidth;
+                plantContainerPanel.classList.add('shake-animation');
+                
+                // جعل النبتة تبدو أسوأ قليلاً (نعود لحالة أقل)
+                updatePlantState(Math.max(0, currentStageIndex - 1));
+                showPlantMessage("أوه لا! هذا يؤلمني 🥀");
+
+                // عرض التغذية الراجعة السلبية (التعليمية)
+                feedbackPanel.classList.add('border-amber-400', 'bg-amber-50', 'text-amber-900');
+                titleEl.innerHTML = `⚠️ انتبه!`;
+                descEl.textContent = option.feedback;
+                
+                btnRetry.classList.remove('hidden');
+            }
+        }
+
+        // إعادة المحاولة في نفس المرحلة
+        function retryStage() {
+            // إعادة تفعيل الأزرار
+            const allBtns = optionsContainer.querySelectorAll('button');
+            allBtns.forEach(b => {
+                b.disabled = false;
+                b.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-red-50', 'border-red-300');
+                b.classList.add('bg-white', 'border-emerald-100');
+            });
+            
+            feedbackPanel.classList.add('hidden');
+            // إعادة النبتة لحالة المرحلة الحالية
+            updatePlantState(currentStageIndex);
+        }
+
+        // الانتقال للمرحلة التالية
+        function nextStage() {
+            currentStageIndex++;
+            if(currentStageIndex < stagesData.length) {
+                optionsContainer.innerHTML = '<div class="text-center text-emerald-600 font-bold py-10">تمر الأيام... جاري تقييم حالة النبتة ⏳</div>';
+                feedbackPanel.classList.add('hidden');
+                setTimeout(() => loadStage(currentStageIndex), 1200);
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function showFinalResults() {
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('final-correct').textContent = correctAnswersCount;
+            
+            const rankEl = document.getElementById('final-rank');
+            
+            if (correctAnswersCount === 4) {
+                rankEl.textContent = '🌳 خبير إنقاذ النباتات';
+            } else if (correctAnswersCount >= 2) {
+                rankEl.textContent = '🌿 صديق النباتات';
+            } else {
+                rankEl.textContent = '🌱 مبتدئ في رعاية النباتات';
+            }
+
+            switchScreen('screen-result');
+            startConfetti();
+        }
+
+        // نظام قصاصات الورق (Confetti) للاحتفال في النهاية باستخدام Canvas
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiArray = [];
+        let confettiInterval;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 10 + 5;
+                this.color = ['#10B981', '#34D399', '#F59E0B', '#3B82F6', '#A3E635'][Math.floor(Math.random() * 5)];
+                this.speed = Math.random() * 3 + 2;
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() * 0.2 - 0.1;
+            }
+            update() {
+                this.y += this.speed;
+                this.angle += this.spin;
+                if (this.y > canvas.height) {
+                    this.y = -10;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        function startConfetti() {
+            confettiArray = [];
+            for (let i = 0; i < 100; i++) {
+                confettiArray.push(new Confetti());
+            }
+            if(confettiInterval) clearInterval(confettiInterval);
+            confettiInterval = setInterval(() => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                confettiArray.forEach(c => {
+                    c.update();
+                    c.draw();
+                });
+            }, 1000/60);
+        }
+    </script>
+</body>
+</html>

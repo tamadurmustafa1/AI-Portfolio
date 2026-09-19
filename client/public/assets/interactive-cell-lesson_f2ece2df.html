@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رحلة إلى بوابة الخلية الذكية 🚪🔬</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+        .glow-energy {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.6);
+        }
+        .animate-bounce-slow {
+            animation: bounce 3s infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        .pulse-card {
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-slate-900 text-slate-100">
+
+    <!-- Navbar / Header -->
+    <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-600 text-white p-2 rounded-xl text-xl font-bold glow-effect">
+                    <i class="fa-solid fa-microscope"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg md:text-xl text-blue-400">مختبر العلوم التفاعلي</h1>
+                    <p class="text-xs text-slate-400">الصف السادس الابتدائي - غشاء الخلية وبوابة النقل</p>
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <nav class="flex gap-2 mt-3 sm:mt-0 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0">
+                <button onclick="switchTab('intro')" id="tab-intro" class="tab-btn active bg-blue-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-blue-500 transition">
+                    <i class="fa-solid fa-door-open ml-1"></i> البوابة الذكية
+                </button>
+                <button onclick="switchTab('passive')" id="tab-passive" class="tab-btn bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-slate-600 transition">
+                    <i class="fa-solid fa-wind ml-1"></i> النقل السلبي 🍃
+                </button>
+                <button onclick="switchTab('active')" id="tab-active" class="tab-btn bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-slate-600 transition">
+                    <i class="fa-solid fa-bolt ml-1"></i> النقل النشط ⚡
+                </button>
+                <button onclick="switchTab('lab')" id="tab-lab" class="tab-btn bg-purple-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-purple-500 transition glow-effect">
+                    <i class="fa-solid fa-flask ml-1"></i> المختبر التفاعلي 🔬
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn bg-amber-600 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-amber-500 transition">
+                    <i class="fa-solid fa-trophy ml-1"></i> التحدي 🏆
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+
+        <!-- SECTION 1: INTRO (البوابة الذكية) -->
+        <section id="section-intro" class="tab-content block space-y-6">
+            <div class="bg-gradient-to-r from-blue-900/40 via-slate-800 to-indigo-900/40 p-6 rounded-2xl border border-blue-500/30">
+                <div class="md:flex items-center justify-between gap-6">
+                    <div class="space-y-4 md:w-2/3">
+                        <span class="bg-blue-500/20 text-blue-300 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wide border border-blue-500/30">
+                            مفهوم أساسي
+                        </span>
+                        <h2 class="text-3xl font-black text-white">غشاء الخلية = حارس البوابة الذكي 🚪🧠</h2>
+                        <p class="text-slate-300 leading-relaxed text-base">
+                            هل تساءلت يوماً كيف تنظم الخلية ما يدخل إليها وما يخرج منها؟
+                            غشاء الخلية يعمل تماماً كـ **حارس الأمن الذكي**! فهو يمتلك خاصية تُسمى <strong class="text-emerald-400">"النفاذية الاختيارية"</strong>، حيث يسمح لبعض المواد بالمرور بسهولة، بينما يمنع مواد أخرى، أو يتطلب فتح أبواب خاصة لنقلها.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex items-center gap-3">
+                                <div class="text-2xl text-emerald-400"><i class="fa-solid fa-leaf"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">نقل سحري بدون طاقة</h4>
+                                    <p class="text-xs text-slate-400">تنساب المواد من الزحام إلى الفراغ بسهولة.</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex items-center gap-3">
+                                <div class="text-2xl text-amber-400"><i class="fa-solid fa-bolt"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-white">نقل يحتاج طاقة $ATP$</h4>
+                                    <p class="text-xs text-slate-400">تُدفع المواد بعكس اتجاه الزحام بقوة.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 md:mt-0 md:w-1/3 flex justify-center">
+                        <div class="relative w-64 h-64 bg-slate-800 border-4 border-blue-500/50 rounded-full flex items-center justify-center p-4 pulse-card shadow-2xl">
+                            <div class="text-center space-y-2">
+                                <div class="text-5xl">🛡️</div>
+                                <div class="font-black text-blue-300 text-lg">غشاء الخلية</div>
+                                <div class="text-xs text-slate-400">يحافظ على توازن الخلية وسلامتها</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Breakdown Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700 hover:border-emerald-500/50 transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="bg-emerald-500/20 text-emerald-400 p-3 rounded-xl text-xl"><i class="fa-solid fa-feather-pointed"></i></span>
+                        <div>
+                            <h3 class="font-bold text-lg text-emerald-400">1. النقل السلبي 🍃</h3>
+                            <p class="text-xs text-slate-400">تلقائي • بدون بذل أي طاقة</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                        مثل التزلج مع المنحدر! تتحرك الجزيئات تلقائيًا من **المنطقة المزدحمة** (تركيز عالٍ) إلى **المنطقة الأقل ازدحاماً** (تركيز منخفض).
+                    </p>
+                    <div class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-1 text-slate-400 border border-slate-700/50">
+                        <div>🌱 **الانتشار:** حركة المواد العامة كالأكسجين $O_2$.</div>
+                        <div>💧 **الأسموزية:** حركة جزيئات الماء $H_2O$ فقط.</div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-800/60 p-5 rounded-2xl border border-slate-700 hover:border-amber-500/50 transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="bg-amber-500/20 text-amber-400 p-3 rounded-xl text-xl"><i class="fa-solid fa-person-biking"></i></span>
+                        <div>
+                            <h3 class="font-bold text-lg text-amber-400">2. النقل النشط ⚡</h3>
+                            <p class="text-xs text-slate-400">يتطلب جهداً • يحتاج طاقة $ATP$</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                        مثل ركوب الدراجة صعوداً للقمة أو تجذيف قارب عكس التيار 🚣‍♂️! تجبر الخلية المواد على الدخول رغم أن الداخل مزدحم جداً.
+                    </p>
+                    <div class="bg-slate-900/60 p-3 rounded-xl text-xs space-y-1 text-slate-400 border border-slate-700/50">
+                        <div>⚡ **المصدر:** تستخدم الخلية بطاريات الطاقة ($ATP$).</div>
+                        <div>🚪 **الوسيلة:** مضخات وبوابات بروتينية خاصة.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PASSIVE TRANSPORT -->
+        <section id="section-passive" class="tab-content hidden space-y-6">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-emerald-500/30">
+                <h2 class="text-2xl font-bold text-emerald-400 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-wind"></i> النقل السلبي: رحلة الانسياب دون طاقة
+                </h2>
+                <p class="text-slate-300 text-sm">
+                    تخيل غرفة مليئة ببالونات الرائحة الزكية، عند فتح البالون تنتشر الرائحة في كل الغرفة بدون أي محرك! هذا هو النقل السلبي.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <!-- Diffusion Card -->
+                    <div class="bg-slate-900/80 p-5 rounded-xl border border-emerald-500/20 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-white">💨 1. الانتشار (Diffusion)</h3>
+                                <span class="bg-emerald-900/60 text-emerald-300 text-xs px-2.5 py-1 rounded-full">كل المواد العامة</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                                انتقال المواد من **التركيز العالي** (المكان المزدحم) إلى **التركيز المنخفض** حتى تتوزع بالتساوي.
+                            </p>
+                            <div class="bg-slate-800 p-3 rounded-lg text-xs space-y-2 text-slate-300 mb-4">
+                                <div class="font-semibold text-emerald-400">مثال حيوي:</div>
+                                <p>دخول الأكسجين $O_2$ من الدم إلى داخل الخلية عندما تقل كميته داخل الخلية.</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('lab'); setLabMode('diffusion');" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2 rounded-lg text-xs font-bold transition">
+                            جرب محاكاة الانتشار بالمختبر 🔬
+                        </button>
+                    </div>
+
+                    <!-- Osmosis Card -->
+                    <div class="bg-slate-900/80 p-5 rounded-xl border border-blue-500/20 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-lg text-white">💧 2. الأسموزية (Osmosis)</h3>
+                                <span class="bg-blue-900/60 text-blue-300 text-xs px-2.5 py-1 rounded-full">خاص بـ الماء فقط!</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-4">
+                                حركة **الماء فقط** عبر غشاء الخلية نحو المنطقة التي تحتوي على كمية أكبر من المذاب (مثل السكر أو الملح) لتقليل تركيزه!
+                            </p>
+                            <div class="bg-slate-800 p-3 rounded-lg text-xs space-y-2 text-slate-300 mb-4">
+                                <div class="font-semibold text-blue-400">مثال حيوي:</div>
+                                <p>امتصاص جذور النباتات للماء من التربة، أو انتفاخ الخلية عند وضعها في ماء عذب.</p>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('lab'); setLabMode('osmosis');" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg text-xs font-bold transition">
+                            جرب محاكاة الأسموزية بالمختبر 🔬
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ACTIVE TRANSPORT -->
+        <section id="section-active" class="tab-content hidden space-y-6">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-amber-500/30">
+                <h2 class="text-2xl font-bold text-amber-400 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> النقل النشط: التحدي واستهلاك الطاقة $ATP$
+                </h2>
+                <p class="text-slate-300 text-sm mb-6">
+                    في بعض الأحيان، تحتاج الخلية إلى جلب جزيئات إضافية من السكر أو الأملاح رغم أن داخلها مزدحم جداً بها! هنا تأتي بطاريات الطاقة $ATP$.
+                </p>
+
+                <div class="bg-slate-900/90 p-6 rounded-2xl border border-slate-700 grid md:grid-cols-2 gap-6 items-center">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center gap-2 bg-amber-500/20 text-amber-300 text-xs px-3 py-1 rounded-full border border-amber-500/30 font-bold">
+                            <i class="fa-solid fa-battery-charging"></i> طاقة $ATP$ هي المفتاح
+                        </div>
+                        <h3 class="text-xl font-bold text-white">كيف يعمل النقل النشط؟</h3>
+                        <ul class="space-y-3 text-xs text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400 text-base">1️⃣</span>
+                                <span>ترتبط الجزيئات في الخارج بمضخة بروتينية موجودة في غشاء الخلية.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400 text-base">2️⃣</span>
+                                <span>تستهلك الخلية جزيء طاقة ⚡ ($ATP$) لفتح المضخة بالقوة.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-amber-400 text-base">3️⃣</span>
+                                <span>تُدفع المادة إلى داخل الخلية ضد اتجاه التركيز الطبيعي!</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Analogy Box -->
+                    <div class="bg-gradient-to-br from-amber-950/40 to-slate-800 p-5 rounded-xl border border-amber-500/30 text-center space-y-3">
+                        <div class="text-6xl animate-bounce-slow">🚣‍♂️</div>
+                        <h4 class="font-bold text-amber-300 text-sm">التشبيه الذكي:</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            النقل النشط تماماً كالتجذيف بقارب **عكس اتجاه تيار الماء**! إذا توقفت عن بذل الجهد والطاقة، سيسحبك التيار للخلف.
+                        </p>
+                        <button onclick="switchTab('lab'); setLabMode('active');" class="mt-2 bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-2 rounded-lg text-xs font-bold transition glow-energy">
+                            تجربة النقل النشط في المختبر ⚡
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: INTERACTIVE LAB (المختبر التفاعلي) -->
+        <section id="section-lab" class="tab-content hidden space-y-4">
+            <div class="bg-slate-800 p-4 md:p-6 rounded-2xl border border-purple-500/40 shadow-2xl">
+                <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-purple-300 flex items-center gap-2">
+                            <i class="fa-solid fa-flask"></i> المختبر التفاعلي للنقل الخلوي
+                        </h2>
+                        <p class="text-xs text-slate-400">اختر نوع النقل وراقب حركة الجزيئات عبر غشاء الخلية!</p>
+                    </div>
+
+                    <!-- Mode Selectors -->
+                    <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-700 text-xs">
+                        <button id="btn-mode-diffusion" onclick="setLabMode('diffusion')" class="px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white transition">💨 انتشار</button>
+                        <button id="btn-mode-osmosis" onclick="setLabMode('osmosis')" class="px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white transition">💧 أسموزية</button>
+                        <button id="btn-mode-active" onclick="setLabMode('active')" class="px-3 py-1.5 rounded-lg font-bold text-slate-300 hover:text-white transition">⚡ نقل نشط</button>
+                    </div>
+                </div>
+
+                <!-- Simulation Canvas Area -->
+                <div class="relative bg-slate-950 rounded-xl overflow-hidden border border-slate-700">
+                    <!-- Labels Overlay -->
+                    <div class="absolute top-2 right-4 bg-slate-900/80 px-3 py-1 rounded-full text-xs font-bold text-blue-300 border border-blue-500/30 z-10">
+                        خارج الخلية (Outside)
+                    </div>
+                    <div class="absolute top-2 left-4 bg-slate-900/80 px-3 py-1 rounded-full text-xs font-bold text-emerald-300 border border-emerald-500/30 z-10">
+                        داخل الخلية (Inside)
+                    </div>
+
+                    <canvas id="simCanvas" class="w-full h-80 block"></canvas>
+
+                    <!-- Control Bar inside Lab -->
+                    <div class="p-3 bg-slate-900/90 border-t border-slate-800 flex flex-wrap justify-between items-center gap-3">
+                        <div id="sim-status" class="text-xs font-semibold text-slate-300 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                            <span id="status-text">جاري تشغيل محاكاة الانتشار...</span>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button id="action-btn" onclick="triggerLabAction()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow">
+                                <i class="fa-solid fa-bolt"></i> <span id="action-btn-text">ضخ طاقة ATP ⚡</span>
+                            </button>
+                            <button onclick="resetLab()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                <i class="fa-solid fa-rotate-right"></i> إعادة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Legend & Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-2 text-xs">
+                    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700 flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-red-500 inline-block"></span>
+                        <span class="text-slate-300">جزيئات المادة / السكر</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700 flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-cyan-400 inline-block"></span>
+                        <span class="text-slate-300">جزيئات الماء ($H_2O$)</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700 flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-amber-400 inline-block"></span>
+                        <span class="text-slate-300">طاقة $ATP$</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700 flex items-center gap-2">
+                        <span class="w-3 h-6 bg-amber-600 rounded inline-block"></span>
+                        <span class="text-slate-300">بوابة الغشاء الخلوي</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: QUIZ (التحدي والتقييم) -->
+        <section id="section-quiz" class="tab-content hidden space-y-6">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-amber-500/30 max-w-3xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-amber-400 flex items-center gap-2">
+                            <i class="fa-solid fa-trophy"></i> تحدي بطل الخلية 🏆
+                        </h2>
+                        <p class="text-xs text-slate-400">اختبر معلوماتك وأثبت أنك خبير في نقل المواد الخلوية!</p>
+                    </div>
+                    <div id="score-badge" class="bg-slate-900 border border-amber-500/50 px-4 py-2 rounded-xl text-center">
+                        <div class="text-xs text-slate-400">النقاط</div>
+                        <div class="text-xl font-black text-amber-400" id="current-score">0 / 4</div>
+                    </div>
+                </div>
+
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Dynamic Question Box -->
+                    <div id="question-card" class="bg-slate-900/80 p-5 rounded-xl border border-slate-700 space-y-4">
+                        <div class="flex items-center gap-2 text-xs text-blue-400 font-bold">
+                            <span id="question-number">السؤال 1 من 4</span>
+                        </div>
+                        <h3 id="question-text" class="text-base font-bold text-white leading-relaxed">
+                            loading...
+                        </h3>
+                        <div id="options-container" class="grid grid-cols-1 gap-2 pt-2">
+                            <!-- Options rendered via JS -->
+                        </div>
+                    </div>
+
+                    <div id="feedback-box" class="hidden p-4 rounded-xl text-xs font-bold leading-relaxed"></div>
+
+                    <div class="flex justify-between items-center">
+                        <button id="next-btn" onclick="nextQuestion()" class="hidden bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-xs font-bold transition">
+                            السؤال التالي <i class="fa-solid fa-arrow-left mr-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quiz Finish Screen -->
+                <div id="quiz-finish" class="hidden text-center space-y-4 py-8">
+                    <div class="text-6xl animate-bounce">🎉</div>
+                    <h3 class="text-2xl font-black text-amber-400">أحسنت يا بطل العلوم!</h3>
+                    <p id="final-eval" class="text-slate-300 text-sm">لقد أتممت التحدي بنجاح رائع.</p>
+                    <button onclick="restartQuiz()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-6 py-2.5 rounded-xl font-bold text-sm transition glow-energy">
+                        إعادة التحدي 🔄
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        مادة العلوم - مرحلة التعليم الأساسي الصف السادس • مصمم للتعليم التفاعلي 🔬🌱
+    </footer>
+
+    <!-- JavaScript Logic & Interactive Canvas Simulation -->
+    <script>
+        // --- Tab Switching Logic ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'glow-effect');
+                btn.classList.add('bg-slate-700', 'text-slate-300');
+            });
+
+            document.getElementById(`section-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-slate-700', 'text-slate-300');
+                activeBtn.classList.add('bg-blue-600', 'text-white');
+            }
+
+            if (tabId === 'lab') {
+                initLabCanvas();
+            }
+        }
+
+        // --- Interactive Canvas Simulation Logic ---
+        let canvas, ctx;
+        let labMode = 'diffusion'; // 'diffusion', 'osmosis', 'active'
+        let particles = [];
+        let animId = null;
+        let gateOpen = false;
+
+        function setLabMode(mode) {
+            labMode = mode;
+            // Update UI buttons
+            ['diffusion', 'osmosis', 'active'].forEach(m => {
+                const btn = document.getElementById(`btn-mode-${m}`);
+                if (m === mode) {
+                    btn.className = "px-3 py-1.5 rounded-lg font-bold bg-purple-600 text-white shadow";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white";
+                }
+            });
+
+            const actionBtn = document.getElementById('action-btn');
+            const statusText = document.getElementById('status-text');
+
+            if (mode === 'diffusion') {
+                actionBtn.classList.add('hidden');
+                statusText.innerText = "الانتشار: تتحرك المواد تلقائيًا من الخارج (المزدحم) إلى الداخل بدون طاقة.";
+            } else if (mode === 'osmosis') {
+                actionBtn.classList.add('hidden');
+                statusText.innerText = "الأسموزية: يتحرك الماء نحو الجانب الأكثر اكتظاظاً بالسكر ليتعادل التركيز.";
+            } else if (mode === 'active') {
+                actionBtn.classList.remove('hidden');
+                document.getElementById('action-btn-text').innerText = "ضخ طاقة ATP ⚡";
+                statusText.innerText = "النقل النشط: انقر زر الطاقة ($ATP$) لضخ الجزيئات بعكس الاتجاه!";
+            }
+
+            resetLab();
+        }
+
+        function initLabCanvas() {
+            canvas = document.getElementById('simCanvas');
+            ctx = canvas.getContext('2d');
+            
+            // Adjust canvas resolution dynamically
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+
+            resetLab();
+        }
+
+        function resetLab() {
+            if (!canvas) return;
+            particles = [];
+            gateOpen = false;
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const midX = w / 2;
+
+            if (labMode === 'diffusion') {
+                // Lots of red particles outside (right), few inside (left)
+                for (let i = 0; i < 28; i++) {
+                    particles.push({
+                        x: midX + Math.random() * (midX - 40) + 20,
+                        y: Math.random() * (h - 40) + 20,
+                        vx: (Math.random() - 0.5) * 1.5,
+                        vy: (Math.random() - 0.5) * 1.5,
+                        type: 'solute',
+                        radius: 6
+                    });
+                }
+                for (let i = 0; i < 4; i++) {
+                    particles.push({
+                        x: Math.random() * (midX - 40) + 20,
+                        y: Math.random() * (h - 40) + 20,
+                        vx: (Math.random() - 0.5) * 1.5,
+                        vy: (Math.random() - 0.5) * 1.5,
+                        type: 'solute',
+                        radius: 6
+                    });
+                }
+            } else if (labMode === 'osmosis') {
+                // Water particles moving across
+                for (let i = 0; i < 25; i++) {
+                    particles.push({
+                        x: Math.random() * (w - 40) + 20,
+                        y: Math.random() * (h - 40) + 20,
+                        vx: (Math.random() - 0.5) * 1.8,
+                        vy: (Math.random() - 0.5) * 1.8,
+                        type: 'water',
+                        radius: 4
+                    });
+                }
+                // Solutes trapped inside (left)
+                for (let i = 0; i < 12; i++) {
+                    particles.push({
+                        x: Math.random() * (midX - 60) + 20,
+                        y: Math.random() * (h - 40) + 20,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        type: 'solute',
+                        radius: 10
+                    });
+                }
+            } else if (labMode === 'active') {
+                // High inside (left), Low outside (right)
+                for (let i = 0; i < 22; i++) {
+                    particles.push({
+                        x: Math.random() * (midX - 60) + 20,
+                        y: Math.random() * (h - 40) + 20,
+                        vx: (Math.random() - 0.5) * 1,
+                        vy: (Math.random() - 0.5) * 1,
+                        type: 'solute',
+                        radius: 6
+                    });
+                }
+                for (let i = 0; i < 5; i++) {
+                    particles.push({
+                        x: midX + Math.random() * (midX - 60) + 20,
+                        y: Math.random() * (h - 40) + 20,
+                        vx: (Math.random() - 0.5) * 1,
+                        vy: (Math.random() - 0.5) * 1,
+                        type: 'solute',
+                        radius: 6
+                    });
+                }
+            }
+
+            if (animId) cancelAnimationFrame(animId);
+            runSimulation();
+        }
+
+        function triggerLabAction() {
+            if (labMode === 'active') {
+                // Find a particle outside and pump it inside
+                const outsideParticle = particles.find(p => p.x > canvas.width / 2 && p.type === 'solute');
+                if (outsideParticle) {
+                    outsideParticle.x = canvas.width / 2 - 40;
+                    // Flash effect / visual feedback
+                    createAtpFlash();
+                }
+            }
+        }
+
+        function createAtpFlash() {
+            const statusText = document.getElementById('status-text');
+            statusText.innerHTML = "<span class='text-amber-400 font-bold'>⚡ تم استهلاك طاقة ATP وضخ الجزيء بنجاح!</span>";
+            setTimeout(() => {
+                statusText.innerText = "النقل النشط: انقر زر الطاقة (ATP) لضخ الجزيئات بعكس الاتجاه!";
+            }, 2500);
+        }
+
+        function runSimulation() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const midX = w / 2;
+
+            // Draw Cell Membrane (Lipid Bilayer)
+            ctx.fillStyle = '#334155';
+            ctx.fillRect(midX - 12, 0, 24, h);
+
+            // Draw Protein Gate in Membrane
+            ctx.fillStyle = '#d97706';
+            ctx.fillRect(midX - 16, h / 2 - 40, 32, 80);
+
+            // Gate opening label
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '10px Cairo';
+            ctx.textAlign = 'center';
+            ctx.fillText('قناة الغشاء', midX, h / 2 - 48);
+
+            // Update & Draw Particles
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                // Bounce off top/bottom canvas walls
+                if (p.y - p.radius < 0 || p.y + p.radius > h) p.vy *= -1;
+                // Bounce off left/right canvas walls
+                if (p.x - p.radius < 0 || p.x + p.radius > w) p.vx *= -1;
+
+                // Membrane Interaction
+                if (labMode === 'diffusion') {
+                    // Allow passing through gate region easily
+                    if (Math.abs(p.x - midX) < 15) {
+                        if (p.y < h / 2 - 40 || p.y > h / 2 + 40) {
+                            p.vx *= -1; // bounce off lipid membrane
+                        }
+                    }
+                } else if (labMode === 'osmosis') {
+                    if (p.type === 'water') {
+                        // Water passes through freely
+                        if (p.x > midX - 10 && p.x < midX + 10) {
+                            // Slight pull towards high concentration side (left)
+                            p.vx -= 0.05;
+                        }
+                    } else {
+                        // Solute trapped by membrane
+                        if (Math.abs(p.x - midX) < 20) p.vx *= -1;
+                    }
+                } else if (labMode === 'active') {
+                    // Membrane blocks passive passage
+                    if (Math.abs(p.x - midX) < 20) p.vx *= -1;
+                }
+
+                // Draw Particles
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                if (p.type === 'solute') {
+                    ctx.fillStyle = '#ef4444'; // Red for solute
+                } else if (p.type === 'water') {
+                    ctx.fillStyle = '#22d3ee'; // Cyan for water
+                }
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+
+            animId = requestAnimationFrame(runSimulation);
+        }
+
+        // --- Interactive Quiz System ---
+        const quizData = [
+            {
+                q: "ما هي الوظيفة الأساسية لغشاء الخلية؟",
+                options: [
+                    "إنتاج الطاقة والغذاء فقط",
+                    "العمل كبوابة ذكية تُحدد المواد الداخلة والخارجة",
+                    "صنع الخلية من العظام",
+                    "تخزين الماء في جميع الكائنات"
+                ],
+                correct: 1,
+                explain: "صحيح! غشاء الخلية يمتلك نفاذية اختيارية تسمح بتحكم ذكي في دخول وخروج المواد."
+            },
+            {
+                q: "انتقال جزيئات **الماء فقط** عبر غشاء الخلية يُسمى:",
+                options: [
+                    "النقل النشط ⚡",
+                    "الانتشار 💨",
+                    "الأسموزية 💧",
+                    "البناء الضوئي ☀️"
+                ],
+                correct: 2,
+                explain: "ممتاز! الأسموزية هي المصطلح الخاص بحركة جزيئات الماء عبر الغشاء."
+            },
+            {
+                q: "عندما تنقل الخلية المواد من منطقة تركيز منخفض إلى منطقة تركيز عالٍ (عكس التيار)، فإنها تحتاج إلى:",
+                options: [
+                    "النقل السلبي",
+                    "طاقة $ATP$ (نقل نشط)",
+                    "النوم والراحة",
+                    "تبخير الماء"
+                ],
+                correct: 1,
+                explain: "بطل! هذا هو النقل النشط الذكي الذي يتطلب استهلاك طاقة $ATP$ لدفع المواد عكس الاتجاه."
+            },
+            {
+                q: "أي الطرق التالية **لا تحتاج إلى أي طاقة** لنقل المواد؟",
+                options: [
+                    "النقل النشط",
+                    "ضخ مضخات البروتين",
+                    "النقل السلبي (مثل الانتشار والأسموزية)",
+                    "شحن الخلية بالكهرباء"
+                ],
+                correct: 2,
+                explain: "إجابة موفقة! النقل السلبي يحدث تلقائياً من التركيز العالي للمنخفض دون بذل طاقة."
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const data = quizData[currentQ];
+            document.getElementById('question-number').innerText = `السؤال ${currentQ + 1} من ${quizData.length}`;
+            document.getElementById('question-text').innerText = data.q;
+
+            const optsContainer = document.getElementById('options-container');
+            optsContainer.innerHTML = '';
+
+            data.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-right p-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition flex items-center justify-between";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-500"></i>`;
+                btn.onclick = () => selectOption(idx, btn);
+                optsContainer.appendChild(btn);
+            });
+
+            document.getElementById('feedback-box').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        function selectOption(selectedIdx, btnEl) {
+            const data = quizData[currentQ];
+            const allBtns = document.getElementById('options-container').children;
+
+            // Disable all buttons
+            for (let b of allBtns) b.disabled = true;
+
+            const feedback = document.getElementById('feedback-box');
+            feedback.classList.remove('hidden');
+
+            if (selectedIdx === data.correct) {
+                score++;
+                document.getElementById('current-score').innerText = `${score} / ${quizData.length}`;
+                btnEl.classList.remove('bg-slate-800', 'border-slate-700');
+                btnEl.classList.add('bg-emerald-900/60', 'border-emerald-500', 'text-emerald-200');
+                feedback.className = "p-4 rounded-xl text-xs font-bold bg-emerald-900/40 border border-emerald-500/50 text-emerald-300";
+                feedback.innerText = data.explain;
+            } else {
+                btnEl.classList.remove('bg-slate-800', 'border-slate-700');
+                btnEl.classList.add('bg-red-900/60', 'border-red-500', 'text-red-200');
+                feedback.className = "p-4 rounded-xl text-xs font-bold bg-red-900/40 border border-red-500/50 text-red-300";
+                feedback.innerText = `إجابة خاطئة! الإجابة الصحيحة هي: ${data.options[data.correct]}`;
+            }
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ < quizData.length) {
+                loadQuestion();
+            } else {
+                showQuizFinish();
+            }
+        }
+
+        function showQuizFinish() {
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('quiz-finish').classList.remove('hidden');
+            document.getElementById('final-eval').innerText = `لقد حصلت على ${score} من أصل ${quizData.length} في اختبار بوابة الخلية!`;
+        }
+
+        function restartQuiz() {
+            currentQ = 0;
+            score = 0;
+            document.getElementById('current-score').innerText = `0 / ${quizData.length}`;
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('quiz-finish').classList.add('hidden');
+            loadQuestion();
+        }
+
+        // Initialize on page load
+        window.onload = function() {
+            loadQuestion();
+        };
+    </script>
+</body>
+</html>

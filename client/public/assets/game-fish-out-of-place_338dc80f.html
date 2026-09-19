@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>سمكة مش بمكانها - Fish Out of Place</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Cairo for modern Arabic typography) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            background-color: #0b0f19;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+        }
+        .pixelated {
+            image-rendering: pixelated;
+        }
+        /* Custom scrollbar just in case */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #38bdf8;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col items-center justify-center p-2 sm:p-4 text-white">
+
+    <!-- Game Container -->
+    <div class="relative w-full max-w-4xl aspect-[16/9] flex items-center justify-center overflow-hidden rounded-2xl border-4 border-slate-700 bg-slate-900 shadow-2xl">
+        
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas" width="854" height="480" class="w-full h-full bg-gradient-to-b from-sky-400 to-indigo-950"></canvas>
+
+        <!-- UI Overlay: Start Screen -->
+        <div id="startScreen" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center transition-all duration-300">
+            <!-- Decorative Fish Mascot container -->
+            <div class="w-32 h-32 mb-4 relative animate-bounce">
+                <!-- Golden/Orange Fish Vector Drawing style inside CSS -->
+                <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-[0_0_15px_rgba(249,115,22,0.6)]">
+                    <path d="M15,50 C30,20 70,25 85,45 C90,40 95,35 98,40 C95,50 95,55 98,60 C95,65 90,60 85,55 C70,75 30,80 15,50 Z" fill="#f97316" stroke="#ea580c" stroke-width="3"/>
+                    <path d="M15,50 C5,40 2,50 5,55 C2,60 5,70 15,50 Z" fill="#ef4444"/>
+                    <!-- Big worried eye -->
+                    <circle cx="65" cy="42" r="8" fill="white" />
+                    <circle cx="67" cy="42" r="4" fill="black" />
+                    <!-- Highlight -->
+                    <circle cx="69" cy="40" r="2" fill="white" />
+                    <!-- Water Droplet Helmet -->
+                    <circle cx="60" cy="48" r="28" fill="rgba(56, 189, 248, 0.25)" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" />
+                </svg>
+            </div>
+            
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-300 to-sky-400 mb-2 drop-shadow-md">
+                سمكة مش بمكانها
+            </h1>
+            <p class="text-sm sm:text-lg text-slate-300 max-w-md mb-6 leading-relaxed">
+                لقد قفزت سمكتنا الشجاعة خارج الحوض! ساعدها على "القفز والرفرفة" في شوارع المدينة الجافة والوصول إلى بر الأمان. حافظ على رطوبتها وتجنب العقبات الساخنة والقطط الشرسة!
+            </p>
+
+            <button id="startButton" class="px-8 py-3 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xl rounded-full shadow-lg shadow-orange-500/30 transform hover:scale-105 transition active:scale-95 flex items-center gap-2">
+                <span>ابدأ المغامرة الآن</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+
+            <div class="mt-8 grid grid-cols-3 gap-4 text-xs sm:text-sm text-slate-400">
+                <div class="bg-slate-800/50 p-2 rounded-lg border border-slate-700">
+                    <span class="block text-amber-400 font-bold text-lg">المسافة</span>
+                    تجنب السقوط الطويل
+                </div>
+                <div class="bg-slate-800/50 p-2 rounded-lg border border-slate-700">
+                    <span class="block text-sky-400 font-bold text-lg">الرطوبة</span>
+                    اجمع قطرات الماء لتعيش
+                </div>
+                <div class="bg-slate-800/50 p-2 rounded-lg border border-slate-700">
+                    <span class="block text-red-400 font-bold text-lg">احذر!</span>
+                    الأسطح الحارة والأعداء
+                </div>
+            </div>
+        </div>
+
+        <!-- UI Overlay: Pause/HUD Status (Top Bar) -->
+        <div id="hud" class="absolute top-0 inset-x-0 p-4 flex justify-between items-center pointer-events-none hidden">
+            <!-- Moisture Bar (Left/Right depending on RTL, let's keep physical positions clean) -->
+            <div class="flex items-center gap-2 bg-slate-900/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-slate-700/50 pointer-events-auto">
+                <span class="text-xs sm:text-sm font-bold text-sky-400">الرطوبة:</span>
+                <div class="w-24 sm:w-40 h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    <div id="moistureBar" class="h-full bg-gradient-to-r from-sky-500 to-blue-400 transition-all duration-100" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <!-- Score & High Score -->
+            <div class="flex gap-4">
+                <div class="bg-slate-900/80 backdrop-blur-sm px-4 py-1.5 rounded-full border border-slate-700/50 text-right">
+                    <span class="text-xs text-slate-400 block leading-none">النقاط</span>
+                    <span id="scoreVal" class="text-lg sm:text-2xl font-black text-amber-400">0</span>
+                </div>
+                <div class="bg-slate-900/80 backdrop-blur-sm px-4 py-1.5 rounded-full border border-slate-700/50 text-right hidden sm:block">
+                    <span class="text-xs text-slate-400 block leading-none">أفضل نتيجة</span>
+                    <span id="highScoreVal" class="text-lg font-bold text-slate-300">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Touch/Click Instruction Flash -->
+        <div id="actionHint" class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/80 backdrop-blur-sm px-4 py-2 rounded-full border border-slate-700/50 pointer-events-none text-xs sm:text-sm text-slate-300 animate-pulse hidden">
+            انقر على الشاشة أو اضغط <span class="bg-slate-700 px-1.5 py-0.5 rounded text-white font-mono">Space</span> للقفز والرفرفة! 🦘
+        </div>
+
+        <!-- UI Overlay: Game Over Screen -->
+        <div id="gameOverScreen" class="absolute inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center transition-all duration-300 hidden">
+            <div class="w-24 h-24 mb-4 relative opacity-85">
+                <!-- Sad/Dry Fish SVG -->
+                <svg viewBox="0 0 100 100" class="w-full h-full filter sepia">
+                    <path d="M15,50 C30,20 70,25 85,45 C90,40 95,35 98,40 C95,50 95,55 98,60 C95,65 90,60 85,55 C70,75 30,80 15,50 Z" fill="#b45309" stroke="#78350f" stroke-width="3"/>
+                    <path d="M15,50 C5,40 2,50 5,55 C2,60 5,70 15,50 Z" fill="#991b1b"/>
+                    <!-- X Eyes (Dried out) -->
+                    <path d="M60,40 L68,48 M68,40 L60,48" stroke="black" stroke-width="3" stroke-linecap="round" />
+                    <!-- Frown -->
+                    <path d="M75,55 Q70,50 65,55" stroke="black" stroke-width="2" fill="none" />
+                </svg>
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl font-black text-red-500 mb-2">جفّت السمكة!</h2>
+            <p id="gameOverReason" class="text-sm sm:text-lg text-slate-300 mb-6 max-w-sm">
+                لقد نفدت الرطوبة تماماً وتبخرت مياهها! حاول البقاء رطباً في المرة القادمة.
+            </p>
+
+            <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 mb-6 min-w-[240px] flex justify-around">
+                <div>
+                    <span class="text-xs text-slate-400 block">النتيجة النهائية</span>
+                    <span id="finalScore" class="text-2xl sm:text-3xl font-black text-amber-400">0</span>
+                </div>
+                <div class="border-r border-slate-800 mx-2"></div>
+                <div>
+                    <span class="text-xs text-slate-400 block">أفضل رقم شخصي</span>
+                    <span id="finalHighScore" class="text-2xl sm:text-3xl font-black text-sky-400">0</span>
+                </div>
+            </div>
+
+            <button id="restartButton" class="px-8 py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold text-xl rounded-full shadow-lg shadow-sky-500/30 transform hover:scale-105 transition active:scale-95 flex items-center gap-2">
+                <span>حاول مرة أخرى</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 15H17" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Instructions Footnote -->
+    <p class="text-slate-500 text-xs mt-4 text-center max-w-md hidden sm:block">
+        تم التطوير بحب وإتقان. استخدم زر الفأرة الأيسر، لمس الشاشة، أو المسافة للتحكم بالارتفاع والرفرفة. حافظ على السمكة في الهواء أو التقط القطرات!
+    </p>
+
+    <!-- Game Logic -->
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // UI Screens
+        const startScreen = document.getElementById('startScreen');
+        const hud = document.getElementById('hud');
+        const actionHint = document.getElementById('actionHint');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const startButton = document.getElementById('startButton');
+        const restartButton = document.getElementById('restartButton');
+
+        // HUD Elements
+        const moistureBar = document.getElementById('moistureBar');
+        const scoreVal = document.getElementById('scoreVal');
+        const highScoreVal = document.getElementById('highScoreVal');
+        const finalScore = document.getElementById('finalScore');
+        const finalHighScore = document.getElementById('finalHighScore');
+        const gameOverReason = document.getElementById('gameOverReason');
+
+        // Web Audio API Context setup (Lazy initialized)
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Synthesizer Sound Generator helper
+        function playSound(type) {
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'flop') {
+                    // Quick cute flopping water sound
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, now);
+                    osc.frequency.exponentialRampToValueAtTime(450, now + 0.15);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                    osc.start(now);
+                    osc.stop(now + 0.15);
+                } else if (type === 'bubble') {
+                    // Satisfying bubble popping sound
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'hit') {
+                    // Harsh impact on hard surface
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.linearRampToValueAtTime(60, now + 0.25);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
+                } else if (type === 'gameover') {
+                    // Sad downward sliding sound
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.linearRampToValueAtTime(80, now + 0.6);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                    osc.start(now);
+                    osc.stop(now + 0.6);
+                }
+            } catch (e) {
+                console.log("Audio play blocked or failed: ", e);
+            }
+        }
+
+        // Game Configuration & State
+        let gameState = 'start'; // start, playing, gameover
+        let score = 0;
+        let highScore = localStorage.getItem('fish_high_score') || 0;
+        highScoreVal.textContent = highScore;
+
+        // Constants
+        const GRAVITY = 0.42;
+        const FLOP_FORCE = -7.5;
+        const GROUND_Y = 410; // Street level
+
+        // Dynamic Game Entities
+        let player = {
+            x: 120,
+            y: 200,
+            vy: 0,
+            radius: 20,
+            angle: 0,
+            targetAngle: 0,
+            moisture: 100, // percentage 0-100
+            maxMoisture: 100,
+            width: 52,
+            height: 38,
+            flopCooldown: 0
+        };
+
+        let obstacles = [];
+        let collectibles = [];
+        let particles = [];
+        let backgroundElements = [];
+        let gameFrame = 0;
+        let gameSpeed = 3.5;
+        let bgScroll = 0;
+
+        // Populate Starry/City Background
+        function initBackground() {
+            backgroundElements = [];
+            // Spawn some background city skyscrapers silhouettes
+            for (let i = 0; i < 15; i++) {
+                backgroundElements.push({
+                    x: i * 80 + Math.random() * 20,
+                    width: 50 + Math.random() * 70,
+                    height: 150 + Math.random() * 200,
+                    color: `rgba(${25 + Math.random() * 15}, ${32 + Math.random() * 15}, ${55 + Math.random() * 15}, 0.85)`,
+                    speedFactor: 0.15
+                });
+            }
+        }
+
+        // Handle Input
+        function triggerFlop() {
+            if (gameState !== 'playing') return;
+            initAudio();
+            
+            player.vy = FLOP_FORCE;
+            player.targetAngle = -0.4; // Tilt upwards slightly when flopping
+            playSound('flop');
+
+            // Flop visual feedback particles (splashes)
+            createSplash(player.x, player.y, '#38bdf8', 12);
+        }
+
+        // Global Event Listeners
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'ArrowUp') {
+                e.preventDefault();
+                if (gameState === 'playing') triggerFlop();
+            }
+        });
+
+        canvas.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            if (gameState === 'playing') triggerFlop();
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (gameState === 'playing') triggerFlop();
+        }, { passive: false });
+
+        // Button Listeners
+        startButton.addEventListener('click', () => {
+            initAudio();
+            startGame();
+        });
+
+        restartButton.addEventListener('click', () => {
+            initAudio();
+            startGame();
+        });
+
+        function startGame() {
+            gameState = 'playing';
+            score = 0;
+            gameSpeed = 4;
+            player.x = 120;
+            player.y = 180;
+            player.vy = 0;
+            player.moisture = 100;
+            player.angle = 0;
+            obstacles = [];
+            collectibles = [];
+            particles = [];
+            gameFrame = 0;
+
+            initBackground();
+
+            // Setup UI states
+            startScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            hud.classList.remove('hidden');
+            actionHint.classList.remove('hidden');
+
+            // Fade out the action hint after 4 seconds
+            setTimeout(() => {
+                actionHint.classList.add('hidden');
+            }, 4000);
+        }
+
+        function triggerGameOver(reason) {
+            gameState = 'gameover';
+            playSound('gameover');
+
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem('fish_high_score', highScore);
+            }
+
+            // Update UI elements
+            finalScore.textContent = Math.floor(score);
+            finalHighScore.textContent = Math.floor(highScore);
+            highScoreVal.textContent = Math.floor(highScore);
+
+            if (reason === 'dry') {
+                gameOverReason.textContent = "لقد نفدت الرطوبة تماماً وتبخرت مياه السمكة! انتبه لعداد الماء في المرة القادمة.";
+            } else if (reason === 'cat') {
+                gameOverReason.textContent = "أوه لا! لقد رصدتك قطة الشارع الجائعة وأمسكت بك!";
+            } else if (reason === 'hot') {
+                gameOverReason.textContent = "لقد اصطدمت بسطح معدني ساخن جداً وجفت السمكة فوراً!";
+            } else {
+                gameOverReason.textContent = "سقطت السمكة خارج مسار الإنقاذ المتاح!";
+            }
+
+            hud.classList.add('hidden');
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        // Particle Generators
+        function createSplash(x, y, color, count = 8) {
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 6 - 2, // Drift backwards slightly
+                    vy: (Math.random() - 0.7) * 5,
+                    radius: Math.random() * 4 + 2,
+                    color: color,
+                    alpha: 1,
+                    life: 1.0,
+                    decay: 0.02 + Math.random() * 0.03
+                });
+            }
+        }
+
+        function createSweatParticle(x, y) {
+            particles.push({
+                x: x + (Math.random() - 0.5) * 20,
+                y: y + (Math.random() - 0.5) * 20,
+                vx: -1 - Math.random() * 2,
+                vy: -Math.random() * 1.5,
+                radius: Math.random() * 2.5 + 1,
+                color: 'rgba(239, 68, 68, 0.7)', // Reddish distress sweat
+                alpha: 0.8,
+                life: 1.0,
+                decay: 0.05
+            });
+        }
+
+        // Main Draw Functions
+        function drawFish(ctx, p) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+
+            // Glistening aura based on moisture level
+            if (p.moisture > 30) {
+                const gradAura = ctx.createRadialGradient(0, 0, p.radius - 2, 0, 0, p.radius + 12);
+                gradAura.addColorStop(0, `rgba(56, 189, 248, ${p.moisture / 100 * 0.4})`);
+                gradAura.addColorStop(1, 'rgba(56, 189, 248, 0)');
+                ctx.fillStyle = gradAura;
+                ctx.beginPath();
+                ctx.arc(0, 0, p.radius + 12, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Outer Fish Body (Vibrant Fish Out Of Place!)
+            // We draw an stylized orange goldfish
+            const scaleX = 1.3;
+            const scaleY = 0.95;
+            ctx.scale(scaleX, scaleY);
+
+            // Tail Fin (Wiggle based on sine of gameFrame)
+            ctx.save();
+            const wiggle = Math.sin(gameFrame * 0.18) * 0.25;
+            ctx.translate(-p.radius + 4, 0);
+            ctx.rotate(wiggle);
+            
+            const tailGrad = ctx.createLinearGradient(-18, -12, 0, 12);
+            tailGrad.addColorStop(0, '#f97316');
+            tailGrad.addColorStop(0.5, '#ea580c');
+            tailGrad.addColorStop(1, '#ef4444');
+            
+            ctx.fillStyle = tailGrad;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.quadraticCurveTo(-15, -15, -22, -18);
+            ctx.quadraticCurveTo(-18, 0, -22, 18);
+            ctx.quadraticCurveTo(-15, 15, 0, 0);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+
+            // Fish Main Body Gradient (Slightly dried up if low moisture)
+            const mainGrad = ctx.createLinearGradient(-p.radius, -p.radius, p.radius, p.radius);
+            if (p.moisture > 35) {
+                mainGrad.addColorStop(0, '#fb923c'); // Bright orange
+                mainGrad.addColorStop(0.6, '#f97316');
+                mainGrad.addColorStop(1, '#dc2626');
+            } else {
+                // Ashy/Brownish dried look
+                mainGrad.addColorStop(0, '#b45309');
+                mainGrad.addColorStop(0.6, '#78350f');
+                mainGrad.addColorStop(1, '#451a03');
+            }
+            
+            ctx.fillStyle = mainGrad;
+            ctx.beginPath();
+            ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Shiny scales details
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(-4, -4, 8, -0.5, Math.PI * 0.6);
+            ctx.stroke();
+
+            // Dorsal Fin (Top Fin)
+            ctx.fillStyle = '#ea580c';
+            ctx.beginPath();
+            ctx.moveTo(-6, -p.radius + 2);
+            ctx.quadraticCurveTo(-12, -p.radius - 12, -2, -p.radius - 10);
+            ctx.quadraticCurveTo(8, -p.radius - 8, 4, -p.radius + 2);
+            ctx.fill();
+
+            // Big expressively worried Eye
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(p.radius * 0.45, -p.radius * 0.25, 6.5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            // Pupil changes size depending on stress
+            const pupilRadius = p.moisture < 40 ? 4.5 : 3.5;
+            ctx.arc(p.radius * 0.5, -p.radius * 0.22, pupilRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Eye highlight
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(p.radius * 0.54, -p.radius * 0.28, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Worried Eyebrow
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2.2;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(p.radius * 0.25, -p.radius * 0.65);
+            ctx.quadraticCurveTo(p.radius * 0.45, -p.radius * 0.58, p.radius * 0.65, -p.radius * 0.52);
+            ctx.stroke();
+
+            // Fish Mouth (Sad / Gasping for air)
+            ctx.strokeStyle = '#991b1b';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            if (p.moisture > 50) {
+                // Slight gasp
+                ctx.arc(p.radius * 0.82, p.radius * 0.2, 3.5, 0, Math.PI, true);
+            } else {
+                // Huge dry gasp
+                ctx.arc(p.radius * 0.82, p.radius * 0.2, 5.5, 0, Math.PI * 1.8, true);
+            }
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // Environment Background & Ground Render
+        function drawBackground() {
+            // Draw gradient background sky (night transitioning to sunset city)
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            skyGrad.addColorStop(0, '#0f172a'); // Dark indigo deep sky
+            skyGrad.addColorStop(0.4, '#1e1b4b');
+            skyGrad.addColorStop(0.7, '#2e1065'); // Deep neon purple
+            skyGrad.addColorStop(1, '#1e293b');
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw glowing moon/warm spot high up
+            const moonGrad = ctx.createRadialGradient(720, 90, 10, 720, 90, 120);
+            moonGrad.addColorStop(0, 'rgba(253, 186, 116, 0.25)');
+            moonGrad.addColorStop(1, 'rgba(253, 186, 116, 0)');
+            ctx.fillStyle = moonGrad;
+            ctx.beginPath();
+            ctx.arc(720, 90, 120, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Parallax City Skylines
+            backgroundElements.forEach(bg => {
+                bg.x -= gameSpeed * bg.speedFactor;
+                if (bg.x + bg.width < 0) {
+                    bg.x = canvas.width + Math.random() * 50;
+                    bg.height = 120 + Math.random() * 220;
+                }
+                ctx.fillStyle = bg.color;
+                ctx.fillRect(bg.x, canvas.height - bg.height, bg.width, bg.height);
+
+                // Add simple window glowing lights to skyscrapers
+                ctx.fillStyle = 'rgba(250, 204, 21, 0.3)';
+                for (let wy = canvas.height - bg.height + 20; wy < canvas.height - 20; wy += 40) {
+                    for (let wx = bg.x + 10; wx < bg.x + bg.width - 15; wx += 25) {
+                        if (Math.sin(wx + wy) > 0.1) { // Pseudo-randomized windows on
+                            ctx.fillRect(wx, wy, 8, 12);
+                        }
+                    }
+                }
+            });
+
+            // Draw Street Base / Ground Surface
+            // Warm asphalt/cobblestone textures representing dried up streets
+            const groundGrad = ctx.createLinearGradient(0, GROUND_Y, 0, canvas.height);
+            groundGrad.addColorStop(0, '#334155'); // Gutter border
+            groundGrad.addColorStop(0.1, '#1e293b'); // Dark dry asphalt
+            groundGrad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = groundGrad;
+            ctx.fillRect(0, GROUND_Y, canvas.width, canvas.height - GROUND_Y);
+
+            // Draw concrete sidewalk curb
+            ctx.fillStyle = '#475569';
+            ctx.fillRect(0, GROUND_Y - 4, canvas.width, 6);
+
+            // Street lines (scrolling dashed effect)
+            ctx.fillStyle = 'rgba(234, 179, 8, 0.4)';
+            const dashWidth = 60;
+            const dashGap = 40;
+            const cycle = dashWidth + dashGap;
+            bgScroll = (bgScroll - gameSpeed) % cycle;
+            for (let sx = bgScroll; sx < canvas.width; sx += cycle) {
+                ctx.fillRect(sx, GROUND_Y + 32, dashWidth, 6);
+            }
+        }
+
+        // Game Entities Updates (Obstacles & Collectibles)
+        function updateEntities() {
+            gameFrame++;
+
+            // Gradually increase game speed to increase difficulty
+            if (gameFrame % 600 === 0) {
+                gameSpeed += 0.35;
+            }
+
+            // Spawn Collectibles (Water Droplets / Bubbles)
+            if (gameFrame % 90 === 0) {
+                const targetY = 80 + Math.random() * 240;
+                // Sometimes spawn double droplets
+                collectibles.push({
+                    x: canvas.width + 20,
+                    y: targetY,
+                    radius: 12,
+                    type: 'drop',
+                    pulse: 0
+                });
+
+                if (Math.random() > 0.6) {
+                    collectibles.push({
+                        x: canvas.width + 60,
+                        y: targetY + (Math.random() > 0.5 ? 40 : -40),
+                        radius: 8,
+                        type: 'small-drop',
+                        pulse: 0
+                    });
+                }
+            }
+
+            // Spawn Obstacles (Cats, Sizzling pans, steam pipes)
+            // Spawn rate gets tighter with score progression
+            const spawnInterval = Math.max(80, 160 - Math.floor(score * 1.5));
+            if (gameFrame % spawnInterval === 0) {
+                const rand = Math.random();
+                if (rand < 0.45) {
+                    // Hot Sizzling Grate/Pan on the floor
+                    obstacles.push({
+                        x: canvas.width + 30,
+                        y: GROUND_Y - 24,
+                        width: 60 + Math.random() * 40,
+                        height: 24,
+                        type: 'hot-pan',
+                        color: '#f97316'
+                    });
+                } else if (rand < 0.8) {
+                    // Tall pole / street hydrant or steam hazard
+                    obstacles.push({
+                        x: canvas.width + 30,
+                        y: GROUND_Y - 110,
+                        width: 32,
+                        height: 110,
+                        type: 'hydrant',
+                        color: '#cbd5e1'
+                    });
+                } else {
+                    // A street wild cat waiting to swipe from high air platforms!
+                    obstacles.push({
+                        x: canvas.width + 30,
+                        y: 100 + Math.random() * 150,
+                        width: 45,
+                        height: 45,
+                        type: 'cat',
+                        color: '#ef4444'
+                    });
+                }
+            }
+
+            // Update Obstacles
+            for (let i = obstacles.length - 1; i >= 0; i--) {
+                const obs = obstacles[i];
+                obs.x -= gameSpeed;
+
+                // Collision detection with fish
+                let collides = false;
+                if (obs.type === 'hot-pan' || obs.type === 'hydrant') {
+                    // AABB vs Circle
+                    const closestX = Math.max(obs.x, Math.min(player.x, obs.x + obs.width));
+                    const closestY = Math.max(obs.y, Math.min(player.y, obs.y + obs.height));
+                    const distanceX = player.x - closestX;
+                    const distanceY = player.y - closestY;
+                    const distanceSquared = (distanceX * distanceX) + (distanceY * distanceY);
+                    if (distanceSquared < (player.radius * player.radius)) {
+                        collides = true;
+                    }
+                } else if (obs.type === 'cat') {
+                    // Circle vs Circle approximate
+                    const dx = player.x - (obs.x + obs.width / 2);
+                    const dy = player.y - (obs.y + obs.height / 2);
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < player.radius + obs.width / 2 - 2) {
+                        collides = true;
+                    }
+                }
+
+                if (collides) {
+                    if (obs.type === 'hot-pan') {
+                        playSound('hit');
+                        triggerGameOver('hot');
+                    } else if (obs.type === 'cat') {
+                        playSound('hit');
+                        triggerGameOver('cat');
+                    } else {
+                        // Regular structure hit -> deplete moisture heavily & bounce fish away
+                        playSound('hit');
+                        player.vy = -5.5; // bounce up
+                        player.moisture = Math.max(0, player.moisture - 30);
+                        createSplash(player.x, player.y, '#f87171', 15);
+                        obstacles.splice(i, 1);
+                        continue;
+                    }
+                }
+
+                // Clean up off-screen obstacles
+                if (obs.x + obs.width < -50) {
+                    obstacles.splice(i, 1);
+                    score += 5; // Reward for passing obstacles
+                }
+            }
+
+            // Update Collectibles
+            for (let i = collectibles.length - 1; i >= 0; i--) {
+                const col = collectibles[i];
+                col.x -= gameSpeed;
+                col.pulse += 0.08;
+
+                // Collide with player
+                const dx = player.x - col.x;
+                const dy = player.y - col.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < player.radius + col.radius) {
+                    // Collected! Restore Moisture
+                    playSound('bubble');
+                    const restoreAmount = col.type === 'drop' ? 25 : 12;
+                    player.moisture = Math.min(player.maxMoisture, player.moisture + restoreAmount);
+                    createSplash(col.x, col.y, '#38bdf8', 10);
+                    collectibles.splice(i, 1);
+                    score += 15;
+                    continue;
+                }
+
+                // Off-screen cleanup
+                if (col.x + col.radius < -20) {
+                    collectibles.splice(i, 1);
+                }
+            }
+
+            // Update Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= p.decay;
+                p.alpha = Math.max(0, p.life);
+
+                if (p.life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+        }
+
+        // Render Obstacles and Collectibles
+        function drawEntities() {
+            // Draw Collectibles
+            collectibles.forEach(col => {
+                ctx.save();
+                const hoverOffset = Math.sin(col.pulse) * 4;
+                ctx.translate(col.x, col.y + hoverOffset);
+
+                // Water glow
+                const glow = ctx.createRadialGradient(0, 0, 1, 0, 0, col.radius + 6);
+                glow.addColorStop(0, 'rgba(56, 189, 248, 0.7)');
+                glow.addColorStop(0.5, 'rgba(56, 189, 248, 0.3)');
+                glow.addColorStop(1, 'rgba(56, 189, 248, 0)');
+                ctx.fillStyle = glow;
+                ctx.beginPath();
+                ctx.arc(0, 0, col.radius + 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Drop core drawing
+                ctx.fillStyle = '#38bdf8';
+                ctx.beginPath();
+                ctx.moveTo(0, -col.radius * 1.3);
+                ctx.quadraticCurveTo(col.radius, 0, col.radius, col.radius * 0.7);
+                ctx.arc(0, col.radius * 0.7, col.radius, 0, Math.PI);
+                ctx.quadraticCurveTo(-col.radius, 0, 0, -col.radius * 1.3);
+                ctx.fill();
+
+                // Highlight gloss
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.beginPath();
+                ctx.arc(-col.radius * 0.3, col.radius * 0.2, col.radius * 0.3, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.restore();
+            });
+
+            // Draw Obstacles
+            obstacles.forEach(obs => {
+                ctx.save();
+                if (obs.type === 'hot-pan') {
+                    // Draw glowing hot pan/grate on street
+                    const pulseGlow = Math.sin(gameFrame * 0.15) * 4;
+                    ctx.fillStyle = '#475569';
+                    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+
+                    // Hot red element inside
+                    ctx.fillStyle = `rgba(239, 68, 68, ${0.7 + Math.sin(gameFrame * 0.2) * 0.2})`;
+                    ctx.fillRect(obs.x + 4, obs.y + 4, obs.width - 8, obs.height - 8);
+
+                    // Caution sign stripes
+                    ctx.strokeStyle = '#eab308';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    for (let sx = obs.x + 10; sx < obs.x + obs.width; sx += 20) {
+                        ctx.moveTo(sx, obs.y + obs.height - 4);
+                        ctx.lineTo(sx + 10, obs.y + 4);
+                    }
+                    ctx.stroke();
+
+                    // Tiny sizzle heat waves rising
+                    if (gameFrame % 10 === 0) {
+                        particles.push({
+                            x: obs.x + Math.random() * obs.width,
+                            y: obs.y - 4,
+                            vx: (Math.random() - 0.5) * 1,
+                            vy: -1.5 - Math.random() * 1.5,
+                            radius: Math.random() * 2 + 1,
+                            color: 'rgba(249, 115, 22, 0.6)',
+                            alpha: 0.8,
+                            life: 1.0,
+                            decay: 0.04
+                        });
+                    }
+                } else if (obs.type === 'hydrant') {
+                    // Fire Hydrant obstacles
+                    ctx.fillStyle = '#dc2626'; // Bright Red Hydrant
+                    ctx.fillRect(obs.x + 4, obs.y, obs.width - 8, obs.height);
+                    
+                    // Cap and sides details
+                    ctx.fillStyle = '#991b1b';
+                    ctx.fillRect(obs.x, obs.y + 12, obs.width, 16);
+                    ctx.fillRect(obs.x + 2, obs.y + obs.height - 14, obs.width - 4, 14);
+
+                    // Top dome cap
+                    ctx.fillStyle = '#dc2626';
+                    ctx.beginPath();
+                    ctx.arc(obs.x + obs.width / 2, obs.y + 4, obs.width / 2 - 4, Math.PI, 0);
+                    ctx.fill();
+
+                    // Steam venting effect from side occasionally
+                    if (gameFrame % 4 === 0) {
+                        particles.push({
+                            x: obs.x + obs.width / 2,
+                            y: obs.y + 20,
+                            vx: 1 + Math.random() * 3, // Venting to the right
+                            vy: (Math.random() - 0.5) * 1,
+                            radius: Math.random() * 3 + 1.5,
+                            color: 'rgba(226, 232, 240, 0.4)',
+                            alpha: 0.7,
+                            life: 1.0,
+                            decay: 0.05
+                        });
+                    }
+                } else if (obs.type === 'cat') {
+                    // Stray cat hovering on a ledge / dynamic hazard
+                    ctx.translate(obs.x + obs.width / 2, obs.y + obs.height / 2);
+
+                    // Cat background cloud shadow
+                    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                    ctx.beginPath();
+                    ctx.arc(0, 0, obs.width / 2 + 3, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Cat Body
+                    ctx.fillStyle = '#475569'; // Grey shadow cat
+                    ctx.beginPath();
+                    ctx.arc(0, 4, obs.width / 2 - 4, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Cat ears
+                    ctx.beginPath();
+                    ctx.moveTo(-15, -6);
+                    ctx.lineTo(-18, -20);
+                    ctx.lineTo(-5, -10);
+                    ctx.moveTo(15, -6);
+                    ctx.lineTo(18, -20);
+                    ctx.lineTo(5, -10);
+                    ctx.fill();
+
+                    // Glistening feline eyes
+                    ctx.fillStyle = '#eab308';
+                    ctx.beginPath();
+                    ctx.ellipse(-7, -4, 4, 6, 0, 0, Math.PI * 2);
+                    ctx.ellipse(7, -4, 4, 6, 0, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Cat vertical pupils
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(-8, -8, 2, 8);
+                    ctx.fillRect(6, -8, 2, 8);
+                }
+                ctx.restore();
+            });
+
+            // Draw Particles
+            particles.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+
+        // Primary Physics & State Update
+        function updatePlayer() {
+            // Apply Gravity
+            player.vy += GRAVITY;
+            player.y += player.vy;
+
+            // Rotation angle smoothly follows velocity
+            player.targetAngle = Math.min(Math.PI / 4, Math.max(-Math.PI / 6, player.vy * 0.06));
+            player.angle += (player.targetAngle - player.angle) * 0.12;
+
+            // Constrain Player inside Canvas Y boundaries
+            if (player.y - player.radius < 0) {
+                player.y = player.radius;
+                player.vy = 0;
+            }
+
+            // Flopping along the asphalt/sidewalk
+            if (player.y + player.radius >= GROUND_Y) {
+                player.y = GROUND_Y - player.radius;
+                
+                // Keep moving, but hitting the dry ground causes extra moisture loss
+                player.vy = 0;
+                player.moisture = Math.max(0, player.moisture - 0.4); // High depletion on land!
+
+                // Flapping visual trail/friction dust on the ground
+                if (gameFrame % 6 === 0) {
+                    createSplash(player.x, player.y + 12, '#94a3b8', 3);
+                }
+            }
+
+            // Moisture depletes gradually automatically in dry air
+            player.moisture -= 0.085;
+
+            // Visual feedback for extreme dehydration
+            if (player.moisture < 35 && gameFrame % 15 === 0) {
+                createSweatParticle(player.x, player.y);
+            }
+
+            // Check Game Over Condition
+            if (player.moisture <= 0) {
+                triggerGameOver('dry');
+            }
+
+            // Update Score naturally as time goes on
+            score += 0.05;
+
+            // Dynamic updates for HUD UI elements
+            scoreVal.textContent = Math.floor(score);
+            moistureBar.style.width = `${player.moisture}%`;
+
+            // Change color of moisture bar based on stress levels
+            if (player.moisture > 50) {
+                moistureBar.className = "h-full bg-gradient-to-r from-sky-500 to-blue-400 transition-all duration-100";
+            } else if (player.moisture > 25) {
+                moistureBar.className = "h-full bg-gradient-to-r from-amber-500 to-orange-400 transition-all duration-100";
+            } else {
+                moistureBar.className = "h-full bg-gradient-to-r from-red-600 to-rose-500 animate-pulse transition-all duration-100";
+            }
+        }
+
+        // Complete Frame loop
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (gameState === 'playing') {
+                drawBackground();
+                updateEntities();
+                updatePlayer();
+                drawEntities();
+                drawFish(ctx, player);
+            } else if (gameState === 'start' || gameState === 'gameover') {
+                // Keep drawing an active backdrop so background has life
+                drawBackground();
+                drawEntities();
+                
+                // Let the fish fall/flop gently in place behind start UI
+                if (gameState === 'start') {
+                    player.y = 220 + Math.sin(Date.now() * 0.0035) * 35;
+                    player.angle = Math.sin(Date.now() * 0.002) * 0.15;
+                    drawFish(ctx, player);
+                }
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Bootstrapping
+        initBackground();
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>
