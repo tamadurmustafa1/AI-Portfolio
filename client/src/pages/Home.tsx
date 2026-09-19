@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -126,7 +126,7 @@ const sections: PortfolioSection[] = [
     id: "audio",
     index: "02",
     title: { ar: "الأصوات والموسيقى", en: "Audio & Music" },
-    description: { ar: "مساحة صوتية تجمع أغنية شك خرز وأعمالاً صوتية من ملف التدريب.", en: "An audio space featuring Shape Kharaz and other sound works from the course archive." },
+    description: { ar: "مساحة صوتية تجمع أغنية شك خرز وأعمالاً صوتية من ملف التدريب.", en: "An audio space featuring Shape Kharaz and other sound works from the course portfolio." },
     accent: "ice",
     projects: [
       { id: "shape-kharaz", type: "audio", title: { ar: "أغنية شكل خرز", en: "Shape Kharaz Song" }, description: { ar: "أغنية إبداعية صُنعت باستخدام Suno. الرابط محفوظ في ملف My Links الأصلي.", en: "A creative song made with Suno. The link is preserved from the original My Links document." }, drive: "https://suno.com/s/QLM2sxwaYqIkI1DU", tool: { ar: "Suno", en: "Suno" }, cta: { ar: "استمع إلى الأغنية", en: "Listen to the Song" }, featured: true },
@@ -151,7 +151,7 @@ const sections: PortfolioSection[] = [
     description: { ar: "فيديوهات دعائية وتجارب أفاتار تحوّل الفكرة إلى رسالة مرئية.", en: "Promotional videos and avatar-led pieces that turn a concept into a visual message." },
     accent: "blue",
     projects: [
-      { id: "promo", type: "video", title: { ar: "فيديو دعائي إبداعي", en: "Creative Promotional Video" }, description: { ar: "فيديو ترويجي من مواد الدورة.", en: "A promotional video from the course archive." }, source: storage.videos.promo, poster: storage.posters.smartbox, tool: { ar: "فيديو", en: "Video" } },
+      { id: "promo", type: "video", title: { ar: "فيديو دعائي إبداعي", en: "Creative Promotional Video" }, description: { ar: "فيديو ترويجي من مواد الدورة.", en: "A promotional video from the course portfolio." }, source: storage.videos.promo, poster: storage.posters.smartbox, tool: { ar: "فيديو", en: "Video" } },
       { id: "data-trainer", type: "video", title: { ar: "مدربة إدخال البيانات", en: "Data Entry Trainer" }, description: { ar: "فيديو دعائي يقدّم شخصية مدربة إدخال البيانات.", en: "A promotional video introducing a data-entry trainer character." }, source: storage.videos.data, poster: storage.posters.smartbox, tool: { ar: "فيديو", en: "Video" } },
       { id: "smartbox", type: "video", title: { ar: "إعلان سمارت بوكس مع أفاتار", en: "Smart Box Ad with Avatar" }, description: { ar: "إعلان مرئي لسمارت بوكس باستخدام أفاتار.", en: "A visual Smart Box advertisement using an avatar." }, source: storage.videos.smartbox, poster: storage.posters.smartbox, tool: { ar: "فيديو", en: "Video" } },
     ],
@@ -163,8 +163,8 @@ const sections: PortfolioSection[] = [
     description: { ar: "صور وشخصيات وأغلفة وتكوينات بصرية من التجارب الإبداعية.", en: "Characters, covers, compositions, and visual studies from the creative experiments." },
     accent: "ice",
     projects: [
-      { id: "character-1", type: "image", title: { ar: "ورقة شخصية 01", en: "Character Sheet 01" }, description: { ar: "ورقة تصميم شخصية من ملف الصور.", en: "A character design sheet from the image archive." }, source: storage.images.character1, tool: { ar: "صورة", en: "Image" } },
-      { id: "character-2", type: "image", title: { ar: "ورقة شخصية 02", en: "Character Sheet 02" }, description: { ar: "ورقة تصميم شخصية ثانية من ملف الصور.", en: "A second character design sheet from the image archive." }, source: storage.images.character2, tool: { ar: "صورة", en: "Image" } },
+      { id: "character-1", type: "image", title: { ar: "ورقة شخصية 01", en: "Character Sheet 01" }, description: { ar: "ورقة تصميم شخصية من ملف الصور.", en: "A character design sheet from the image collection." }, source: storage.images.character1, tool: { ar: "صورة", en: "Image" } },
+      { id: "character-2", type: "image", title: { ar: "ورقة شخصية 02", en: "Character Sheet 02" }, description: { ar: "ورقة تصميم شخصية ثانية من ملف الصور.", en: "A second character design sheet from the image collection." }, source: storage.images.character2, tool: { ar: "صورة", en: "Image" } },
       { id: "flow-1", type: "image", title: { ar: "Google Flow — مشهد 01", en: "Google Flow — Scene 01" }, description: { ar: "مشهد بصري محفوظ ضمن صور Google Flow.", en: "A visual scene preserved in the Google Flow image set." }, source: storage.images.flow1, tool: { ar: "Google Flow", en: "Google Flow" } },
       { id: "flow-2", type: "image", title: { ar: "Google Flow — مشهد 02", en: "Google Flow — Scene 02" }, description: { ar: "مشهد بصري ثانٍ من المجموعة نفسها.", en: "A second visual scene from the same set." }, source: storage.images.flow2, tool: { ar: "Google Flow", en: "Google Flow" } },
       { id: "paperback", type: "image", title: { ar: "غلاف كتاب", en: "Book Cover" }, description: { ar: "تصميم غلاف محفوظ ضمن مجموعة الصور.", en: "A cover design preserved in the image collection." }, source: storage.images.paperback, tool: { ar: "تصميم بصري", en: "Visual design" } },
@@ -178,7 +178,7 @@ const sections: PortfolioSection[] = [
     description: { ar: "صور تتجاوز الواقع: مكتبة في الصحراء، شارع يتحول إلى محيط، وديناصور في المدينة.", en: "Images that move beyond reality: a desert library, a street becoming an ocean, and a dinosaur in the city." },
     accent: "orange",
     projects: [
-      { id: "library", type: "image", title: { ar: "مكتبة في الصحراء", en: "Library in the Desert" }, description: { ar: "مشهد خيالي من أرشيف الصور الغريبة.", en: "An imaginative scene from the surreal image archive." }, source: storage.images.library, tool: { ar: "صورة مولدة", en: "Generated image" } },
+      { id: "library", type: "image", title: { ar: "مكتبة في الصحراء", en: "Library in the Desert" }, description: { ar: "مشهد خيالي من مجموعة الصور الغريبة.", en: "An imaginative scene from the surreal image collection." }, source: storage.images.library, tool: { ar: "صورة مولدة", en: "Generated image" } },
       { id: "ocean-street", type: "image", title: { ar: "شارع يتحول إلى محيط", en: "Street Becoming an Ocean" }, description: { ar: "تحويل مشهد حضري إلى صورة خيالية.", en: "A city scene transformed into an imaginative image." }, source: storage.images.ocean, tool: { ar: "صورة مولدة", en: "Generated image" } },
       { id: "dinosaur", type: "image", title: { ar: "ديناصور ضخم في المدينة", en: "Giant Dinosaur in the City" }, description: { ar: "صورة خيالية تجمع المدينة والمخلوق العملاق.", en: "An imaginative image merging a city with a giant creature." }, source: storage.images.dinosaur, tool: { ar: "صورة مولدة", en: "Generated image" } },
       { id: "surreal", type: "image", title: { ar: "مشهد خيالي", en: "Surreal Scene" }, description: { ar: "مشهد بصري عمودي من المجموعة الخيالية.", en: "A vertical visual scene from the imaginative collection." }, source: storage.images.surreal, tool: { ar: "صورة مولدة", en: "Generated image" } },
@@ -236,24 +236,13 @@ const sections: PortfolioSection[] = [
     id: "books",
     index: "11",
     title: { ar: "قصص وكتب", en: "Stories & Books" },
-    description: { ar: "كتب وقصص رقمية محفوظة كملفات PDF ضمن أرشيف الأعمال.", en: "Digital books and stories preserved as PDF files in the portfolio archive." },
+    description: { ar: "كتب وقصص رقمية محفوظة كملفات PDF ضمن الأعمال.", en: "Digital books and stories preserved as PDF files in the portfolio." },
     accent: "ice",
     projects: [
       { id: "alphabet", type: "doc", title: { ar: "كتاب الحروف الإنجليزية للأطفال", en: "English Alphabet Children Book" }, description: { ar: "كتاب رقمي للأطفال محفوظ بصيغة PDF.", en: "A digital children’s book preserved as a PDF." }, drive: drive.englishBook, tool: { ar: "PDF", en: "PDF" }, cta: { ar: "افتح الكتاب", en: "Open Book" } },
       { id: "tala-moon", type: "doc", title: { ar: "رحلة تالا وإخوانها إلى القمر", en: "Tala & Her Siblings’ Journey to the Moon" }, description: { ar: "قصة رقمية طويلة محفوظة بصيغة PDF.", en: "A long-form digital story preserved as a PDF." }, drive: drive.talaBook, tool: { ar: "PDF", en: "PDF" }, cta: { ar: "افتح القصة", en: "Open Story" } },
     ],
   },
-];
-
-const gallery = [
-  { src: storage.images.library, section: "surreal", label: { ar: "صور خيالية", en: "Imaginative images" } },
-  { src: storage.posters.robot, section: "creative-video", label: { ar: "فيديو إبداعي", en: "Creative video" } },
-  { src: storage.images.flow1, section: "images", label: { ar: "مشهد بصري", en: "Visual scene" } },
-  { src: storage.posters.smartbox, section: "ads", label: { ar: "دعاية وأفاتار", en: "Ad & avatar" } },
-  { src: storage.images.fashion, section: "cards", label: { ar: "مخطط تفصيلي", en: "Detailed diagram" } },
-  { src: storage.posters.kitchen, section: "timelapse", label: { ar: "تحول مساحة", en: "Space transformation" } },
-  { src: storage.images.character1, section: "images", label: { ar: "ورقة شخصية", en: "Character sheet" } },
-  { src: storage.images.dinosaur, section: "surreal", label: { ar: "خيال بصري", en: "Visual fiction" } },
 ];
 
 const iconFor = (type: ProjectType) => {
@@ -267,16 +256,16 @@ const iconFor = (type: ProjectType) => {
 function useCopy(lang: Lang): any {
   return useMemo(() => ({
     nav: {
-      ar: ["الرئيسية", "كيف غيّر AI طريقة العمل؟", "المعرض", "الأعمال"],
-      en: ["Home", "How did AI change the way we work?", "Gallery", "Work"],
+      ar: ["الرئيسية", "كيف غيّر AI طريقة العمل؟", "الأعمال"],
+      en: ["Home", "How did AI change the way we work?", "Work"],
     },
     heroKicker: { ar: "ملف تماضر مصطفى / تدريب أدوات الذكاء الاصطناعي", en: "Tamadur Mustafa / AI tools training portfolio" },
     heroTitle: { ar: "من التعلّم\nإلى الأثر", en: "From learning\nto impact" },
     heroSubtitle: { ar: "ملف أعمال أدوات الذكاء الاصطناعي", en: "AI Tools Course Portfolio" },
-    heroBody: { ar: "رحلة موثقة من استكشاف الأدوات إلى صناعة الصور، الفيديو، الصوت، القصص، الألعاب والتجارب التفاعلية — باستخدام الأعمال الفعلية المحفوظة في أرشيف الدورة.", en: "A documented journey from exploring AI tools to making images, video, sound, stories, games, and interactive experiences — using the actual works preserved in the course archive." },
+    heroBody: { ar: "رحلة موثقة من استكشاف الأدوات إلى صناعة الصور، الفيديو، الصوت، القصص، الألعاب والتجارب التفاعلية — باستخدام الأعمال الفعلية المحفوظة في ملف الدورة.", en: "A documented journey from exploring AI tools to making images, video, sound, stories, games, and interactive experiences — using the actual works preserved in the course portfolio." },
     explore: { ar: "استعرض الأعمال", en: "Explore the work" },
     watch: { ar: "كيف غيّر AI طريقة العمل؟", en: "How did AI change the way we work?" },
-    archiveLabel: { ar: "أرشيف حيّ", en: "Living archive" },
+    archiveLabel: { ar: "AI TOOLS", en: "AI TOOLS" },
     identity: { ar: "تماضر مصطفى", en: "Tamadur Mustafa" },
     identityRole: { ar: "مدربة حاسوب · مؤسسة التدريب المهني", en: "Computer trainer · Vocational Training Corporation" },
     stats: [
@@ -287,7 +276,7 @@ function useCopy(lang: Lang): any {
     ],
     transformationEyebrow: { ar: "الفصل الأهم", en: "The pivotal chapter" },
     transformationTitle: { ar: "كيف غيّر AI طريقة العمل؟", en: "How did AI change the way we work?" },
-    transformationBody: { ar: "هذا ليس فيديو عاديًا داخل الأرشيف. إنه قطعة سردية تفاعلية تسأل كيف تغيّر العمل حين أصبحت الأداة شريكًا في التفكير والتنفيذ.", en: "This is not an ordinary archive video. It is an interactive narrative asking how work changes when the tool becomes a partner in thinking and making." },
+    transformationBody: { ar: "هذا ليس فيديو عاديًا داخل ملف الأعمال. إنه قطعة سردية تفاعلية تسأل كيف تغيّر العمل حين أصبحت الأداة شريكًا في التفكير والتنفيذ.", en: "This is not an ordinary portfolio video. It is an interactive narrative asking how work changes when the tool becomes a partner in thinking and making." },
     phases: [
       { ar: "قبل الذكاء الاصطناعي", en: "Before AI" },
       { ar: "تعلّم الأدوات", en: "Learning tools" },
@@ -299,16 +288,13 @@ function useCopy(lang: Lang): any {
     comments: { ar: "تعليقات", en: "Comments" },
     commentPlaceholder: { ar: "اكتب ملاحظة عن: كيف غيّر AI طريقة العمل؟", en: "Write a note about: How did AI change the way we work?" },
     send: { ar: "إرسال", en: "Send" },
-    galleryEyebrow: { ar: "لوحة AI ARCHIVE", en: "The AI ARCHIVE board" },
-    galleryTitle: { ar: "لمحة من الأثر", en: "A glimpse of the output" },
-    galleryBody: { ar: "لوحة تحريرية من لقطات حقيقية داخل الأرشيف — يتجدد تكوينها عند الدخول، واختر أي قطعة للانتقال إلى قسمها.", en: "An editorial board of real archive snippets — its composition refreshes on entry, and every piece jumps to its section." },
-    workEyebrow: { ar: "الأرشيف الكامل", en: "The complete archive" },
-    workTitle: { ar: "الأعمال، كما حدثت", en: "The work, as it happened" },
+    workEyebrow: { ar: "الأعمال", en: "The works" },
+    workTitle: { ar: "كل الأعمال", en: "All works" },
     workBody: { ar: "كل قسم يحتفظ باسم المجلد الأصلي وترتيبه. افتح الصورة، شغّل الفيديو، أو ادخل إلى التجربة الأصلية.", en: "Every section preserves the original folder name and order. Open the image, play the video, or enter the original experience." },
     openSource: { ar: "افتح المصدر", en: "Open source" },
     scroll: { ar: "مرّر للاكتشاف", en: "Scroll to discover" },
-    footer: { ar: "أرشيف إبداعي من رحلة أدوات الذكاء الاصطناعي", en: "A creative archive from an AI tools journey" },
-    sourceNote: { ar: "المحتوى مأخوذ من ملفات الأرشيف الأصلية", en: "Content sourced from the original archive files" },
+    footer: { ar: "ملف إبداعي من رحلة أدوات الذكاء الاصطناعي", en: "A creative portfolio from an AI tools journey" },
+    sourceNote: { ar: "المحتوى مأخوذ من ملفات الأعمال الأصلية", en: "Content sourced from the original portfolio files" },
   }), [lang]);
 }
 
@@ -327,8 +313,7 @@ function Header({ lang, setLang, open, setOpen }: { lang: Lang; setLang: (lang: 
   const links = [
     { href: "#home", label: copy.nav[lang][0] },
     { href: "#transformation", label: copy.nav[lang][1] },
-    { href: "#gallery", label: copy.nav[lang][2] },
-    { href: "#work", label: copy.nav[lang][3] },
+    { href: "#work", label: copy.nav[lang][2] },
   ];
   return (
     <header className="site-header">
@@ -393,44 +378,6 @@ function Transformation({ lang }: { lang: Lang }) {
   );
 }
 
-function OrbitGallery({ lang }: { lang: Lang }) {
-  const copy = useCopy(lang);
-  const boardRef = useRef<HTMLDivElement>(null);
-  const [composition, setComposition] = useState(() => [...gallery].sort(() => Math.random() - 0.5).slice(0, 6));
-  const [entry, setEntry] = useState(0);
-  const jump = (section: string) => document.getElementById(section)?.scrollIntoView({ behavior: "smooth", block: "start" });
-  useEffect(() => {
-    const node = boardRef.current;
-    if (!node) return;
-    let wasVisible = false;
-    const observer = new IntersectionObserver(([item]) => {
-      if (item.isIntersecting && !wasVisible) {
-        setComposition([...gallery].sort(() => Math.random() - 0.5).slice(0, 6));
-        setEntry((value) => value + 1);
-      }
-      wasVisible = item.isIntersecting;
-    }, { threshold: 0.38 });
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-  return (
-    <section className="gallery-section" id="gallery">
-      <div className="gallery-copy section-intro reveal-up"><span className="section-number">03</span><div className="eyebrow"><span className="eyebrow-dot blue" />{L(lang, copy.galleryEyebrow)}</div><h2>{L(lang, copy.galleryTitle)}</h2><p>{L(lang, copy.galleryBody)}</p><div className="gallery-key"><span><i className="key-dot orange" />{lang === "ar" ? "مواد حقيقية من الأرشيف" : "Real archive material"}</span><span><i className="key-dot blue" />{lang === "ar" ? "انقر للانتقال" : "Click to jump"}</span></div></div>
-      <div className="archive-board-wrap reveal-up" style={{ "--delay": "90ms" } as CSSProperties}>
-        <div className="archive-board" ref={boardRef}>
-          <div className="archive-board-header"><span className="archive-board-kicker">AI / 03—11</span><strong>AI ARCHIVE</strong><span className="archive-board-note">{lang === "ar" ? "أعمال حقيقية · تكوين متجدد" : "REAL WORKS · NEW COMPOSITION"}</span></div>
-          <div className="archive-board-grid">
-            {composition.map((item, index) => <button key={`${item.src}-${entry}`} className={`archive-piece piece-${index + 1}`} onClick={() => jump(item.section)} aria-label={`${L(lang, item.label)} — ${lang === "ar" ? "انتقل للقسم" : "jump to section"}`}>
-              <span className="piece-pin" /><span className="piece-tape" /><img src={item.src} alt={L(lang, item.label)} /><span className="piece-caption"><b>{String(index + 1).padStart(2, "0")}</b>{L(lang, item.label)}</span>
-            </button>)}
-          </div>
-          <div className="archive-board-footer"><span>{lang === "ar" ? "ملف بصري من الأعمال المحفوظة" : "A visual file of preserved works"}</span><span>ARCHIVE / {String(entry + 1).padStart(2, "0")}</span></div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: Lang; sectionIndex: string }) {
   const title = L(lang, project.title);
   const description = L(lang, project.description);
@@ -469,19 +416,21 @@ const categoryIcon = (id: string) => {
   return <BookOpen size={20} />;
 };
 
-function WorkArchive({ lang }: { lang: Lang }) {
+const groupLabel = (id: string) => {
+  if (["timelapse", "ads", "creative-video"].includes(id)) return { ar: "الفيديوهات", en: "Videos" };
+  if (id === "audio") return { ar: "الصوت والموسيقى", en: "Audio & music" };
+  if (["images", "surreal", "cards"].includes(id)) return { ar: "الصور والتصاميم", en: "Images & designs" };
+  if (id === "books") return { ar: "الكتب والقصص", en: "Books & stories" };
+  if (["games", "interactive"].includes(id)) return { ar: "التجارب التفاعلية والألعاب", en: "Interactive experiences & games" };
+  return { ar: "المشاريع والأعمال الأخرى", en: "Projects & other works" };
+};
+
+function WorksSection({ lang }: { lang: Lang }) {
   const copy = useCopy(lang);
   return (
     <section className="work-section" id="work">
-      <div className="work-heading reveal-up"><div className="section-intro"><span className="section-number">04</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.workEyebrow)}</div><h2>{L(lang, copy.workTitle)}</h2><p>{L(lang, copy.workBody)}</p></div><div className="archive-stamp"><Layers3 size={21} /><span>AI<br />PORTFOLIO</span><b>2026</b></div></div>
-      <div className="works-library-head"><span><i />AI WORKS LIBRARY</span><small>{lang === "ar" ? "استكشف مجموعات الأعمال حول النواة الذكية" : "EXPLORE THE WORKS AROUND THE AI CORE"}</small></div>
-      <div className="works-orbit" aria-label={lang === "ar" ? "فئات الأعمال" : "Work categories"}>
-        <div className="orbit-backdrop" aria-hidden="true"><span className="orbit-star star-1" /><span className="orbit-star star-2" /><span className="orbit-star star-3" /><span className="orbit-star star-4" /><span className="orbit-line line-1" /><span className="orbit-line line-2" /></div>
-        <div className="ai-platform" aria-hidden="true"><span className="platform-ring ring-outer" /><span className="platform-ring ring-middle" /><span className="platform-ring ring-inner" /><div className="ai-core"><span>AI</span><small>{lang === "ar" ? "أعمالي" : "MY WORKS"}</small></div></div>
-        <div className="orbit-items">{sections.map((section, index) => <a className={`orbit-item orbit-item-${index + 1} accent-${section.accent}`} key={section.id} href={`#${section.id}`} aria-label={`${L(lang, section.title)} — ${lang === "ar" ? "افتح القسم" : "Open category"}`}><span className="orbit-menu-icon">{categoryIcon(section.id)}</span><strong>{L(lang, section.title)}</strong></a>)}</div>
-        <div className="orbit-instruction"><ChevronDown size={17} />{lang === "ar" ? "اختر فئة لاستكشاف الأعمال" : "SELECT A CATEGORY TO EXPLORE"}</div>
-      </div>
-      <div className="archive-grid">{sections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="archive-number">{section.index}</span><h3>{L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex={section.index} />)}</div></section>)}</div>
+      <div className="work-heading reveal-up"><div className="section-intro"><span className="section-number">03</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.workEyebrow)}</div><h2>{L(lang, copy.workTitle)}</h2><p>{L(lang, copy.workBody)}</p></div><div className="archive-stamp"><Layers3 size={21} /><span>AI<br />PORTFOLIO</span><b>2026</b></div></div>
+      <div className="archive-grid">{sections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="work-group-label">{L(lang, groupLabel(section.id))}</span><span className="archive-number">{section.index}</span><h3>{L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex={section.index} />)}</div></section>)}</div>
     </section>
   );
 }
@@ -495,5 +444,5 @@ export default function Home() {
   const [lang, setLang] = useState<Lang>(() => (localStorage.getItem("ai-portfolio-language") as Lang) || "ar");
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => { document.documentElement.lang = lang; document.documentElement.dir = lang === "ar" ? "rtl" : "ltr"; localStorage.setItem("ai-portfolio-language", lang); window.scrollTo({ top: 0, behavior: "smooth" }); }, [lang]);
-  return <div className="site-shell"><Header lang={lang} setLang={setLang} open={menuOpen} setOpen={setMenuOpen} /><main><Hero lang={lang} /><Stats lang={lang} /><Transformation lang={lang} /><OrbitGallery lang={lang} /><WorkArchive lang={lang} /></main><Footer lang={lang} /></div>;
+  return <div className="site-shell"><Header lang={lang} setLang={setLang} open={menuOpen} setOpen={setMenuOpen} /><main><Hero lang={lang} /><Stats lang={lang} /><Transformation lang={lang} /><WorksSection lang={lang} /></main><Footer lang={lang} /></div>;
 }

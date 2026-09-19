@@ -364,3 +364,6 @@ button { font: inherit; border: 0; }
 @media (max-width: 760px) { .works-orbit { min-height: 220px; }.orbit-item, .orbit-item:nth-child(n) { height: 84px; padding-inline: 24px; }.orbit-item strong { font-size: 17px; }.orbit-menu-icon { width: 33px; height: 33px; }.orbit-menu-icon svg { width: 17px; height: 17px; } }
 
 .orbit-menu-icon { width: 34px; height: 30px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }.orbit-item:hover .orbit-menu-icon { background: transparent; transform: translateY(-3px); }.accent-blue .orbit-menu-icon, .accent-ice .orbit-menu-icon { border: 0; background: transparent; }
+
+/* Works grouping labels: the existing project-card presentation remains unchanged */
+.work-group-label { display: block; margin-bottom: 7px; color: var(--orange-2); font-family: "Noto Kufi Arabic", sans-serif; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
