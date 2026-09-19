@@ -267,15 +267,15 @@ const iconFor = (type: ProjectType) => {
 function useCopy(lang: Lang): any {
   return useMemo(() => ({
     nav: {
-      ar: ["الرئيسية", "التحوّل", "المعرض", "الأعمال"],
-      en: ["Home", "Transformation", "Gallery", "Work"],
+      ar: ["الرئيسية", "كيف غيّر AI طريقة العمل؟", "المعرض", "الأعمال"],
+      en: ["Home", "How did AI change the way we work?", "Gallery", "Work"],
     },
     heroKicker: { ar: "ملف تماضر مصطفى / تدريب أدوات الذكاء الاصطناعي", en: "Tamadur Mustafa / AI tools training portfolio" },
     heroTitle: { ar: "من التعلّم\nإلى الأثر", en: "From learning\nto impact" },
     heroSubtitle: { ar: "ملف أعمال أدوات الذكاء الاصطناعي", en: "AI Tools Course Portfolio" },
     heroBody: { ar: "رحلة موثقة من استكشاف الأدوات إلى صناعة الصور، الفيديو، الصوت، القصص، الألعاب والتجارب التفاعلية — باستخدام الأعمال الفعلية المحفوظة في أرشيف الدورة.", en: "A documented journey from exploring AI tools to making images, video, sound, stories, games, and interactive experiences — using the actual works preserved in the course archive." },
     explore: { ar: "استعرض الأعمال", en: "Explore the work" },
-    watch: { ar: "شاهد قصة التحوّل", en: "Watch the transformation" },
+    watch: { ar: "كيف غيّر AI طريقة العمل؟", en: "How did AI change the way we work?" },
     archiveLabel: { ar: "أرشيف حيّ", en: "Living archive" },
     identity: { ar: "تماضر مصطفى", en: "Tamadur Mustafa" },
     identityRole: { ar: "مدربة حاسوب · مؤسسة التدريب المهني", en: "Computer trainer · Vocational Training Corporation" },
@@ -283,10 +283,10 @@ function useCopy(lang: Lang): any {
       { value: "11", ar: "قسمًا منظمًا", en: "structured sections" },
       { value: "34+", ar: "عملًا معروضًا", en: "works showcased" },
       { value: "05", ar: "تجارب قابلة للتشغيل", en: "playable experiences" },
-      { value: "01", ar: "قصة تحوّل", en: "transformation story" },
+      { value: "01", ar: "كيف غيّر AI طريقة العمل؟", en: "How did AI change the way we work?" },
     ],
     transformationEyebrow: { ar: "الفصل الأهم", en: "The pivotal chapter" },
-    transformationTitle: { ar: "قبل الذكاء الاصطناعي\nوبعده", en: "Before AI\nand after" },
+    transformationTitle: { ar: "كيف غيّر AI طريقة العمل؟", en: "How did AI change the way we work?" },
     transformationBody: { ar: "هذا ليس فيديو عاديًا داخل الأرشيف. إنه قطعة سردية تفاعلية تسأل كيف تغيّر العمل حين أصبحت الأداة شريكًا في التفكير والتنفيذ.", en: "This is not an ordinary archive video. It is an interactive narrative asking how work changes when the tool becomes a partner in thinking and making." },
     phases: [
       { ar: "قبل الذكاء الاصطناعي", en: "Before AI" },
@@ -297,7 +297,7 @@ function useCopy(lang: Lang): any {
     ],
     like: { ar: "إعجاب", en: "Like" },
     comments: { ar: "تعليقات", en: "Comments" },
-    commentPlaceholder: { ar: "اكتب ملاحظة عن التحوّل…", en: "Write a note about the transformation…" },
+    commentPlaceholder: { ar: "اكتب ملاحظة عن: كيف غيّر AI طريقة العمل؟", en: "Write a note about: How did AI change the way we work?" },
     send: { ar: "إرسال", en: "Send" },
     galleryEyebrow: { ar: "المعرض المتحرك", en: "The moving gallery" },
     galleryTitle: { ar: "لمحة من الأثر", en: "A glimpse of the output" },
@@ -384,7 +384,7 @@ function Transformation({ lang }: { lang: Lang }) {
     <section className="transformation-section" id="transformation">
       <div className="section-intro transformation-intro reveal-up"><span className="section-number">02</span><div className="eyebrow"><span className="eyebrow-dot orange" />{L(lang, copy.transformationEyebrow)}</div><h2>{L(lang, copy.transformationTitle)}</h2><p>{L(lang, copy.transformationBody)}</p><div className="phase-list">{copy.phases.map((phase: { ar: string; en: string }, index: number) => <div className={index === 0 || index === 4 ? "phase edge" : "phase"} key={phase.en}><span>0{index + 1}</span><b>{L(lang, phase)}</b></div>)}</div></div>
       <div className="transformation-visual reveal-up" style={{ "--delay": "100ms" } as CSSProperties}>
-        <div className="video-frame"><video controls playsInline poster={storage.transPoster} src={storage.transVideo} aria-label={lang === "ar" ? "فيديو التحول التفاعلي" : "Interactive transformation video"} /><div className="video-corner"><span>BEFORE / AFTER</span><span>INTERACTIVE FILM</span></div></div>
+        <div className="video-frame"><video controls playsInline poster={storage.transPoster} src={storage.transVideo} aria-label={lang === "ar" ? "فيديو كيف غيّر AI طريقة العمل؟" : "How did AI change the way we work? video"} /><div className="video-corner"><span>BEFORE / AFTER</span><span>INTERACTIVE FILM</span></div></div>
         <div className="film-controls"><button className={liked ? "reaction active" : "reaction"} onClick={() => setLiked(!liked)}><Heart size={16} fill={liked ? "currentColor" : "none"} />{L(lang, copy.like)}</button><span className="reaction-count">{liked ? "01" : "00"}</span><span className="film-divider" /><span className="comment-count"><MessageCircle size={16} />{comments.length.toString().padStart(2, "0")} {L(lang, copy.comments)}</span></div>
         <div className="comment-box"><input value={comment} onChange={(event) => setComment(event.target.value)} onKeyDown={(event) => event.key === "Enter" && submitComment()} placeholder={L(lang, copy.commentPlaceholder)} aria-label={L(lang, copy.commentPlaceholder)} /><button onClick={submitComment}><ArrowUpRight size={16} />{L(lang, copy.send)}</button></div>
         {comments.length > 0 && <div className="comment-list">{comments.slice(0, 2).map((item, index) => <div className="comment-item" key={`${item}-${index}`}><span>0{index + 1}</span>{item}</div>)}</div>}
