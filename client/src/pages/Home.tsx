@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -299,9 +299,9 @@ function useCopy(lang: Lang): any {
     comments: { ar: "تعليقات", en: "Comments" },
     commentPlaceholder: { ar: "اكتب ملاحظة عن: كيف غيّر AI طريقة العمل؟", en: "Write a note about: How did AI change the way we work?" },
     send: { ar: "إرسال", en: "Send" },
-    galleryEyebrow: { ar: "المعرض المتحرك", en: "The moving gallery" },
+    galleryEyebrow: { ar: "لوحة AI ARCHIVE", en: "The AI ARCHIVE board" },
     galleryTitle: { ar: "لمحة من الأثر", en: "A glimpse of the output" },
-    galleryBody: { ar: "دُوّارة بصرية من مواد حقيقية داخل الأرشيف — حرّك المؤشر فوقها، أو اختر صورة للانتقال إلى قسمها.", en: "An orbiting visual index made from real archive materials — hover to pause, or choose an image to jump to its section." },
+    galleryBody: { ar: "لوحة تحريرية من لقطات حقيقية داخل الأرشيف — يتجدد تكوينها عند الدخول، واختر أي قطعة للانتقال إلى قسمها.", en: "An editorial board of real archive snippets — its composition refreshes on entry, and every piece jumps to its section." },
     workEyebrow: { ar: "الأرشيف الكامل", en: "The complete archive" },
     workTitle: { ar: "الأعمال، كما حدثت", en: "The work, as it happened" },
     workBody: { ar: "كل قسم يحتفظ باسم المجلد الأصلي وترتيبه. افتح الصورة، شغّل الفيديو، أو ادخل إلى التجربة الأصلية.", en: "Every section preserves the original folder name and order. Open the image, play the video, or enter the original experience." },
@@ -395,15 +395,37 @@ function Transformation({ lang }: { lang: Lang }) {
 
 function OrbitGallery({ lang }: { lang: Lang }) {
   const copy = useCopy(lang);
-  const [paused, setPaused] = useState(false);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const [composition, setComposition] = useState(() => [...gallery].sort(() => Math.random() - 0.5).slice(0, 6));
+  const [entry, setEntry] = useState(0);
   const jump = (section: string) => document.getElementById(section)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  useEffect(() => {
+    const node = boardRef.current;
+    if (!node) return;
+    let wasVisible = false;
+    const observer = new IntersectionObserver(([item]) => {
+      if (item.isIntersecting && !wasVisible) {
+        setComposition([...gallery].sort(() => Math.random() - 0.5).slice(0, 6));
+        setEntry((value) => value + 1);
+      }
+      wasVisible = item.isIntersecting;
+    }, { threshold: 0.38 });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
   return (
     <section className="gallery-section" id="gallery">
-      <div className="gallery-copy section-intro reveal-up"><span className="section-number">03</span><div className="eyebrow"><span className="eyebrow-dot blue" />{L(lang, copy.galleryEyebrow)}</div><h2>{L(lang, copy.galleryTitle)}</h2><p>{L(lang, copy.galleryBody)}</p><div className="gallery-key"><span><i className="key-dot orange" />{lang === "ar" ? "مرئي من الأرشيف" : "Seen in the archive"}</span><span><i className="key-dot blue" />{lang === "ar" ? "انقر للانتقال" : "Click to jump"}</span></div></div>
-      <div className={paused ? "orbit-stage paused" : "orbit-stage"} onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-        <div className="orbit-grid-lines" /><div className="orbit-center"><span>AI</span><small>ARCHIVE</small></div><div className="orbit-ring ring-one" /><div className="orbit-ring ring-two" />
-        <div className="orbit-items">{gallery.map((item, index) => <button key={item.src} className={`orbit-item orbit-${index + 1}`} onClick={() => jump(item.section)} aria-label={`${L(lang, item.label)} — ${lang === "ar" ? "انتقل للقسم" : "jump to section"}`}><img src={item.src} alt="" /><span>{L(lang, item.label)}</span></button>)}</div>
-        <span className="orbit-label top">01 — OUTPUT</span><span className="orbit-label bottom">11 — SECTIONS</span>
+      <div className="gallery-copy section-intro reveal-up"><span className="section-number">03</span><div className="eyebrow"><span className="eyebrow-dot blue" />{L(lang, copy.galleryEyebrow)}</div><h2>{L(lang, copy.galleryTitle)}</h2><p>{L(lang, copy.galleryBody)}</p><div className="gallery-key"><span><i className="key-dot orange" />{lang === "ar" ? "مواد حقيقية من الأرشيف" : "Real archive material"}</span><span><i className="key-dot blue" />{lang === "ar" ? "انقر للانتقال" : "Click to jump"}</span></div></div>
+      <div className="archive-board-wrap reveal-up" style={{ "--delay": "90ms" } as CSSProperties}>
+        <div className="archive-board" ref={boardRef}>
+          <div className="archive-board-header"><span className="archive-board-kicker">AI / 03—11</span><strong>AI ARCHIVE</strong><span className="archive-board-note">{lang === "ar" ? "أعمال حقيقية · تكوين متجدد" : "REAL WORKS · NEW COMPOSITION"}</span></div>
+          <div className="archive-board-grid">
+            {composition.map((item, index) => <button key={`${item.src}-${entry}`} className={`archive-piece piece-${index + 1}`} onClick={() => jump(item.section)} aria-label={`${L(lang, item.label)} — ${lang === "ar" ? "انتقل للقسم" : "jump to section"}`}>
+              <span className="piece-pin" /><span className="piece-tape" /><img src={item.src} alt={L(lang, item.label)} /><span className="piece-caption"><b>{String(index + 1).padStart(2, "0")}</b>{L(lang, item.label)}</span>
+            </button>)}
+          </div>
+          <div className="archive-board-footer"><span>{lang === "ar" ? "ملف بصري من الأعمال المحفوظة" : "A visual file of preserved works"}</span><span>ARCHIVE / {String(entry + 1).padStart(2, "0")}</span></div>
+        </div>
       </div>
     </section>
   );
