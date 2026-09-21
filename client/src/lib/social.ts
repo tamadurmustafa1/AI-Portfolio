@@ -48,7 +48,7 @@ async function request(path: string, init?: RequestInit) {
 export async function loadSocial(workId: string): Promise<SocialSnapshot> {
   const encoded = encodeURIComponent(workId);
   const [commentsResponse, likesResponse, mineResponse] = await Promise.all([
-    request(`portfolio_comments?select=id,work_id,body,visitor_id,created_at&work_id=eq.${encoded}&order=created_at.desc&limit=50`),
+    request(`portfolio_comments?select=id,work_id,body,visitor_id,created_at&work_id=eq.${encoded}&order=created_at.desc`),
     request(`portfolio_likes?select=id&work_id=eq.${encoded}`),
     request(`portfolio_likes?select=id&work_id=eq.${encoded}&visitor_id=eq.${encodeURIComponent(visitorId())}&limit=1`),
   ]);

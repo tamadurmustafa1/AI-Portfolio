@@ -409,7 +409,7 @@ function SocialControls({ workId, lang }: { workId: string; lang: Lang }) {
     <div className="shared-social" data-work-id={workId}>
       <div className="film-controls"><button className={liked ? "reaction active" : "reaction"} onClick={() => void toggleLike()}><Heart size={16} fill={liked ? "currentColor" : "none"} />{L(lang, copy.like)}</button><span className="reaction-count">{likeCount.toString().padStart(2, "0")}</span><span className="film-divider" /><span className="comment-count"><MessageCircle size={16} />{comments.length.toString().padStart(2, "0")} {L(lang, copy.comments)}</span></div>
       <div className="comment-box"><input value={comment} onChange={(event) => setComment(event.target.value)} onKeyDown={(event) => event.key === "Enter" && void submitComment()} placeholder={L(lang, copy.commentPlaceholder)} aria-label={L(lang, copy.commentPlaceholder)} disabled={!socialReady} /><button onClick={() => void submitComment()} disabled={!socialReady}><ArrowUpRight size={16} />{L(lang, copy.send)}</button></div>
-      {comments.length > 0 && <div className="comment-list">{comments.slice(0, 2).map((item, index) => <div className="comment-item" key={item.id}><span>0{index + 1}</span>{item.body}</div>)}</div>}
+      {comments.length > 0 && <div className="comment-list">{comments.map((item, index) => <div className="comment-item" key={item.id}><span>{String(index + 1).padStart(2, "0")}</span>{item.body}</div>)}</div>}
     </div>
   );
 }
