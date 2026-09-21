@@ -414,6 +414,34 @@ function SocialControls({ workId, lang }: { workId: string; lang: Lang }) {
   );
 }
 
+function MediaViewer({ project, lang, kind, imageProjects, imageIndex, onClose, onNavigate }: { project: Project; lang: Lang; kind: "image" | "video"; imageProjects: Project[]; imageIndex: number; onClose: () => void; onNavigate: (direction: -1 | 1) => void }) {
+  const title = L(lang, project.title);
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+      if (kind === "image" && imageProjects.length > 1 && event.key === "ArrowLeft") onNavigate(-1);
+      if (kind === "image" && imageProjects.length > 1 && event.key === "ArrowRight") onNavigate(1);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.removeEventListener("keydown", onKeyDown); document.body.style.overflow = previousOverflow; };
+  }, [imageProjects.length, kind, onClose, onNavigate]);
+  return (
+    <div className="media-viewer" role="dialog" aria-modal="true" aria-label={title} onMouseDown={(event) => event.target === event.currentTarget && onClose()}>
+      <div className="media-viewer-shell">
+        <div className="media-viewer-topbar"><div><span className="media-viewer-kicker">{kind === "video" ? (lang === "ar" ? "مشاهدة الفيديو" : "VIDEO VIEWER") : (lang === "ar" ? "عارض الصور" : "IMAGE VIEWER")}</span><h3>{title}</h3></div><button type="button" className="media-viewer-close" onClick={onClose} aria-label={lang === "ar" ? "إغلاق العارض" : "Close viewer"}><X size={22} /></button></div>
+        <div className="media-viewer-stage">
+          {kind === "video" && project.source && <video className="media-viewer-video" controls playsInline preload="metadata" poster={project.poster} src={project.source} aria-label={title} />}
+          {kind === "image" && project.source && <img className="media-viewer-image" src={project.source} alt={title} />}
+        </div>
+        {kind === "image" && imageProjects.length > 1 && <div className="media-viewer-navigation"><button type="button" onClick={() => onNavigate(-1)} aria-label={lang === "ar" ? "الصورة السابقة" : "Previous image"}>← {lang === "ar" ? "السابق" : "Previous"}</button><span>{imageIndex + 1} / {imageProjects.length}</span><button type="button" onClick={() => onNavigate(1)} aria-label={lang === "ar" ? "الصورة التالية" : "Next image"}>{lang === "ar" ? "التالي" : "Next"} →</button></div>}
+        {kind === "video" && <p className="media-viewer-hint">{lang === "ar" ? "استخدم أدوات التشغيل للتحكم بالصوت والتشغيل والإيقاف." : "Use the player controls for playback and sound."}</p>}
+      </div>
+    </div>
+  );
+}
+
 function Transformation({ lang }: { lang: Lang }) {
   const copy = useCopy(lang);
   return (
@@ -427,16 +455,23 @@ function Transformation({ lang }: { lang: Lang }) {
   );
 }
 
-function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: Lang; sectionIndex: string }) {
+function ProjectCard({ project, lang, sectionIndex, sectionProjects }: { project: Project; lang: Lang; sectionIndex: string; sectionProjects: Project[] }) {
   const title = L(lang, project.title);
   const description = L(lang, project.description);
   const typeLabel = L(lang, project.tool || { ar: "عمل", en: "Work" });
   const action = project.cta ? L(lang, project.cta) : project.type === "doc" ? (lang === "ar" ? "افتح المصدر" : "Open source") : project.type === "html" ? (lang === "ar" ? "افتح التجربة التفاعلية" : "Open Experience") : undefined;
+  const imageProjects = sectionProjects.filter((item) => item.type === "image" && item.source);
+  const imageIndex = imageProjects.findIndex((item) => item.id === project.id);
+  const [viewerProject, setViewerProject] = useState<Project | null>(null);
+  const closeViewer = () => setViewerProject(null);
+  const viewer = viewerProject ? (viewerProject.type === "image" ? "image" : "video") : null;
+  const navigateImage = (direction: -1 | 1) => { if (!viewerProject || imageProjects.length < 2) return; const currentIndex = imageProjects.findIndex((item) => item.id === viewerProject.id); if (currentIndex < 0) return; const nextIndex = (currentIndex + direction + imageProjects.length) % imageProjects.length; const nextProject = imageProjects[nextIndex]; if (nextProject) setViewerProject(nextProject); };
   return (
-    <article className={`project-card type-${project.type} ${project.featured ? "featured" : ""}`}>
+    <>
+      <article className={`project-card type-${project.type} ${project.featured ? "featured" : ""}`}>
       <div className="project-media">
-        {project.type === "image" && project.source && <img src={project.source} alt={title} />}
-        {project.type === "video" && project.source && <video controls playsInline preload="metadata" poster={project.poster} src={project.source} aria-label={title} />}
+        {project.type === "image" && project.source && <button type="button" className="media-open-trigger" onClick={() => setViewerProject(project)} aria-label={lang === "ar" ? `افتح صورة ${title}` : `Open image ${title}`}><img src={project.source} alt={title} /><span className="media-open-badge">{lang === "ar" ? "عرض كبير" : "VIEW LARGE"}</span></button>}
+        {project.type === "video" && project.source && <div className="video-card-player"><video controls playsInline preload="metadata" poster={project.poster} src={project.source} aria-label={title} onClick={() => setViewerProject(project)} /><button type="button" className="media-open-badge video-open-badge" onClick={() => setViewerProject(project)}>{lang === "ar" ? "فتح العرض الكبير" : "OPEN LARGE VIEW"}</button></div>}
         {project.type === "audio" && <div className="audio-art"><div className="audio-orb"><AudioLines size={30} /></div><div className="equalizer">{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((bar) => <i key={bar} style={{ "--bar": `${bar % 4 + 2}` } as CSSProperties} />)}</div><span>SOUND / {sectionIndex}</span></div>}
         {project.type === "html" && project.id === "bead-game" && <div className="game-art game-beads" role="img" aria-label={lang === "ar" ? "صورة مصغرة للعبة رحلة الخرز" : "Thumbnail for the Bead Quest game"}><div className="game-art-grid" /><span className="bead bead-1" /><span className="bead bead-2" /><span className="bead bead-3" /><span className="bead bead-4" /><span className="bead bead-5" /><span className="bead bead-6" /><span className="bead bead-7" /><span className="bead bead-8" /><span className="bead-thread" /><div className="game-thumb-label"><Gamepad2 size={14} />{lang === "ar" ? "تحدي الخرز" : "BEAD QUEST"}</div></div>}
         {project.type === "html" && project.id === "fish-game" && <div className="game-art game-fish" role="img" aria-label={lang === "ar" ? "صورة مصغرة لسمكة ذهبية مصنوعة من الخرز للعبة سمكة مش بمكانها" : "Bead-crafted golden fish thumbnail for Fish Out of Place"}><img className="game-fish-image" src={storage.gameFish} alt="" /><div className="game-thumb-label"><Gamepad2 size={14} />{lang === "ar" ? "السمكة مش بمكانها" : "FISH OUT OF PLACE"}</div></div>}
@@ -447,7 +482,9 @@ function ProjectCard({ project, lang, sectionIndex }: { project: Project; lang: 
         <div className="media-index">{sectionIndex ? `${sectionIndex} / ` : ""}{project.type.toUpperCase()}</div>
       </div>
       <div className="project-content"><div className="project-meta"><span>{iconFor(project.type)}{typeLabel}</span>{project.featured && <span className="featured-pill"><Sparkles size={13} />{lang === "ar" ? "مختار" : "Featured"}</span>}</div><h3>{title}</h3><p>{description}</p><div className="project-footer">{action && (project.drive || project.source) && <a className="project-link" href={project.drive || project.source} target="_blank" rel="noreferrer">{action}<MoveUpRight size={15} /></a>}{project.type === "audio" && project.id === "courtyard" && project.source && <audio controls preload="none" src={project.source} aria-label={title} />}</div></div>
-    </article>
+      </article>
+      {viewer && viewerProject && <MediaViewer project={viewerProject} lang={lang} kind={viewer} imageProjects={imageProjects} imageIndex={imageProjects.findIndex((item) => item.id === viewerProject.id)} onClose={closeViewer} onNavigate={navigateImage} />}
+    </>
   );
 }
 
@@ -495,7 +532,7 @@ function WorksSection({ lang }: { lang: Lang }) {
           <div className="archive-board-footer"><span>{lang === "ar" ? "معاينة بصرية من مجموعات الأعمال" : "A visual preview of the work groups"}</span><span>WORKS</span></div>
         </div>
       </div>
-      <div className="archive-grid">{orderedSections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="work-group-label">{L(lang, groupLabel(section.id))}</span><h3>{section.id === "timelapse" ? "Time Lapse" : L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex="" />)}</div></section>)}</div>
+      <div className="archive-grid">{orderedSections.map((section) => <section className={`archive-section accent-${section.accent}`} id={section.id} key={section.id}><div className="archive-section-header"><div><span className="work-group-label">{L(lang, groupLabel(section.id))}</span><h3>{section.id === "timelapse" ? "Time Lapse" : L(lang, section.title)}</h3></div><p>{L(lang, section.description)}</p><span className="section-count">{String(section.projects.length).padStart(2, "0")} {lang === "ar" ? "أعمال" : "works"}</span></div><div className="projects-grid">{section.projects.map((project) => <ProjectCard key={project.id} project={project} lang={lang} sectionIndex="" sectionProjects={section.projects} />)}</div></section>)}</div>
     </section>
   );
 }
